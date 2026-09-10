@@ -1,0 +1,44 @@
+{
+  "full_disk": {
+    "area_error_m2": 0.0,
+    "centroid_error_m": 2.6958767089841215e-13
+  },
+  "half_disk": {
+    "area_error_m2": 0.0,
+    "centroid_error_m": 2.665833957910461e-13
+  },
+  "near_half_disk": {
+    "area_error_m2": 7.105427357601002e-15,
+    "centroid_error_m": 7.137684862622321e-16
+  },
+  "sector": {
+    "inscribed_area_gap_m2": 1.1466181604191661e-07,
+    "centroid_error_m": 1.213493305933284e-09,
+    "radius_m": 900.137095239517
+  },
+  "symmetric_0.8": {
+    "diameter_m": 27.93252919658778,
+    "difference_m": 3.836930773104541e-13
+  },
+  "symmetric_1": {
+    "diameter_m": 34.920769491747876,
+    "difference_m": 4.973799150320701e-14
+  },
+  "symmetric_1.005": {
+    "diameter_m": 35.09551631971823,
+    "difference_m": 1.8474111129762605e-13
+  },
+  "symmetric_1.2": {
+    "diameter_m": 41.91241804078879,
+    "difference_m": 3.623767952376511e-13
+  },
+  "triangle_acute": {
+    "diameter_circle_covers": false
+  },
+  "triangle_right": {
+    "diameter_circle_covers": true
+  },
+  "triangle_obtuse": {
+    "diameter_circle_covers": true
+  }
+}

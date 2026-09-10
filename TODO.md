@@ -15,14 +15,15 @@
 ### q1
 
 - [ ] `TODO` 明确目标、输入输出和评价指标
-- [ ] `REVIEW` 完成基础模型，含部分边界条件和敏感性分析（2026-09-10）
+- [ ] `REVIEW` 完成基础模型并按审查修订圆域约束、覆盖判据和下游接口（2026-09-10）
   - 执行：本文档提交者（成员代号待团队确认）
   - 复核：待另一名队员认领；第三人检查与后续问题及论文的一致性
-  - 输入：用户提供的《B-q1：基础模型建立.md》
+  - 输入：用户提供的基础模型原稿与《q1-审查.md》，以及仓库B题题面、附件1和附件2
   - 产物：[q1 基础模型草稿](paper/drafts/B-q1：基础模型建立.md)
-  - 记录：`notes/modeling.md`、`notes/assumptions.md`、`notes/symbols.md`、`notes/experiments.md`
+  - 记录：`notes/modeling.md`、`notes/assumptions.md`、`notes/symbols.md`、`notes/experiments.md`、`notes/q1-review-response.md`
+  - 算例核验：`python src/q1/verify_revision_examples.py`；结果为 `results/tables/q1_revision_validation.json`（非完整求解器）
   - 分支：`q1/baseline-model`；目标分支：`main`
-  - 验收：独立核对公式、边界条件、单位、量化误差处理及覆盖判据；补齐可运行源码和结果后复现实验；复核通过并合并后改为 `DONE`
+  - 验收：独立核对P与K的口径、圆弧计算、量化裕量、面积/质心及状态响应；解析例已复算，完整求解器、历史随机实验与模拟器验证仍待补齐；复核通过并合并后改为 `DONE`
 - [ ] `TODO` 生成结果、图表和结论
 
 ### q2
