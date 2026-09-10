@@ -1,0 +1,65 @@
+\documentclass[UTF8,zihao=-4]{ctexart}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,graphicx,float}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\graphicspath{{../../figures/}{../../../results/figures/}}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt}
+\pagestyle{plain}
+
+\title{B 题论文标题（不得出现身份信息）}
+\author{}
+\date{}
+
+\begin{document}
+
+% 电子版第一页必须为摘要专用页；不要加入承诺书和编号专用页。
+\maketitle
+\vspace{-2.5em}
+\begin{abstract}
+在此撰写摘要。依次交代问题、方法、关键量化结果和结论，原则上不超过一页。
+
+\textbf{关键词：} 关键词一；关键词二；关键词三
+\end{abstract}
+\thispagestyle{plain}
+\clearpage
+
+\section{问题重述}
+\input{sections/01_problem}
+
+\section{问题分析}
+\input{sections/02_analysis}
+
+\section{模型假设与符号说明}
+\input{sections/03_assumptions}
+
+\section{模型建立与求解}
+\input{sections/04_model}
+
+\section{模型检验、敏感性与误差分析}
+\input{sections/05_validation}
+
+\section{模型评价与推广}
+\input{sections/06_evaluation}
+
+\section{结论}
+\input{sections/07_conclusion}
+
+\begin{thebibliography}{99}
+\bibitem{example} 作者. 文献标题[J]. 期刊, 年, 卷(期): 页码.
+\end{thebibliography}
+
+\appendix
+\section{支撑材料文件清单}
+\begin{itemize}[leftmargin=2em]
+  \item \texttt{src/}：完整可运行源程序；
+  \item \texttt{data/}：必要的自主查阅与处理后数据；
+  \item \texttt{results/}：必要的中间结果与表格。
+\end{itemize}
+
+\section{补充推导或结果}
+在此放置必要的补充内容。
+
+\end{document}

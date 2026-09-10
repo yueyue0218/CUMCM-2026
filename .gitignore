@@ -1,0 +1,49 @@
+# Python cache and environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+secrets*.yml
+
+# Temporary files
+tmp/
+scratch/
+dist/
+*.tmp
+*.bak
+~$*
+
+# LaTeX build products (keep final PDFs under paper/final/)
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini
