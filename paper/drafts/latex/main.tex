@@ -33,19 +33,25 @@
 \input{sections/02_analysis}
 
 \section{模型假设与符号说明}
-\input{sections/03_assumptions}
+\input{sections/03_assumptions_symbols}
 
-\section{模型建立与求解}
-\input{sections/04_model}
+\section{问题一：不确定测向下的定位区域}
+\input{sections/04_q1_localization}
 
-\section{模型检验、敏感性与误差分析}
-\input{sections/05_validation}
+\section{问题二：第二检测点选择}
+\input{sections/05_q2_second_point}
 
-\section{模型评价与推广}
-\input{sections/06_evaluation}
+\section{问题三：全向干扰源搜索定位与清除}
+\input{sections/06_q3_omnidirectional}
+
+\section{问题四：定向干扰源检测与清除}
+\input{sections/07_q4_directional}
+
+\section{模型检验、评价与误差分析}
+\input{sections/08_validation}
 
 \section{结论}
-\input{sections/07_conclusion}
+\input{sections/09_conclusion}
 
 \begin{thebibliography}{99}
 \bibitem{example} 作者. 文献标题[J]. 期刊, 年, 卷(期): 页码.
@@ -55,8 +61,10 @@
 \section{支撑材料文件清单}
 \begin{itemize}[leftmargin=2em]
   \item \texttt{src/}：完整可运行源程序；
-  \item \texttt{data/}：必要的自主查阅与处理后数据；
-  \item \texttt{results/}：必要的中间结果与表格。
+  \item \texttt{runs/}：问题三、问题四的运行配置、交互日志与指标；
+  \item \texttt{support/}：模拟器导出的正式测试加密日志，保持原文件名；
+  \item \texttt{data/}：确有使用的自主查阅与处理后数据；
+  \item \texttt{results/}：必要的中间结果、图和表格。
 \end{itemize}
 
 \section{补充推导或结果}
