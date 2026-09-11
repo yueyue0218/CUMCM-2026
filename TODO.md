@@ -15,15 +15,15 @@
 ### q1
 
 - [ ] `TODO` 明确目标、输入输出和评价指标
-- [ ] `REVIEW` 重组q1基础模型，采用旋转卡壳、精确覆盖判据、Jung预判和Welzl求圆（2026-09-11）
+- [ ] `REVIEW` 修订q1基础模型，落实二次审查的圆弧规范、覆盖控制与预测交会接口（2026-09-11）
   - 执行：本文档提交者（成员代号待团队确认）
   - 复核：待另一名队员认领；第三人检查与后续问题及论文的一致性
-  - 输入：用户提供的基础模型原稿与《q1-审查.md》，以及仓库B题题面、附件1和附件2
+  - 输入：用户提供的基础模型原稿、《q1-审查.md》与《q1-审查 (1).md》，以及仓库B题题面、附件1和附件2
   - 产物：[q1 基础模型草稿](paper/drafts/B-q1：基础模型建立.md)
   - 记录：`notes/modeling.md`、`notes/assumptions.md`、`notes/symbols.md`、`notes/experiments.md`、`notes/q1-review-response.md`
   - 算例核验：`python src/q1/verify_revision_examples.py`；结果为 `results/tables/q1_revision_validation.json`（非完整求解器）
   - 分支：`q1/baseline-model`；目标分支：`main`
-  - 验收：独立核对P与K的口径、Jung充分/必要条件、Welzl边界集、圆弧计算、量化裕量、面积/质心及状态响应；解析例及Jung阈值已复算，完整求解器、历史随机实验与模拟器验证仍待补齐；复核通过并合并后改为 `DONE`
+  - 验收：独立核对P/K/真实可行集口径、Jung判据、Welzl边界集、圆弧扫角与对踵点、预测面积及清除状态；解析例、Jung阈值和二次审查边界例已复算，完整求解器、历史随机实验与模拟器验证仍待补齐；复核通过并合并后改为 `DONE`
 - [ ] `TODO` 生成结果、图表和结论
 
 ### q2

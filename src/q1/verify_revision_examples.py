@@ -149,6 +149,103 @@ for d2_text, expected in [
 checks['jung_examples'] = jung_cases
 checks['jung_squared_thresholds'] = threshold_checks
 
+# Oriented arc fixtures: topology is input, never inferred as the shorter arc.
+# Compare the analytic Green term with an independently closed chord polygon.
+arc_checks = []
+for label, start_deg, end_deg, full, expected_sweep in [
+    ('atan2_seam', 179, -179, False, 2),
+    ('zero_seam', 359, 1, False, 2),
+    ('major_arc', 1, 359, False, 358),
+    ('zero_arc', 25, 25, False, 0),
+    ('full_circle', 25, 25, True, 360),
+    ('semicircle', 270, 90, False, 180),
+    ('over_semicircle', 270, 91, False, 181),
+    ('under_semicircle', 270, 89, False, 179),
+]:
+    start_deg %= 360
+    sweep_deg = 360 if full else (end_deg-start_deg) % 360
+    assert sweep_deg == expected_sweep
+    a, sweep = math.radians(start_deg), math.radians(sweep_deg)
+    b, radius = a+sweep, 5
+    cx, cy = 3, -2
+    term = (radius*cx*(math.sin(b)-math.sin(a))
+            + radius*cy*(math.cos(a)-math.cos(b)) + radius**2*sweep)/2
+    angles = np.linspace(a, b, 20001)
+    points = np.column_stack((cx+radius*np.cos(angles), cy+radius*np.sin(angles)))
+    # Add the returning chord to both representations, closing the boundary.
+    chord = float(points[-1, 0]*points[0, 1]-points[-1, 1]*points[0, 0])/2
+    following = np.roll(points, -1, axis=0)
+    polygon_area = float(np.sum(points[:, 0]*following[:, 1]
+                                - following[:, 0]*points[:, 1])/2)
+    exact_area = term+chord
+    assert exact_area >= -1e-12
+    assert abs(exact_area-polygon_area) < 2e-6
+    # Split at 360 degrees to verify that the branch cut changes no integral.
+    def area_term(lo, hi):
+        return (radius*cx*(math.sin(hi)-math.sin(lo))
+                + radius*cy*(math.cos(lo)-math.cos(hi)) + radius**2*(hi-lo))/2
+    split = 2*math.pi
+    split_term = area_term(a, split)+area_term(split, b) if a < split < b else term
+    assert abs(term-split_term) < 1e-12
+    antipodal = sweep_deg >= 180
+    if antipodal:
+        pair = np.array([[cx+radius*math.cos(a), cy+radius*math.sin(a)],
+                         [cx+radius*math.cos(a+math.pi), cy+radius*math.sin(a+math.pi)]])
+        assert abs(float(np.linalg.norm(pair[0]-pair[1]))-2*radius) < 1e-12
+    arc_checks.append(dict(case=label, sweep_deg=sweep_deg,
+                           has_antipodal_pair=antipodal,
+                           green_vs_polygon_error_m2=abs(exact_area-polygon_area)))
+checks['oriented_arc_examples'] = arc_checks
+
+# Two separately retained arcs can have an antipodal pair even though each is short.
+assert 10 <= 15 <= 20 and 190 <= 195 <= 200 and (195-15) % 360 == 180
+opposite_points = 1800*np.column_stack((np.cos(np.radians([15, 195])),
+                                       np.sin(np.radians([15, 195]))))
+assert abs(float(np.linalg.norm(opposite_points[0]-opposite_points[1]))-3600) < 1e-9
+checks['separate_arc_antipodes'] = dict(arcs_deg=[[10, 20], [190, 200]],
+                                       witness_deg=[15, 195], diameter_m=3600)
+
+# Exact rational segment endpoints demonstrate why the rounded output needs a check.
+left, right = Fraction('-19.996'), Fraction('20.004')
+optimal_center, optimal_radius = (left+right)/2, (right-left)/2
+output_center = Fraction(0)  # 0.004 rounded to two decimal places.
+output_radius = max(abs(left-output_center), abs(right-output_center))
+assert optimal_radius == 20 and output_radius > 20
+checks['rounded_center_counterexample'] = dict(
+    optimal_center_m=float(optimal_center), optimal_radius_m=float(optimal_radius),
+    output_center_m=float(output_center), output_radius_m=float(output_radius),
+    conclusion='exists_but_output_not_clear_ready')
+
+# Predictive geometry at the center of Omega: the reception disk is not redundant.
+theta_half = math.radians(1)
+prior_area = math.pi*1800**2
+predictive = {'direction': 1500**2*theta_half, 'near': math.pi*5**2,
+              'no_signal': prior_area}
+arc_angle = np.linspace(-theta_half, theta_half, 20001)
+boundary = np.vstack(([0, 0], np.column_stack((1500*np.cos(arc_angle),
+                                               1500*np.sin(arc_angle)))))
+next_boundary = np.roll(boundary, -1, axis=0)
+direction_area_check = float(np.sum(boundary[:, 0]*next_boundary[:, 1]
+                                   - next_boundary[:, 0]*boundary[:, 1])/2)
+assert abs(direction_area_check-predictive['direction']) < 1e-6
+assert predictive['direction'] < 1800**2*theta_half
+assert all(0 <= value <= prior_area for value in predictive.values())
+checks['predictive_area_examples'] = dict(
+    prior_area_m2=prior_area, predicted_area_m2=predictive,
+    reduction_m2={key: prior_area-value for key, value in predictive.items()},
+    direction_polygon_error_m2=abs(direction_area_check-predictive['direction']),
+    scope='convex_envelope_only_no_probability_model')
+
+# A disk intersection remains convex; removing the near disk need not do so.
+outer_radius, excluded_radius = 10, 5
+witnesses = np.array([[-6, 0], [6, 0]])
+assert np.all(np.linalg.norm(witnesses, axis=1) <= outer_radius)
+assert np.all(np.linalg.norm(witnesses, axis=1) > excluded_radius)
+assert np.linalg.norm(witnesses.mean(axis=0)) <= excluded_radius
+checks['nonconvex_exclusion_example'] = dict(
+    envelope_radius_m=outer_radius, excluded_radius_m=excluded_radius,
+    feasible_points=witnesses.tolist(), midpoint_excluded=True)
+
 out = root / 'results/tables/q1_revision_validation.json'
 out.parent.mkdir(parents=True, exist_ok=True)
 out.write_text(json.dumps(checks, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')

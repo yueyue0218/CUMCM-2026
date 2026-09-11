@@ -113,5 +113,109 @@
       "diameter_squared_m2": "1600.00000001",
       "screen": "impossible_for_entire_region"
     }
-  ]
+  ],
+  "oriented_arc_examples": [
+    {
+      "case": "atan2_seam",
+      "sweep_deg": 2,
+      "has_antipodal_pair": false,
+      "green_vs_polygon_error_m2": 2.1432855490388647e-13
+    },
+    {
+      "case": "zero_seam",
+      "sweep_deg": 2,
+      "has_antipodal_pair": false,
+      "green_vs_polygon_error_m2": 2.1671553440683056e-13
+    },
+    {
+      "case": "major_arc",
+      "sweep_deg": 358,
+      "has_antipodal_pair": true,
+      "green_vs_polygon_error_m2": 1.270515539886219e-06
+    },
+    {
+      "case": "zero_arc",
+      "sweep_deg": 0,
+      "has_antipodal_pair": false,
+      "green_vs_polygon_error_m2": 0.0
+    },
+    {
+      "case": "full_circle",
+      "sweep_deg": 360,
+      "has_antipodal_pair": true,
+      "green_vs_polygon_error_m2": 1.2919282283974098e-06
+    },
+    {
+      "case": "semicircle",
+      "sweep_deg": 180,
+      "has_antipodal_pair": true,
+      "green_vs_polygon_error_m2": 1.6149105164231514e-07
+    },
+    {
+      "case": "over_semicircle",
+      "sweep_deg": 181,
+      "has_antipodal_pair": true,
+      "green_vs_polygon_error_m2": 1.6419761550423573e-07
+    },
+    {
+      "case": "under_semicircle",
+      "sweep_deg": 179,
+      "has_antipodal_pair": false,
+      "green_vs_polygon_error_m2": 1.5881457215982664e-07
+    }
+  ],
+  "separate_arc_antipodes": {
+    "arcs_deg": [
+      [
+        10,
+        20
+      ],
+      [
+        190,
+        200
+      ]
+    ],
+    "witness_deg": [
+      15,
+      195
+    ],
+    "diameter_m": 3600
+  },
+  "rounded_center_counterexample": {
+    "optimal_center_m": 0.004,
+    "optimal_radius_m": 20.0,
+    "output_center_m": 0.0,
+    "output_radius_m": 20.004,
+    "conclusion": "exists_but_output_not_clear_ready"
+  },
+  "predictive_area_examples": {
+    "prior_area_m2": 10178760.197630929,
+    "predicted_area_m2": {
+      "direction": 39269.90816987241,
+      "near": 78.53981633974483,
+      "no_signal": 10178760.197630929
+    },
+    "reduction_m2": {
+      "direction": 10139490.289461056,
+      "near": 10178681.657814588,
+      "no_signal": 0.0
+    },
+    "direction_polygon_error_m2": 2.0016159396618605e-08,
+    "scope": "convex_envelope_only_no_probability_model"
+  },
+  "nonconvex_exclusion_example": {
+    "envelope_radius_m": 10,
+    "excluded_radius_m": 5,
+    "feasible_points": [
+      [
+        -6,
+        0
+      ],
+      [
+        6,
+        0
+      ]
+    ],
+    "midpoint_excluded": true
+  }
 }
