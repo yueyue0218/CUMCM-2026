@@ -99,7 +99,7 @@ def _deduplicate_adjacent(vertices: list[Point], tolerance: float) -> list[Point
     return distinct
 
 
-def _convex_hull(points: list[Point], tolerance: float) -> list[Point]:
+def convex_hull(points: list[Point], tolerance: float = 0.0) -> list[Point]:
     ordered: list[Point] = []
     for point in sorted(points):
         if not ordered or math.dist(point, ordered[-1]) > tolerance:
@@ -164,7 +164,7 @@ def intersect_halfplanes(
             _clip_polygon(vertices, plane, tolerance), tolerance
         )
 
-    hull = _convex_hull(vertices, tolerance)
+    hull = convex_hull(vertices, tolerance)
     if not hull:
         return Region("empty", (), 0.0)
     status = {1: "point", 2: "segment"}.get(len(hull), "polygon")
