@@ -34,7 +34,7 @@
 | segment_region | analytic | {halfplanes: [[0.000000, 1.000000, 0.000000], [0.000000, -1.000000, 0.000000], [1.000000, 0.000000, 2.000000], [-1.000000, 0.000000, 0.000000]]} |
 | equilateral_diameter_circle_failure | analytic | {vertices: [[0.000000, 0.000000], [36.000000, 0.000000], [18.000000, 31.176915]]} |
 | square_diameter_circle_success | analytic | {vertices: [[0.000000, 0.000000], [36.000000, 0.000000], [36.000000, 36.000000], [0.000000, 36.000000]]} |
-| clear_radius_exactly_20 | analytic | {points: [[-20.000000, 0.000000], [20.000000, 0.000000]], clear_radius_m: 20.000000} |
-| clear_radius_above_20 | analytic | {points: [[-20.000001, 0.000000], [20.000001, 0.000000]], clear_radius_m: 20.000000} |
+| clear_radius_exactly_20 | analytic | {observations: [{station: [-20.000000, 0.000000], bearing_deg: 0.000000}, {station: [20.000000, 0.000000], bearing_deg: 180.000000}], arena_radius_m: 1800.000000, clear_radius_m: 20.000000, output_decimals: 6} |
+| clear_radius_above_20 | analytic | {observations: [{station: [-20.000001, 0.000000], bearing_deg: 0.000000}, {station: [20.000001, 0.000000], bearing_deg: 180.000000}], arena_radius_m: 1800.000000, clear_radius_m: 20.000000, output_decimals: 6} |
 | arc_crosses_zero | analytic | {center: [0.000000, 0.000000], radius_m: 10.000000, start_deg: 350.000000, sweep_deg: 20.000000} |
 | rounded_center_counterexample | analytic | {observations: [{station: [0.490000, 0.490000], bearing_deg: 0.000000}, {station: [0.490000, 0.490000], bearing_deg: 180.000000}], clear_radius_m: 0.500000, output_decimals: 0} |

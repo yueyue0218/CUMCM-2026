@@ -16,7 +16,6 @@ if __name__ == "__main__":
     if str(repository_root) not in sys.path:
         sys.path.insert(0, str(repository_root))
 
-from src.q1.enclosing_circle import minimum_enclosing_circle
 from src.q1.geometry import (
     HalfPlane,
     Observation,
@@ -427,10 +426,26 @@ def _analytic_boundary_checks() -> list[dict[str, object]]:
     square_diameter = diameter_rotating_calipers(square)
     square_coverage = diameter_circle_coverage(square, square_diameter)
 
-    exact_points = [(-20.0, 0.0), (20.0, 0.0)]
-    exact_circle = minimum_enclosing_circle(exact_points)
-    above_points = [(-20.000001, 0.0), (20.000001, 0.0)]
-    above_circle = minimum_enclosing_circle(above_points)
+    exact_clearance_payload = {
+        "observations": [
+            {"station": [-20.0, 0.0], "bearing_deg": 0.0},
+            {"station": [20.0, 0.0], "bearing_deg": 180.0},
+        ],
+        "arena_radius_m": 1800.0,
+        "clear_radius_m": 20.0,
+        "output_decimals": 6,
+    }
+    exact_clearance = solve_case(exact_clearance_payload)
+    above_clearance_payload = {
+        "observations": [
+            {"station": [-20.000001, 0.0], "bearing_deg": 0.0},
+            {"station": [20.000001, 0.0], "bearing_deg": 180.0},
+        ],
+        "arena_radius_m": 1800.0,
+        "clear_radius_m": 20.0,
+        "output_decimals": 6,
+    }
+    above_clearance = solve_case(above_clearance_payload)
 
     arc = CircularArc(
         center=(0.0, 0.0),
@@ -500,16 +515,77 @@ def _analytic_boundary_checks() -> list[dict[str, object]]:
         _check(
             "clear_radius_exactly_20",
             "analytic",
-            {"points": [list(point) for point in exact_points], "clear_radius_m": 20.0},
-            {"radius_m": 20.0, "status": "CLEAR_READY"},
-            {"radius_m": exact_circle.radius, "status": "CLEAR_READY" if exact_circle.radius <= 20.0 else "SINGLE_DISK_IMPOSSIBLE"},
+            exact_clearance_payload,
+            {
+                "region_status": "polygon",
+                "arena_contains_region": True,
+                "control_status": "CLEAR_READY",
+                "diameter_m": 40.0,
+                "required_radius_m": 20.0,
+                "rounded_center_max_distance_m": 20.0,
+            },
+            {
+                "region_status": exact_clearance["region"]["status"],
+                "arena_contains_region": exact_clearance["region"][
+                    "arena_contains_region"
+                ],
+                "control_status": exact_clearance["control"]["status"],
+                "diameter_m": exact_clearance["problem_1"]["diameter_m"],
+                "required_radius_m": exact_clearance["problem_1"][
+                    "minimum_enclosing_circle"
+                ]["radius_m"],
+                "rounded_center_max_distance_m": exact_clearance["control"][
+                    "rounded_center_max_distance_m"
+                ],
+            },
         ),
         _check(
             "clear_radius_above_20",
             "analytic",
-            {"points": [list(point) for point in above_points], "clear_radius_m": 20.0},
-            {"radius_above_20": True, "status": "SINGLE_DISK_IMPOSSIBLE"},
-            {"radius_above_20": above_circle.radius > 20.0, "status": "SINGLE_DISK_IMPOSSIBLE" if above_circle.radius > 20.0 else "CLEAR_READY"},
+            above_clearance_payload,
+            {
+                "region_status": "polygon",
+                "arena_contains_region": True,
+                "control_status": "SINGLE_DISK_IMPOSSIBLE",
+                "diameter_m": 40.000002,
+                "required_radius_m": 20.000001,
+                "rounded_center_max_distance_m": 20.000001,
+            },
+            {
+                "region_status": above_clearance["region"]["status"],
+                "arena_contains_region": above_clearance["region"][
+                    "arena_contains_region"
+                ],
+                "control_status": above_clearance["control"]["status"],
+                "diameter_m": above_clearance["problem_1"]["diameter_m"],
+                "required_radius_m": above_clearance["problem_1"][
+                    "minimum_enclosing_circle"
+                ]["radius_m"],
+                "rounded_center_max_distance_m": above_clearance["control"][
+                    "rounded_center_max_distance_m"
+                ],
+            },
+            above_clearance["region"]["status"] == "polygon"
+            and above_clearance["region"]["arena_contains_region"] is True
+            and above_clearance["control"]["status"]
+            == "SINGLE_DISK_IMPOSSIBLE"
+            and math.isclose(
+                above_clearance["problem_1"]["diameter_m"],
+                40.000002,
+                abs_tol=1e-10,
+            )
+            and math.isclose(
+                above_clearance["problem_1"]["minimum_enclosing_circle"][
+                    "radius_m"
+                ],
+                20.000001,
+                abs_tol=1e-10,
+            )
+            and math.isclose(
+                above_clearance["control"]["rounded_center_max_distance_m"],
+                20.000001,
+                abs_tol=1e-10,
+            ),
         ),
         _check(
             "arc_crosses_zero",
@@ -556,13 +632,13 @@ def run_simulation(cases: Sequence[Mapping[str, object]]) -> dict[str, object]:
         for status in ("empty", "unbounded", "point", "segment", "polygon")
     }
 
-    consistent = [
+    random_consistent = [
         case
         for case, _ in solved
         if case.get("case_kind") in {"regular_random", "near_parallel_random"}
         and case.get("expected_truth_retained") is True
     ]
-    retained_count = sum(_truth_retained(case) for case in consistent)
+    retained_count = sum(_truth_retained(case) for case in random_consistent)
     diameters: list[float] = []
     radii: list[float] = []
     discrepancies: list[float] = []
@@ -597,15 +673,15 @@ def run_simulation(cases: Sequence[Mapping[str, object]]) -> dict[str, object]:
             "regular_random": kind_counts["regular_random"],
             "near_parallel_random": kind_counts["near_parallel_random"],
             "random_total": random_cases,
-            "consistent_cases": len(consistent),
+            "random_consistent_cases": len(random_consistent),
             "analytic_checks": len(ANALYTIC_BOUNDARY_IDS),
             "boundary_checks": len(boundary_checks),
         },
         "region_status_distribution": status_distribution,
-        "consistent_truth_retention_count": retained_count,
-        "consistent_truth_case_count": len(consistent),
-        "consistent_truth_retention_rate": (
-            retained_count / len(consistent) if consistent else 1.0
+        "random_consistent_truth_retention_count": retained_count,
+        "random_consistent_truth_case_count": len(random_consistent),
+        "random_consistent_truth_retention_rate": (
+            retained_count / len(random_consistent) if random_consistent else 1.0
         ),
         "diameter_m_quantiles": _quantiles(diameters),
         "minimum_radius_m_quantiles": _quantiles(radii),
@@ -677,7 +753,7 @@ def _results_markdown(summary: Mapping[str, object]) -> str:
         "## 汇总统计",
         "",
         f"- 观测案例数：{summary['counts']['total_observation_cases']}。",
-        f"- 一致案例真值保留：{summary['consistent_truth_retention_count']}/{summary['consistent_truth_case_count']}，比例 {_markdown_value(summary['consistent_truth_retention_rate'])}。",
+        f"- 随机一致案例真值保留：{summary['random_consistent_truth_retention_count']}/{summary['random_consistent_truth_case_count']}，比例 {_markdown_value(summary['random_consistent_truth_retention_rate'])}。",
         f"- 区域状态分布：{_markdown_value(summary['region_status_distribution'])}。",
         f"- 直径分位数（m）：{_markdown_value(summary['diameter_m_quantiles'])}。",
         f"- 最小包围圆半径分位数（m）：{_markdown_value(summary['minimum_radius_m_quantiles'])}。",
@@ -733,7 +809,10 @@ def main() -> int:
     cases = generate_cases()
     summary = run_simulation(cases)
     write_outputs(root, cases, summary)
-    if summary["boundary_fail_count"] or summary["consistent_truth_retention_rate"] != 1.0:
+    if (
+        summary["boundary_fail_count"]
+        or summary["random_consistent_truth_retention_rate"] != 1.0
+    ):
         return 1
     return 0
 

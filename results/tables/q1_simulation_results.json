@@ -6,7 +6,7 @@
     "regular_random": 50,
     "near_parallel_random": 20,
     "random_total": 70,
-    "consistent_cases": 70,
+    "random_consistent_cases": 70,
     "analytic_checks": 8,
     "boundary_checks": 16
   },
@@ -17,9 +17,9 @@
     "segment": 0,
     "polygon": 76
   },
-  "consistent_truth_retention_count": 70,
-  "consistent_truth_case_count": 70,
-  "consistent_truth_retention_rate": 1.0,
+  "random_consistent_truth_retention_count": 70,
+  "random_consistent_truth_case_count": 70,
+  "random_consistent_truth_retention_rate": 1.0,
   "diameter_m_quantiles": {
     "minimum": 9.100892061155012,
     "q25": 26.667470153776854,
@@ -413,25 +413,41 @@
       "case_id": "clear_radius_exactly_20",
       "kind": "analytic",
       "parameters": {
-        "points": [
-          [
-            -20.0,
-            0.0
-          ],
-          [
-            20.0,
-            0.0
-          ]
+        "observations": [
+          {
+            "station": [
+              -20.0,
+              0.0
+            ],
+            "bearing_deg": 0.0
+          },
+          {
+            "station": [
+              20.0,
+              0.0
+            ],
+            "bearing_deg": 180.0
+          }
         ],
-        "clear_radius_m": 20.0
+        "arena_radius_m": 1800.0,
+        "clear_radius_m": 20.0,
+        "output_decimals": 6
       },
       "expected": {
-        "radius_m": 20.0,
-        "status": "CLEAR_READY"
+        "region_status": "polygon",
+        "arena_contains_region": true,
+        "control_status": "CLEAR_READY",
+        "diameter_m": 40.0,
+        "required_radius_m": 20.0,
+        "rounded_center_max_distance_m": 20.0
       },
       "actual": {
-        "radius_m": 20.0,
-        "status": "CLEAR_READY"
+        "region_status": "polygon",
+        "arena_contains_region": true,
+        "control_status": "CLEAR_READY",
+        "diameter_m": 40.0,
+        "required_radius_m": 20.0,
+        "rounded_center_max_distance_m": 20.0
       },
       "pass": true
     },
@@ -439,25 +455,41 @@
       "case_id": "clear_radius_above_20",
       "kind": "analytic",
       "parameters": {
-        "points": [
-          [
-            -20.000001,
-            0.0
-          ],
-          [
-            20.000001,
-            0.0
-          ]
+        "observations": [
+          {
+            "station": [
+              -20.000001,
+              0.0
+            ],
+            "bearing_deg": 0.0
+          },
+          {
+            "station": [
+              20.000001,
+              0.0
+            ],
+            "bearing_deg": 180.0
+          }
         ],
-        "clear_radius_m": 20.0
+        "arena_radius_m": 1800.0,
+        "clear_radius_m": 20.0,
+        "output_decimals": 6
       },
       "expected": {
-        "radius_above_20": true,
-        "status": "SINGLE_DISK_IMPOSSIBLE"
+        "region_status": "polygon",
+        "arena_contains_region": true,
+        "control_status": "SINGLE_DISK_IMPOSSIBLE",
+        "diameter_m": 40.000002,
+        "required_radius_m": 20.000001,
+        "rounded_center_max_distance_m": 20.000001
       },
       "actual": {
-        "radius_above_20": true,
-        "status": "SINGLE_DISK_IMPOSSIBLE"
+        "region_status": "polygon",
+        "arena_contains_region": true,
+        "control_status": "SINGLE_DISK_IMPOSSIBLE",
+        "diameter_m": 40.000002,
+        "required_radius_m": 20.000001,
+        "rounded_center_max_distance_m": 20.000001
       },
       "pass": true
     },

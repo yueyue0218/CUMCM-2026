@@ -43,7 +43,8 @@ class SimulationTests(unittest.TestCase):
     def test_every_consistent_random_case_retains_truth(self):
         cases = generate_cases(seed=20260911, regular_count=10, near_parallel_count=5)
         summary = run_simulation(cases)
-        self.assertEqual(summary["consistent_truth_retention_rate"], 1.0)
+        self.assertEqual(summary["random_consistent_truth_retention_rate"], 1.0)
+        self.assertNotIn("consistent_truth_retention_rate", summary)
         self.assertEqual(summary["diameter_crosscheck_max_abs_error_m"], 0.0)
 
     def test_generation_contains_every_observation_boundary_and_requested_counts(self):
@@ -65,8 +66,10 @@ class SimulationTests(unittest.TestCase):
         self.assertTrue(all(check["pass"] for check in checks.values()))
         self.assertEqual(summary["counts"]["regular_random"], 4)
         self.assertEqual(summary["counts"]["near_parallel_random"], 2)
-        self.assertEqual(summary["consistent_truth_case_count"], 6)
-        self.assertEqual(summary["consistent_truth_retention_count"], 6)
+        self.assertEqual(summary["random_consistent_truth_case_count"], 6)
+        self.assertEqual(summary["random_consistent_truth_retention_count"], 6)
+        self.assertEqual(summary["counts"]["random_consistent_cases"], 6)
+        self.assertNotIn("consistent_cases", summary["counts"])
         self.assertEqual(
             sum(summary["region_status_distribution"].values()), len(cases)
         )
@@ -88,6 +91,39 @@ class SimulationTests(unittest.TestCase):
         self.assertIn(
             "rounded_center_max_distance_m",
             checks["rounded_center_counterexample"]["actual"],
+        )
+
+    def test_clearance_boundary_checks_use_end_to_end_solver_results(self):
+        summary = run_simulation(
+            generate_cases(seed=20260911, regular_count=0, near_parallel_count=0)
+        )
+        checks = {check["case_id"]: check for check in summary["boundary_checks"]}
+
+        exact = checks["clear_radius_exactly_20"]
+        self.assertIn("observations", exact["parameters"])
+        self.assertEqual(exact["actual"]["region_status"], "polygon")
+        self.assertTrue(exact["actual"]["arena_contains_region"])
+        self.assertEqual(exact["actual"]["control_status"], "CLEAR_READY")
+        self.assertAlmostEqual(exact["actual"]["diameter_m"], 40.0, places=10)
+        self.assertAlmostEqual(
+            exact["actual"]["required_radius_m"], 20.0, places=10
+        )
+        self.assertAlmostEqual(
+            exact["actual"]["rounded_center_max_distance_m"], 20.0, places=10
+        )
+
+        above = checks["clear_radius_above_20"]
+        self.assertIn("observations", above["parameters"])
+        self.assertEqual(above["actual"]["region_status"], "polygon")
+        self.assertTrue(above["actual"]["arena_contains_region"])
+        self.assertEqual(
+            above["actual"]["control_status"], "SINGLE_DISK_IMPOSSIBLE"
+        )
+        self.assertAlmostEqual(
+            above["actual"]["diameter_m"], 40.000002, places=10
+        )
+        self.assertAlmostEqual(
+            above["actual"]["required_radius_m"], 20.000001, places=10
         )
 
     def test_write_outputs_creates_parseable_json_and_complete_markdown(self):
@@ -125,6 +161,8 @@ class SimulationTests(unittest.TestCase):
             self.assertIn("通过", first_section)
             self.assertIn("失败", first_section)
             self.assertIn("1.000000", results_markdown)
+            self.assertIn("随机一致案例真值保留", results_markdown)
+            self.assertNotIn("- 一致案例真值保留", results_markdown)
 
 
 if __name__ == "__main__":
