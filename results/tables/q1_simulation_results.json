@@ -1,0 +1,532 @@
+{
+  "seed": 20260911,
+  "counts": {
+    "total_observation_cases": 78,
+    "observation_boundary": 8,
+    "regular_random": 50,
+    "near_parallel_random": 20,
+    "random_total": 70,
+    "consistent_cases": 70,
+    "analytic_checks": 8,
+    "boundary_checks": 16
+  },
+  "region_status_distribution": {
+    "empty": 1,
+    "unbounded": 1,
+    "point": 0,
+    "segment": 0,
+    "polygon": 76
+  },
+  "consistent_truth_retention_count": 70,
+  "consistent_truth_case_count": 70,
+  "consistent_truth_retention_rate": 1.0,
+  "diameter_m_quantiles": {
+    "minimum": 9.100892061155012,
+    "q25": 26.667470153776854,
+    "median": 39.75554565539163,
+    "q75": 563.9693238585382,
+    "maximum": 2044.5927485396917
+  },
+  "minimum_radius_m_quantiles": {
+    "minimum": 4.608207572460054,
+    "q25": 13.57482934304972,
+    "median": 20.05101726023675,
+    "q75": 281.9846619292691,
+    "maximum": 1022.2963742698458
+  },
+  "diameter_crosscheck_max_abs_error_m": 0.0,
+  "welzl_max_residual_m": 1.7763568394002505e-13,
+  "boundary_pass_count": 16,
+  "boundary_fail_count": 0,
+  "boundary_checks": [
+    {
+      "case_id": "cross_zero",
+      "kind": "observation",
+      "parameters": {
+        "observation_count": 3,
+        "true_source": [
+          0.0,
+          0.0
+        ],
+        "sampled_errors_deg": [
+          -0.5,
+          0.0,
+          0.0
+        ]
+      },
+      "expected": {
+        "region_status": "polygon",
+        "truth_retained": true,
+        "crosses_zero": true
+      },
+      "actual": {
+        "region_status": "polygon",
+        "truth_retained": true,
+        "crosses_zero": true
+      },
+      "pass": true
+    },
+    {
+      "case_id": "error_at_positive_bound",
+      "kind": "observation",
+      "parameters": {
+        "observation_count": 3,
+        "true_source": [
+          125.0,
+          -240.0
+        ],
+        "sampled_errors_deg": [
+          1.0,
+          0.25,
+          -0.25
+        ]
+      },
+      "expected": {
+        "region_status": "polygon",
+        "truth_retained": true,
+        "sampled_error_deg": 1.0
+      },
+      "actual": {
+        "region_status": "polygon",
+        "truth_retained": true,
+        "sampled_error_deg": 1.0
+      },
+      "pass": true
+    },
+    {
+      "case_id": "error_at_negative_bound",
+      "kind": "observation",
+      "parameters": {
+        "observation_count": 3,
+        "true_source": [
+          -360.0,
+          175.0
+        ],
+        "sampled_errors_deg": [
+          -1.0,
+          -0.25,
+          0.25
+        ]
+      },
+      "expected": {
+        "region_status": "polygon",
+        "truth_retained": true,
+        "sampled_error_deg": -1.0
+      },
+      "actual": {
+        "region_status": "polygon",
+        "truth_retained": true,
+        "sampled_error_deg": -1.0
+      },
+      "pass": true
+    },
+    {
+      "case_id": "unbounded_single_observation",
+      "kind": "observation",
+      "parameters": {
+        "observation_count": 1,
+        "true_source": [
+          100.0,
+          100.0
+        ],
+        "sampled_errors_deg": [
+          0.0
+        ]
+      },
+      "expected": {
+        "region_status": "unbounded",
+        "truth_retained": true
+      },
+      "actual": {
+        "region_status": "unbounded",
+        "truth_retained": true
+      },
+      "pass": true
+    },
+    {
+      "case_id": "empty_conflicting_observations",
+      "kind": "observation",
+      "parameters": {
+        "observation_count": 2,
+        "true_source": null,
+        "sampled_errors_deg": []
+      },
+      "expected": {
+        "region_status": "empty"
+      },
+      "actual": {
+        "region_status": "empty"
+      },
+      "pass": true
+    },
+    {
+      "case_id": "duplicate_observations",
+      "kind": "observation",
+      "parameters": {
+        "observation_count": 5,
+        "true_source": [
+          0.0,
+          0.0
+        ],
+        "sampled_errors_deg": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "expected": {
+        "region_status": "polygon",
+        "truth_retained": true,
+        "has_duplicate": true
+      },
+      "actual": {
+        "region_status": "polygon",
+        "truth_retained": true,
+        "has_duplicate": true
+      },
+      "pass": true
+    },
+    {
+      "case_id": "near_parallel_intersection",
+      "kind": "observation",
+      "parameters": {
+        "observation_count": 3,
+        "true_source": [
+          80.0,
+          -60.0
+        ],
+        "sampled_errors_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "expected": {
+        "region_status": "polygon",
+        "truth_retained": true
+      },
+      "actual": {
+        "region_status": "polygon",
+        "truth_retained": true
+      },
+      "pass": true
+    },
+    {
+      "case_id": "source_on_arena_boundary",
+      "kind": "observation",
+      "parameters": {
+        "observation_count": 4,
+        "true_source": [
+          1800.0,
+          0.0
+        ],
+        "sampled_errors_deg": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "expected": {
+        "region_status": "polygon",
+        "truth_retained": true,
+        "source_radius_m": 1800.0
+      },
+      "actual": {
+        "region_status": "polygon",
+        "truth_retained": true,
+        "source_radius_m": 1800.0
+      },
+      "pass": true
+    },
+    {
+      "case_id": "point_region",
+      "kind": "analytic",
+      "parameters": {
+        "halfplanes": [
+          [
+            1.0,
+            0.0,
+            1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            2.0
+          ],
+          [
+            0.0,
+            -1.0,
+            -2.0
+          ]
+        ]
+      },
+      "expected": {
+        "region_status": "point",
+        "vertices": [
+          [
+            1.0,
+            2.0
+          ]
+        ]
+      },
+      "actual": {
+        "region_status": "point",
+        "vertices": [
+          [
+            1.0,
+            2.0
+          ]
+        ]
+      },
+      "pass": true
+    },
+    {
+      "case_id": "segment_region",
+      "kind": "analytic",
+      "parameters": {
+        "halfplanes": [
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            2.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      "expected": {
+        "region_status": "segment",
+        "vertices": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0
+          ]
+        ]
+      },
+      "actual": {
+        "region_status": "segment",
+        "vertices": [
+          [
+            -0.0,
+            -0.0
+          ],
+          [
+            2.0,
+            -0.0
+          ]
+        ]
+      },
+      "pass": true
+    },
+    {
+      "case_id": "equilateral_diameter_circle_failure",
+      "kind": "analytic",
+      "parameters": {
+        "vertices": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            36.0,
+            0.0
+          ],
+          [
+            18.0,
+            31.17691453623979
+          ]
+        ]
+      },
+      "expected": {
+        "covers": false,
+        "diameter_m": 36.0
+      },
+      "actual": {
+        "covers": false,
+        "diameter_m": 36.0,
+        "diameter_circle_radius_m": 18.0,
+        "max_distance_m": 31.176914536239792
+      },
+      "pass": true
+    },
+    {
+      "case_id": "square_diameter_circle_success",
+      "kind": "analytic",
+      "parameters": {
+        "vertices": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            36.0,
+            0.0
+          ],
+          [
+            36.0,
+            36.0
+          ],
+          [
+            0.0,
+            36.0
+          ]
+        ]
+      },
+      "expected": {
+        "covers": true,
+        "diameter_m": 50.91168824543143
+      },
+      "actual": {
+        "covers": true,
+        "diameter_m": 50.91168824543142,
+        "diameter_circle_radius_m": 25.45584412271571,
+        "max_distance_m": 25.45584412271571
+      },
+      "pass": true
+    },
+    {
+      "case_id": "clear_radius_exactly_20",
+      "kind": "analytic",
+      "parameters": {
+        "points": [
+          [
+            -20.0,
+            0.0
+          ],
+          [
+            20.0,
+            0.0
+          ]
+        ],
+        "clear_radius_m": 20.0
+      },
+      "expected": {
+        "radius_m": 20.0,
+        "status": "CLEAR_READY"
+      },
+      "actual": {
+        "radius_m": 20.0,
+        "status": "CLEAR_READY"
+      },
+      "pass": true
+    },
+    {
+      "case_id": "clear_radius_above_20",
+      "kind": "analytic",
+      "parameters": {
+        "points": [
+          [
+            -20.000001,
+            0.0
+          ],
+          [
+            20.000001,
+            0.0
+          ]
+        ],
+        "clear_radius_m": 20.0
+      },
+      "expected": {
+        "radius_above_20": true,
+        "status": "SINGLE_DISK_IMPOSSIBLE"
+      },
+      "actual": {
+        "radius_above_20": true,
+        "status": "SINGLE_DISK_IMPOSSIBLE"
+      },
+      "pass": true
+    },
+    {
+      "case_id": "arc_crosses_zero",
+      "kind": "analytic",
+      "parameters": {
+        "center": [
+          0.0,
+          0.0
+        ],
+        "radius_m": 10.0,
+        "start_deg": 350.0,
+        "sweep_deg": 20.0
+      },
+      "expected": {
+        "crosses_zero": true,
+        "finite_result": true,
+        "positive_area": true
+      },
+      "actual": {
+        "crosses_zero": true,
+        "finite_result": true,
+        "positive_area": true,
+        "area_m2": 0.3522853536598767,
+        "centroid": [
+          9.908886259012796,
+          1.4654943925052066e-14
+        ]
+      },
+      "pass": true
+    },
+    {
+      "case_id": "rounded_center_counterexample",
+      "kind": "analytic",
+      "parameters": {
+        "observations": [
+          {
+            "station": [
+              0.49,
+              0.49
+            ],
+            "bearing_deg": 0.0
+          },
+          {
+            "station": [
+              0.49,
+              0.49
+            ],
+            "bearing_deg": 180.0
+          }
+        ],
+        "clear_radius_m": 0.5,
+        "output_decimals": 0
+      },
+      "expected": {
+        "status": "COVERAGE_UNCERTAIN",
+        "rounded_center_exceeds_radius": true
+      },
+      "actual": {
+        "status": "COVERAGE_UNCERTAIN",
+        "rounded_center_exceeds_radius": true,
+        "output_center": [
+          0.0,
+          0.0
+        ],
+        "rounded_center_max_distance_m": 0.6929646455628161
+      },
+      "pass": true
+    }
+  ]
+}

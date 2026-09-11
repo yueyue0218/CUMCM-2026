@@ -1,0 +1,3048 @@
+{
+  "seed": 20260911,
+  "counts": {
+    "total_observation_cases": 78,
+    "observation_boundary": 8,
+    "regular_random": 50,
+    "near_parallel_random": 20,
+    "random_total": 70,
+    "consistent_cases": 70,
+    "analytic_checks": 8,
+    "boundary_checks": 16
+  },
+  "cases": [
+    {
+      "case_id": "cross_zero",
+      "case_kind": "observation_boundary",
+      "true_source": [
+        0.0,
+        0.0
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -500.0,
+            0.0
+          ],
+          "bearing_deg": 359.5,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.5
+        },
+        {
+          "station": [
+            500.0,
+            0.0
+          ],
+          "bearing_deg": 180.0,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0
+        },
+        {
+          "station": [
+            0.0,
+            -500.0
+          ],
+          "bearing_deg": 90.0,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "error_at_positive_bound",
+      "case_kind": "observation_boundary",
+      "true_source": [
+        125.0,
+        -240.0
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -375.0,
+            -240.0
+          ],
+          "bearing_deg": 1.0,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 1.0
+        },
+        {
+          "station": [
+            625.0,
+            -240.0
+          ],
+          "bearing_deg": 180.25,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.25
+        },
+        {
+          "station": [
+            125.0,
+            -740.0
+          ],
+          "bearing_deg": 89.75,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.25
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "error_at_negative_bound",
+      "case_kind": "observation_boundary",
+      "true_source": [
+        -360.0,
+        175.0
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -860.0,
+            175.0
+          ],
+          "bearing_deg": 359.0,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -1.0
+        },
+        {
+          "station": [
+            140.0,
+            175.0
+          ],
+          "bearing_deg": 179.75,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.25
+        },
+        {
+          "station": [
+            -360.0,
+            -325.0
+          ],
+          "bearing_deg": 90.25,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.25
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "unbounded_single_observation",
+      "case_kind": "observation_boundary",
+      "true_source": [
+        100.0,
+        100.0
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            0.0,
+            0.0
+          ],
+          "bearing_deg": 45.0,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "empty_conflicting_observations",
+      "case_kind": "observation_boundary",
+      "observations": [
+        {
+          "station": [
+            0.0,
+            0.0
+          ],
+          "bearing_deg": 180.0
+        },
+        {
+          "station": [
+            1.0,
+            0.0
+          ],
+          "bearing_deg": 0.0
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "duplicate_observations",
+      "case_kind": "observation_boundary",
+      "true_source": [
+        0.0,
+        0.0
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -500.0,
+            0.0
+          ],
+          "bearing_deg": 0.0,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0
+        },
+        {
+          "station": [
+            500.0,
+            0.0
+          ],
+          "bearing_deg": 180.0,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0
+        },
+        {
+          "station": [
+            0.0,
+            -500.0
+          ],
+          "bearing_deg": 90.0,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0
+        },
+        {
+          "station": [
+            0.0,
+            500.0
+          ],
+          "bearing_deg": 270.0,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0
+        },
+        {
+          "station": [
+            -500.0,
+            0.0
+          ],
+          "bearing_deg": 0.0,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_intersection",
+      "case_kind": "observation_boundary",
+      "true_source": [
+        80.0,
+        -60.0
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            1280.0,
+            -60.0
+          ],
+          "bearing_deg": 180.0,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0
+        },
+        {
+          "station": [
+            -920.0,
+            -59.99999999999988
+          ],
+          "bearing_deg": 0.0,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0
+        },
+        {
+          "station": [
+            -619.9733461449199,
+            -66.1085748488616
+          ],
+          "bearing_deg": 0.4999999999999868,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "source_on_arena_boundary",
+      "case_kind": "observation_boundary",
+      "true_source": [
+        1800.0,
+        0.0
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            1400.0,
+            0.0
+          ],
+          "bearing_deg": 0.0,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0
+        },
+        {
+          "station": [
+            2200.0,
+            0.0
+          ],
+          "bearing_deg": 180.0,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0
+        },
+        {
+          "station": [
+            1800.0,
+            -400.0
+          ],
+          "bearing_deg": 90.0,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0
+        },
+        {
+          "station": [
+            1800.0,
+            400.0
+          ],
+          "bearing_deg": 270.0,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_001",
+      "case_kind": "regular_random",
+      "true_source": [
+        -1048.7279913727755,
+        1233.3223001266417
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -1642.991109755293,
+            1587.2027864515853
+          ],
+          "bearing_deg": 329.75064997648195,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.5242206494450112
+        },
+        {
+          "station": [
+            -726.9697408231265,
+            515.3435502509344
+          ],
+          "bearing_deg": 114.64390143883095,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.5046253875632136
+        },
+        {
+          "station": [
+            -777.3417591487712,
+            1474.5324861302915
+          ],
+          "bearing_deg": 220.80574656559,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.8251956338096029
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_002",
+      "case_kind": "regular_random",
+      "true_source": [
+        -921.7600916733699,
+        -610.1614599456291
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -1315.9704877784625,
+            -1614.1742702144036
+          ],
+          "bearing_deg": 69.49517417328185,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.9318749668482855
+        },
+        {
+          "station": [
+            1.8094178888505894,
+            -695.9598833448729
+          ],
+          "bearing_deg": 175.19849801296294,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.5059693251582018
+        },
+        {
+          "station": [
+            -1280.907537854323,
+            45.32735450500422
+          ],
+          "bearing_deg": 299.3253733998813,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.6066941136218675
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_003",
+      "case_kind": "regular_random",
+      "true_source": [
+        640.7641703662964,
+        -321.76130943568046
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            1411.6425722541348,
+            674.5637642073532
+          ],
+          "bearing_deg": 232.39984670831652,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.12974740829177245
+        },
+        {
+          "station": [
+            398.0874712024463,
+            -211.34378133303193
+          ],
+          "bearing_deg": 334.90404280604,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.6304944602178892
+        },
+        {
+          "station": [
+            842.9628304855778,
+            -760.3175408607531
+          ],
+          "bearing_deg": 115.28727039429484,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.5349572988198386
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_004",
+      "case_kind": "regular_random",
+      "true_source": [
+        -994.4803707628213,
+        -364.9623167643287
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -1561.8293424572971,
+            -1217.0364673903375
+          ],
+          "bearing_deg": 56.86747765538391,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.5249244438011598
+        },
+        {
+          "station": [
+            -3.1657838812034242,
+            -387.5097128838362
+          ],
+          "bearing_deg": 179.05889251709624,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.3618572341513653
+        },
+        {
+          "station": [
+            -1193.1676872880792,
+            5.316620473173259
+          ],
+          "bearing_deg": 297.93876918829676,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.27871372133133554
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_005",
+      "case_kind": "regular_random",
+      "true_source": [
+        -482.0643553100556,
+        -1272.8645969271276
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -513.538812235238,
+            15.300318735907695
+          ],
+          "bearing_deg": 271.3952531502415,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.004408324878115488
+        },
+        {
+          "station": [
+            -1000.0465763596961,
+            -1565.0837370175373
+          ],
+          "bearing_deg": 29.514452716301705,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0849790284669869
+        },
+        {
+          "station": [
+            -69.64105848689178,
+            -1547.8754039029748
+          ],
+          "bearing_deg": 146.1332088626249,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.17076648640072878
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_006",
+      "case_kind": "regular_random",
+      "true_source": [
+        115.162120204845,
+        -1014.6581051077773
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            776.7141397649006,
+            -289.7071037977847
+          ],
+          "bearing_deg": 227.53335903809764,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.08471357284980185
+        },
+        {
+          "station": [
+            -1237.04376354093,
+            -1267.9197084939933
+          ],
+          "bearing_deg": 10.698313634974124,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.08999722140934008
+        },
+        {
+          "station": [
+            609.5696241229582,
+            -1734.006060065506
+          ],
+          "bearing_deg": 123.80109148480967,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.6996308013166308
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_007",
+      "case_kind": "regular_random",
+      "true_source": [
+        493.5307142716859,
+        -1583.4959251909097
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            528.6768894321389,
+            -2387.8523225046897
+          ],
+          "bearing_deg": 93.25269761726238,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.7507626333443684
+        },
+        {
+          "station": [
+            1728.693712055101,
+            -1326.4246460092588
+          ],
+          "bearing_deg": 191.41610697109803,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.3408739027152363
+        },
+        {
+          "station": [
+            -391.78558994440885,
+            -816.6293285330346
+          ],
+          "bearing_deg": 318.14598296352364,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.9546989469827862
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_008",
+      "case_kind": "regular_random",
+      "true_source": [
+        753.811856598493,
+        -1375.4284426896038
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            1036.8879138936181,
+            -1317.9864049658622
+          ],
+          "bearing_deg": 192.18144976292766,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.7106916069396598
+        },
+        {
+          "station": [
+            523.2007430050355,
+            -1220.383147842187
+          ],
+          "bearing_deg": 325.0998514204744,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.9862767290352836
+        },
+        {
+          "station": [
+            699.9306118826839,
+            -1730.7777613411888
+          ],
+          "bearing_deg": 81.04808624923359,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.32989172287936475
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_009",
+      "case_kind": "regular_random",
+      "true_source": [
+        -6.278003758354397,
+        -1009.0333291521922
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -16.859548563331522,
+            -669.2207124874736
+          ],
+          "bearing_deg": 272.13145686835566,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.3478797400192488
+        },
+        {
+          "station": [
+            -1125.9930176480946,
+            -1819.8488338583174
+          ],
+          "bearing_deg": 35.43504690095326,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.47425292605883973
+        },
+        {
+          "station": [
+            747.3892275638684,
+            -1117.4257229366217
+          ],
+          "bearing_deg": 172.35900469608964,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.5431620022492036
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_010",
+      "case_kind": "regular_random",
+      "true_source": [
+        -692.7555469958606,
+        -634.5016691800831
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            83.57801007006276,
+            -1507.3150551724475
+          ],
+          "bearing_deg": 130.858239586212,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7936091818335598
+        },
+        {
+          "station": [
+            -428.756396669755,
+            -102.01506716151584
+          ],
+          "bearing_deg": 244.46889830515187,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.8404467754842264
+        },
+        {
+          "station": [
+            -1455.3345362383975,
+            -859.7309980357124
+          ],
+          "bearing_deg": 16.09028113251326,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.36433667268027525
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_011",
+      "case_kind": "regular_random",
+      "true_source": [
+        -1156.638667500343,
+        1353.8819990014103
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -254.6598358054099,
+            1667.8946840400026
+          ],
+          "bearing_deg": 198.3519124111599,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.843012719267975
+        },
+        {
+          "station": [
+            -2228.513903605594,
+            2091.4275577093877
+          ],
+          "bearing_deg": 324.71958203309435,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7489854225688888
+        },
+        {
+          "station": [
+            -1211.2346633269417,
+            1103.4211814912956
+          ],
+          "bearing_deg": 77.7188964876253,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.015993369623249487
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_012",
+      "case_kind": "regular_random",
+      "true_source": [
+        610.9241531414349,
+        764.1997850280876
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            1932.7256633009188,
+            789.7734487239383
+          ],
+          "bearing_deg": 180.47681743571312,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.6315790944259876
+        },
+        {
+          "station": [
+            298.8468987803636,
+            2084.9058004897856
+          ],
+          "bearing_deg": 283.41667372568844,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.12178577239057531
+        },
+        {
+          "station": [
+            239.8791140846568,
+            -172.6324423413455
+          ],
+          "bearing_deg": 67.60854280641227,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7847470743840688
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_013",
+      "case_kind": "regular_random",
+      "true_source": [
+        -570.2241056293838,
+        -1441.5374406739747
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -114.86335471658299,
+            -1759.1434161534016
+          ],
+          "bearing_deg": 146.0101065646025,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.9051902382502788
+        },
+        {
+          "station": [
+            -795.8991920804903,
+            -218.32947758808268
+          ],
+          "bearing_deg": 281.19353338836817,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.7403248306545407
+        },
+        {
+          "station": [
+            -1014.5828925366238,
+            -1920.3202104174325
+          ],
+          "bearing_deg": 46.713637096575454,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.42193513912594427
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_014",
+      "case_kind": "regular_random",
+      "true_source": [
+        -183.35812385277202,
+        -1106.483455473744
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -165.68015425115715,
+            -668.3875614636481
+          ],
+          "bearing_deg": 268.2515812596403,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.5623170032445015
+        },
+        {
+          "station": [
+            -448.07169162237733,
+            -1159.9316650286646
+          ],
+          "bearing_deg": 11.801024131205603,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.3859267430700941
+        },
+        {
+          "station": [
+            854.0495442815634,
+            -1762.1749681053307
+          ],
+          "bearing_deg": 147.41610804428925,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.28903747016880876
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_015",
+      "case_kind": "regular_random",
+      "true_source": [
+        -523.4181193303343,
+        -1196.826344929901
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            234.77268105733913,
+            -1644.3100303488711
+          ],
+          "bearing_deg": 149.81523427654707,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.3643091865550816
+        },
+        {
+          "station": [
+            -781.2305611512996,
+            38.69361308419889
+          ],
+          "bearing_deg": 281.0662783038167,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7203406855302859
+        },
+        {
+          "station": [
+            -1216.915484354311,
+            -1704.3834024414155
+          ],
+          "bearing_deg": 35.632422951757206,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.5672388500750929
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_016",
+      "case_kind": "regular_random",
+      "true_source": [
+        -1170.586846327419,
+        254.25179751761067
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -514.2563452686278,
+            -430.1559358840603
+          ],
+          "bearing_deg": 133.85397020022043,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.053661360828276106
+        },
+        {
+          "station": [
+            -1024.3140017188966,
+            1150.9882391309268
+          ],
+          "bearing_deg": 259.893827114666,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.8418550645863072
+        },
+        {
+          "station": [
+            -2414.6821204132807,
+            225.7297349598123
+          ],
+          "bearing_deg": 0.561358747890039,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7519712049040519
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_017",
+      "case_kind": "regular_random",
+      "true_source": [
+        9.83782930770572,
+        340.0609635679754
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            431.54074683537164,
+            -16.817503139746464
+          ],
+          "bearing_deg": 140.33704123407222,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.577589473487917
+        },
+        {
+          "station": [
+            -163.48435181892577,
+            1130.3176316214963
+          ],
+          "bearing_deg": 282.48797114952515,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.11750672629104875
+        },
+        {
+          "station": [
+            -430.7532454297458,
+            18.341493845490845
+          ],
+          "bearing_deg": 35.69242816301911,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.44447945826440804
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_018",
+      "case_kind": "regular_random",
+      "true_source": [
+        -306.75346701264954,
+        1585.8012122865557
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            136.48793766015177,
+            2117.6154194604965
+          ],
+          "bearing_deg": 229.2895432421375,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.9008866625664878
+        },
+        {
+          "station": [
+            -679.0104713381079,
+            1538.1773117526875
+          ],
+          "bearing_deg": 6.380665679643318,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.9097453623531497
+        },
+        {
+          "station": [
+            536.3149691765652,
+            539.1490347253239
+          ],
+          "bearing_deg": 128.67425492055992,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.17686050435296052
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_019",
+      "case_kind": "regular_random",
+      "true_source": [
+        -173.91207825427924,
+        -798.1804560543252
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -258.0104840514327,
+            -1015.3866581190407
+          ],
+          "bearing_deg": 68.87312042632387,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.0386438446061228
+        },
+        {
+          "station": [
+            213.12260979348034,
+            -720.8652035324027
+          ],
+          "bearing_deg": 191.38652766263735,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.08964661219404824
+        },
+        {
+          "station": [
+            -613.9177608507233,
+            157.95458077333024
+          ],
+          "bearing_deg": 294.1396812882889,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.5718272264426627
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_020",
+      "case_kind": "regular_random",
+      "true_source": [
+        -465.3791246610617,
+        -1566.4183096919223
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -26.627787273852277,
+            -1269.6381970299717
+          ],
+          "bearing_deg": 214.63012601009092,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.5549252977056778
+        },
+        {
+          "station": [
+            -1272.2838240596234,
+            -1103.9201832331387
+          ],
+          "bearing_deg": 330.7235478749875,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.5438326007799046
+        },
+        {
+          "station": [
+            -391.0838174673027,
+            -2687.9690166724704
+          ],
+          "bearing_deg": 93.89500286636343,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.10507406244676787
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_021",
+      "case_kind": "regular_random",
+      "true_source": [
+        -197.6550278699711,
+        847.636658414647
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -362.34949213403587,
+            1210.4153294601379
+          ],
+          "bearing_deg": 294.93313141343856,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.5160062744582607
+        },
+        {
+          "station": [
+            -835.4023337595004,
+            -73.15019443184713
+          ],
+          "bearing_deg": 54.72899680286539,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.5640951013727069
+        },
+        {
+          "station": [
+            219.23131705217298,
+            846.9641922416588
+          ],
+          "bearing_deg": 179.3850843126813,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.5224937583466294
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_022",
+      "case_kind": "regular_random",
+      "true_source": [
+        -401.0207036953087,
+        -902.3732848352072
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -528.3033163921313,
+            -173.30852125073
+          ],
+          "bearing_deg": 280.68078709498144,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.7777027997179136
+        },
+        {
+          "station": [
+            -681.7395589489893,
+            -1224.6182276860154
+          ],
+          "bearing_deg": 49.86378575310444,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.9240491476666612
+        },
+        {
+          "station": [
+            96.81684874516748,
+            -894.4718561281893
+          ],
+          "bearing_deg": 180.88498185943027,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.024311757765413056
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_023",
+      "case_kind": "regular_random",
+      "true_source": [
+        1144.7584591192654,
+        -385.1770872690459
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            68.34906399811484,
+            198.24100042918593
+          ],
+          "bearing_deg": 331.92023523981203,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.37810057804083663
+        },
+        {
+          "station": [
+            1228.1652735725224,
+            -1484.9888041620993
+          ],
+          "bearing_deg": 94.56973411988284,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.23287508701741544
+        },
+        {
+          "station": [
+            2219.04320685772,
+            165.5078402118151
+          ],
+          "bearing_deg": 206.5446461351728,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.5953083327437636
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_024",
+      "case_kind": "regular_random",
+      "true_source": [
+        -1488.6288402026275,
+        857.6590877862507
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -345.36987839344283,
+            153.92834561339953
+          ],
+          "bearing_deg": 148.5157922362524,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.13008298832170473
+        },
+        {
+          "station": [
+            -1491.797152590766,
+            1071.169323631682
+          ],
+          "bearing_deg": 271.2979875649168,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.4478287673702246
+        },
+        {
+          "station": [
+            -2475.0424804272075,
+            -38.30931249267519
+          ],
+          "bearing_deg": 41.29630096868981,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.9528503506991157
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_025",
+      "case_kind": "regular_random",
+      "true_source": [
+        1415.171210323117,
+        720.1600192158132
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            2234.0403997609264,
+            444.82277853749474
+          ],
+          "bearing_deg": 162.23481684702247,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.8195622687199113
+        },
+        {
+          "station": [
+            974.4560994419337,
+            1998.1595214685399
+          ],
+          "bearing_deg": 288.033667470288,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.9929653989734479
+        },
+        {
+          "station": [
+            1036.027255539336,
+            350.43368767472015
+          ],
+          "bearing_deg": 43.64021845730475,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.6392807670636398
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_026",
+      "case_kind": "regular_random",
+      "true_source": [
+        -342.4297288986774,
+        944.245344192472
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -482.1332616958268,
+            1413.784852297667
+          ],
+          "bearing_deg": 286.6330955917833,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.06361309248934233
+        },
+        {
+          "station": [
+            -824.2006108408175,
+            392.887589216666
+          ],
+          "bearing_deg": 49.70794095251461,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.8545765743730998
+        },
+        {
+          "station": [
+            806.7547032881494,
+            1204.280549833987
+          ],
+          "bearing_deg": 191.8883721019106,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.8616903531810691
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_027",
+      "case_kind": "regular_random",
+      "true_source": [
+        -130.720618191865,
+        -1095.7133872537338
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            518.4676336025166,
+            -1859.5842551924356
+          ],
+          "bearing_deg": 129.47243738783695,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.8876578615516018
+        },
+        {
+          "station": [
+            -67.15185239441902,
+            -654.7696869178259
+          ],
+          "bearing_deg": 261.1966200472285,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.5998401581868367
+        },
+        {
+          "station": [
+            -460.3844341385088,
+            -1101.844971136579
+          ],
+          "bearing_deg": 0.27787120394569564,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7876790878087929
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_028",
+      "case_kind": "regular_random",
+      "true_source": [
+        -1372.1212830771117,
+        -471.4292742194023
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -554.4447196927089,
+            469.4938605901231
+          ],
+          "bearing_deg": 228.45978761152972,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.5490732063625117
+        },
+        {
+          "station": [
+            -2681.7161077638657,
+            -689.5435496811937
+          ],
+          "bearing_deg": 10.170470091263809,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.714598323650063
+        },
+        {
+          "station": [
+            -471.63968602455304,
+            -1325.7968094858054
+          ],
+          "bearing_deg": 136.58622417824654,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.08094765388118774
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_029",
+      "case_kind": "regular_random",
+      "true_source": [
+        766.109256411607,
+        1126.9432690073027
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            224.71079685570885,
+            496.66330073584015
+          ],
+          "bearing_deg": 48.839445381357464,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.49860548598911403
+        },
+        {
+          "station": [
+            1915.8900387063036,
+            756.7381828093355
+          ],
+          "bearing_deg": 162.07953055225485,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.07300922299960111
+        },
+        {
+          "station": [
+            680.5158205709471,
+            1650.8823305570845
+          ],
+          "bearing_deg": 279.1625391846219,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.11564019694847238
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_030",
+      "case_kind": "regular_random",
+      "true_source": [
+        -1494.8188465814312,
+        -866.2948089407242
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -2528.934330140807,
+            -1045.9703798525957
+          ],
+          "bearing_deg": 9.798565150032903,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.058066831764483684
+        },
+        {
+          "station": [
+            -1288.7348127328762,
+            -1091.3209815443297
+          ],
+          "bearing_deg": 131.48933924869328,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.994814489550828
+        },
+        {
+          "station": [
+            -1348.8037611094574,
+            -332.64365580252525
+          ],
+          "bearing_deg": 253.72782982935527,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.969707898042742
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_031",
+      "case_kind": "regular_random",
+      "true_source": [
+        713.5048363584701,
+        -9.341353848130256
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            527.7343554063954,
+            159.04341522076717
+          ],
+          "bearing_deg": 316.9239871393153,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.8864438307062834
+        },
+        {
+          "station": [
+            616.7251147513663,
+            -439.06642048096944
+          ],
+          "bearing_deg": 76.5506077689537,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7573869583297288
+        },
+        {
+          "station": [
+            1791.8903648788905,
+            591.4164441928281
+          ],
+          "bearing_deg": 209.48437599572566,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.3626334976824723
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_032",
+      "case_kind": "regular_random",
+      "true_source": [
+        -926.8038902445916,
+        400.7110077904436
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -1149.0978367716489,
+            1100.0553872963433
+          ],
+          "bearing_deg": 287.89471561937336,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.26131120078039394
+        },
+        {
+          "station": [
+            -1372.319444119316,
+            -5.846623054200791
+          ],
+          "bearing_deg": 41.90824400226512,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.4739396156574751
+        },
+        {
+          "station": [
+            -483.3239277270171,
+            315.9199083200518
+          ],
+          "bearing_deg": 168.58198094060108,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.5939900900361317
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_033",
+      "case_kind": "regular_random",
+      "true_source": [
+        276.79342624527595,
+        -67.08312867115772
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -401.3192122845233,
+            490.9027543864952
+          ],
+          "bearing_deg": 320.5019211247601,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.04877742789394923
+        },
+        {
+          "station": [
+            81.21357621511075,
+            -525.0893024837216
+          ],
+          "bearing_deg": 66.88328208922294,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.006950743385686353
+        },
+        {
+          "station": [
+            963.1075607946664,
+            331.283521934066
+          ],
+          "bearing_deg": 209.36205193778645,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.770696340667772
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_034",
+      "case_kind": "regular_random",
+      "true_source": [
+        -728.8902315486149,
+        -363.63441434390535
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -1213.1298379350092,
+            865.0101058922887
+          ],
+          "bearing_deg": 291.60198254123725,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.09133956477865901
+        },
+        {
+          "station": [
+            -822.7837639983826,
+            -625.5322731821091
+          ],
+          "bearing_deg": 70.19183178220034,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.08480082694158808
+        },
+        {
+          "station": [
+            118.42079986291401,
+            -397.1072232861933
+          ],
+          "bearing_deg": 177.1700743348526,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.567646689713271
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_035",
+      "case_kind": "regular_random",
+      "true_source": [
+        -1013.9823381810924,
+        232.22227271916464
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -857.8577265243079,
+            577.8743134672166
+          ],
+          "bearing_deg": 244.90306394005708,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7891252146031138
+        },
+        {
+          "station": [
+            -1704.051792227459,
+            -7.27861043316031
+          ],
+          "bearing_deg": 18.97125761748789,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.16898335973322287
+        },
+        {
+          "station": [
+            -362.7993777543853,
+            -497.50728667262206
+          ],
+          "bearing_deg": 132.43951000723692,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.6949983122787589
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_036",
+      "case_kind": "regular_random",
+      "true_source": [
+        -56.77940497414825,
+        424.48795786805374
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            321.3148310682982,
+            1131.78294079562
+          ],
+          "bearing_deg": 240.89248052464652,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.9801762549192377
+        },
+        {
+          "station": [
+            -733.8972469244417,
+            532.3092364482073
+          ],
+          "bearing_deg": 351.406370942752,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.45394015065281823
+        },
+        {
+          "station": [
+            570.5814175988692,
+            -621.5086380738798
+          ],
+          "bearing_deg": 120.84934191912646,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.10486265212837309
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_037",
+      "case_kind": "regular_random",
+      "true_source": [
+        -742.0318743444238,
+        -1342.4404126101876
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -1952.7432077998174,
+            -671.1304144770912
+          ],
+          "bearing_deg": 331.41310491985104,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.42040785746896914
+        },
+        {
+          "station": [
+            -545.7771614052464,
+            -2408.5101264361488
+          ],
+          "bearing_deg": 100.50942010270786,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.07852308990721224
+        },
+        {
+          "station": [
+            148.77834660023575,
+            -619.0313136090396
+          ],
+          "bearing_deg": 219.36246487616063,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.28310665587441775
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_038",
+      "case_kind": "regular_random",
+      "true_source": [
+        465.5615239816677,
+        -1144.8725048635413
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            446.3389024581337,
+            -1944.7436954115283
+          ],
+          "bearing_deg": 88.34567960128892,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.2776448288776847
+        },
+        {
+          "station": [
+            1773.76567133444,
+            -841.1420061163261
+          ],
+          "bearing_deg": 193.1109193769944,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.03992878328301863
+        },
+        {
+          "station": [
+            6.270799410723384,
+            -633.1826801530837
+          ],
+          "bearing_deg": 310.98687259000206,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.9241490008440112
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_039",
+      "case_kind": "regular_random",
+      "true_source": [
+        806.0713654807713,
+        1333.6418107116758
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -43.75949040380749,
+            1926.5288487130215
+          ],
+          "bearing_deg": 324.9638781111406,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.13445207039421492
+        },
+        {
+          "station": [
+            658.3568807554707,
+            560.7475193460994
+          ],
+          "bearing_deg": 79.44962076499158,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.2694338304991879
+        },
+        {
+          "station": [
+            1116.7370098241577,
+            1417.8521595445113
+          ],
+          "bearing_deg": 194.86817386802468,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.2982196836019675
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_040",
+      "case_kind": "regular_random",
+      "true_source": [
+        -256.4651641997403,
+        1310.2451437954478
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -1311.9492930174022,
+            1397.2507494154215
+          ],
+          "bearing_deg": 355.2020512423651,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.08560066677051448
+        },
+        {
+          "station": [
+            270.6613426487242,
+            468.3503735783464
+          ],
+          "bearing_deg": 122.67293228457169,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.6214582845695269
+        },
+        {
+          "station": [
+            -49.50734313168431,
+            2310.590149308485
+          ],
+          "bearing_deg": 258.7335975781983,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.42241140104159514
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_041",
+      "case_kind": "regular_random",
+      "true_source": [
+        -1406.4361583893779,
+        -996.7861448199811
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -1803.3425430082254,
+            -1124.1543185968612
+          ],
+          "bearing_deg": 18.77581757033451,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.9842621175217872
+        },
+        {
+          "station": [
+            -517.7335962797825,
+            -1554.5343109250898
+          ],
+          "bearing_deg": 147.19156327240003,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.6961271231731692
+        },
+        {
+          "station": [
+            -1220.3464363177175,
+            131.18362198262082
+          ],
+          "bearing_deg": 259.88228326684754,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7495821852067068
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_042",
+      "case_kind": "regular_random",
+      "true_source": [
+        1439.5142840199858,
+        -704.3727559021021
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            1262.5220285738242,
+            -1996.7893529466369
+          ],
+          "bearing_deg": 81.30764293804665,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.8943934516640795
+        },
+        {
+          "station": [
+            2715.3961287377088,
+            -625.5794354983802
+          ],
+          "bearing_deg": 183.06761866931683,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.466249818830625
+        },
+        {
+          "station": [
+            1004.4220436590904,
+            -360.9323712865698
+          ],
+          "bearing_deg": 321.52545942062767,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.1887169321331139
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_043",
+      "case_kind": "regular_random",
+      "true_source": [
+        -369.679733954945,
+        880.2305397691197
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -289.11225935612134,
+            1322.4406336468492
+          ],
+          "bearing_deg": 258.95381379167094,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7205665012896811
+        },
+        {
+          "station": [
+            -1655.702813186385,
+            576.6702728291541
+          ],
+          "bearing_deg": 12.300237996388498,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.9810806236337666
+        },
+        {
+          "station": [
+            145.7602486442973,
+            461.933060172797
+          ],
+          "bearing_deg": 141.77406128310093,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.8345929352625217
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_044",
+      "case_kind": "regular_random",
+      "true_source": [
+        -1327.7814934148967,
+        -393.64014630315336
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -2232.962837301871,
+            -1369.0903940352277
+          ],
+          "bearing_deg": 46.16326229706323,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.9765717771818463
+        },
+        {
+          "station": [
+            -560.3141710519558,
+            -857.2688396001358
+          ],
+          "bearing_deg": 149.14606534026493,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.2823315006374323
+        },
+        {
+          "station": [
+            -1411.2037144658484,
+            530.4106010959626
+          ],
+          "bearing_deg": 275.3526397363251,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.19402811122762986
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_045",
+      "case_kind": "regular_random",
+      "true_source": [
+        -1797.4249277725442,
+        -18.03668030088723
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -1894.8266971284104,
+            346.08676201058165
+          ],
+          "bearing_deg": 285.41238069305933,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.4365799494028024
+        },
+        {
+          "station": [
+            -2285.5160154483137,
+            -257.1840187740452
+          ],
+          "bearing_deg": 26.442895496446102,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.3396786010211852
+        },
+        {
+          "station": [
+            -1325.4512895115618,
+            -175.04868722085095
+          ],
+          "bearing_deg": 162.33739639261364,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.7381914900296351
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_046",
+      "case_kind": "regular_random",
+      "true_source": [
+        -1429.06082115689,
+        954.5949510450228
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -602.4041556777678,
+            531.718486865256
+          ],
+          "bearing_deg": 152.342637468444,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.5653342844719484
+        },
+        {
+          "station": [
+            -1521.4797706001307,
+            1884.2538749245023
+          ],
+          "bearing_deg": 275.7060520964332,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.028835773814485766
+        },
+        {
+          "station": [
+            -2552.183787892502,
+            331.55969442879234
+          ],
+          "bearing_deg": 29.462084478349084,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.4434331038229522
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_047",
+      "case_kind": "regular_random",
+      "true_source": [
+        589.4065952611944,
+        -447.6555197596205
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -409.36555328690656,
+            -1133.5030420102485
+          ],
+          "bearing_deg": 33.66684721515958,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.8101759917775053
+        },
+        {
+          "station": [
+            1575.5078696689884,
+            -1292.9479029798774
+          ],
+          "bearing_deg": 138.66901172423516,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7275929173650919
+        },
+        {
+          "station": [
+            913.8437350226216,
+            781.9770558912401
+          ],
+          "bearing_deg": 255.64832940430918,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.42891066383006193
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_048",
+      "case_kind": "regular_random",
+      "true_source": [
+        -482.0804516485526,
+        -702.715871240653
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -1166.4341115302618,
+            -459.29894371457067
+          ],
+          "bearing_deg": 340.150255990722,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.26984127025386995
+        },
+        {
+          "station": [
+            -235.06210582789384,
+            -1854.7521048593576
+          ],
+          "bearing_deg": 101.90415240601284,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.19790061556286576
+        },
+        {
+          "station": [
+            -158.43026541155024,
+            -482.5269214717596
+          ],
+          "bearing_deg": 214.26067082390537,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.03203926597731521
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_049",
+      "case_kind": "regular_random",
+      "true_source": [
+        1480.4874269788697,
+        806.687134068817
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            1187.8578659193754,
+            2061.119428537433
+          ],
+          "bearing_deg": 283.6236024904969,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.49266900899721233
+        },
+        {
+          "station": [
+            1268.3942491972407,
+            449.3161820811633
+          ],
+          "bearing_deg": 59.62594811625835,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.3143105361627887
+        },
+        {
+          "station": [
+            2543.226323439324,
+            948.9937358875236
+          ],
+          "bearing_deg": 188.01550736766694,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.38865532483700904
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "regular_050",
+      "case_kind": "regular_random",
+      "true_source": [
+        -632.0683768499849,
+        -770.5170072730268
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -1240.825833263124,
+            -1458.8857233896438
+          ],
+          "bearing_deg": 47.92874776629983,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.5833813935213148
+        },
+        {
+          "station": [
+            -70.81526625494996,
+            -946.0782892365764
+          ],
+          "bearing_deg": 161.82806476607783,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.8021307309743122
+        },
+        {
+          "station": [
+            -710.67086392068,
+            533.8095923863098
+          ],
+          "bearing_deg": 274.08730135811106,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.6386629205444834
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_001",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        -948.5540110902416,
+        1329.801552043734
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -642.9726714007559,
+            2196.442470337981
+          ],
+          "bearing_deg": 251.2399505352199,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.6628214626684388
+        },
+        {
+          "station": [
+            -1054.1568854246048,
+            1029.8487297197917
+          ],
+          "bearing_deg": 71.60420858553906,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.9995879509922159
+        },
+        {
+          "station": [
+            -1199.0498472670138,
+            598.0775873821821
+          ],
+          "bearing_deg": 71.52724405229345,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.4251924028333214
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_002",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        1156.2504920686508,
+        -996.5685927564283
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            894.8000412387578,
+            -1108.0736639924482
+          ],
+          "bearing_deg": 23.013353923548014,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.08423631830437484
+        },
+        {
+          "station": [
+            2122.272114477789,
+            -587.443603333825
+          ],
+          "bearing_deg": 203.04207596224654,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.08867237195940936
+        },
+        {
+          "station": [
+            1846.3078019716895,
+            -696.781161278974
+          ],
+          "bearing_deg": 203.0027631772275,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.47921675614565173
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_003",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        1157.948915685249,
+        813.8700039868326
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            751.1495393461776,
+            -512.3443550639157
+          ],
+          "bearing_deg": 73.86045271614869,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.913181329110593
+        },
+        {
+          "station": [
+            1485.6551307047357,
+            1880.4647821122207
+          ],
+          "bearing_deg": 252.42748069816503,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.49319072585126955
+        },
+        {
+          "station": [
+            1340.588171512087,
+            1422.386408947707
+          ],
+          "bearing_deg": 252.51201801060043,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7814530546053053
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_004",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        -663.9326117342605,
+        -635.4174251184353
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -1095.9317472250536,
+            -975.152314340263
+          ],
+          "bearing_deg": 37.50168118739249,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.6807117847189599
+        },
+        {
+          "station": [
+            357.6235380421757,
+            168.03011883360705
+          ],
+          "bearing_deg": 218.42463639864025,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.2398065491578274
+        },
+        {
+          "station": [
+            -172.47423094152043,
+            -241.95535153313233
+          ],
+          "bearing_deg": 219.33006467896246,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.6492655975776143
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_005",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        204.95373795147245,
+        -1418.7878746015426
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            0.18141230829297683,
+            -1276.2885328430511
+          ],
+          "bearing_deg": 325.40763340004844,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.2413660301929963
+        },
+        {
+          "station": [
+            899.3138698270486,
+            -1902.346370603496
+          ],
+          "bearing_deg": 144.83278669804886,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.3135211448029587
+        },
+        {
+          "station": [
+            620.6904933868979,
+            -1703.1545768513688
+          ],
+          "bearing_deg": 146.43593143929775,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.8083186387335937
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_006",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        -431.97403879362156,
+        575.1276053744847
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -197.98221345176574,
+            533.8068703090909
+          ],
+          "bearing_deg": 170.16545106808647,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.18009406196255728
+        },
+        {
+          "station": [
+            -713.265460075568,
+            625.1335327359434
+          ],
+          "bearing_deg": 350.56007607395765,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.6403904426038323
+        },
+        {
+          "station": [
+            -1718.914743139438,
+            791.7137238332232
+          ],
+          "bearing_deg": 350.0647397274218,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.3821682763071368
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_007",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        1020.7316237562932,
+        -530.5299365713267
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            2318.111944450066,
+            -1006.2534759316269
+          ],
+          "bearing_deg": 159.15571759193142,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7073007723814206
+        },
+        {
+          "station": [
+            -119.46503234959323,
+            -113.6017823748083
+          ],
+          "bearing_deg": 339.33985002314444,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.5745349477957504
+        },
+        {
+          "station": [
+            396.1125164182522,
+            -308.9173259820581
+          ],
+          "bearing_deg": 340.9152509913935,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.4497528238729691
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_008",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        111.48586508965519,
+        1307.7000911143225
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            665.4877893334283,
+            1911.9630910183741
+          ],
+          "bearing_deg": 226.91882748461038,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.5658735347127595
+        },
+        {
+          "station": [
+            -40.40232100131101,
+            1141.8257101590464
+          ],
+          "bearing_deg": 46.95566317373092,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.5645614833943118
+        },
+        {
+          "station": [
+            -681.086506659547,
+            427.5235513502487
+          ],
+          "bearing_deg": 47.01186111458183,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.9860590386553445
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_009",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        -787.0453051432012,
+        506.01560069034883
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -768.64487026254,
+            780.8441264541788
+          ],
+          "bearing_deg": 266.9557478026568,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.7861223419528731
+        },
+        {
+          "station": [
+            -872.6075921396258,
+            -776.1906149754833
+          ],
+          "bearing_deg": 86.50598314101681,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.323700274972643
+        },
+        {
+          "station": [
+            -822.2054756166762,
+            -87.64445822908772
+          ],
+          "bearing_deg": 86.22302545791963,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.38752831915352304
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_010",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        301.83220110039866,
+        445.69857510462253
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            707.3469430571188,
+            1276.7004995842983
+          ],
+          "bearing_deg": 244.19994081104562,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.21152612693505168
+        },
+        {
+          "station": [
+            -306.598710674492,
+            -797.876422204904
+          ],
+          "bearing_deg": 63.18832323539935,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7410446221695357
+        },
+        {
+          "station": [
+            16.312317198607047,
+            -152.8510849879255
+          ],
+          "bearing_deg": 63.64890809943661,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.8490377954417048
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_011",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        -1070.7298490564963,
+        269.3732279838533
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -723.8887915908666,
+            923.8433465184577
+          ],
+          "bearing_deg": 241.31777983189158,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7605513957042878
+        },
+        {
+          "station": [
+            -1626.0084001981547,
+            -778.0523414841663
+          ],
+          "bearing_deg": 62.521696742850075,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.45139297658733524
+        },
+        {
+          "station": [
+            -1198.3530335745052,
+            22.1831840057105
+          ],
+          "bearing_deg": 62.54094501849947,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.15193758884296993
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_012",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        -395.56073372700996,
+        -178.78039937504565
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            44.95923632506327,
+            8.465678996607409
+          ],
+          "bearing_deg": 203.26397139354057,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.23571527168933049
+        },
+        {
+          "station": [
+            -1118.0363712618955,
+            -486.18385607947226
+          ],
+          "bearing_deg": 23.936901043072996,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.8878149650693041
+        },
+        {
+          "station": [
+            -1648.4496205034047,
+            -724.1557400857657
+          ],
+          "bearing_deg": 22.552068193044658,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.9711476797284027
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_013",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        -1455.5010643711291,
+        -836.8972501839576
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -1888.9373226837602,
+            181.40953705001243
+          ],
+          "bearing_deg": 293.3013525850943,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.2446104676623213
+        },
+        {
+          "station": [
+            -1162.912256851571,
+            -1525.6385873927306
+          ],
+          "bearing_deg": 112.59832431092154,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.4182705318503588
+        },
+        {
+          "station": [
+            -970.1921766860277,
+            -1948.3427112087184
+          ],
+          "bearing_deg": 113.65498013659978,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.06665576286772934
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_014",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        111.2818640043954,
+        -512.2037439898396
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            618.3799845360187,
+            320.98650590112857
+          ],
+          "bearing_deg": 238.61842470933988,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.05595138853912163
+        },
+        {
+          "station": [
+            -422.86948702907796,
+            -1387.6781209289788
+          ],
+          "bearing_deg": 58.39400685373387,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.21746120200125896
+        },
+        {
+          "station": [
+            -407.9391713815842,
+            -1376.2717337843374
+          ],
+          "bearing_deg": 59.27921765865126,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.2810011690194789
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_015",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        -947.9100356576567,
+        1259.1649933182393
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -1383.5574290816062,
+            971.4087845825857
+          ],
+          "bearing_deg": 32.600808025722074,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.8449708229141333
+        },
+        {
+          "station": [
+            -246.64091899650066,
+            1721.962353162076
+          ],
+          "bearing_deg": 213.23724328581685,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.18527671797619716
+        },
+        {
+          "station": [
+            -384.8268682386382,
+            1639.050351081839
+          ],
+          "bearing_deg": 213.79876921921982,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.20689278729557992
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_016",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        608.7505740668673,
+        1472.806906854104
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            856.37461279646,
+            1448.00419805749
+          ],
+          "bearing_deg": 173.48029783211294,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7998756749021199
+        },
+        {
+          "station": [
+            24.885991447310857,
+            1531.7164797625323
+          ],
+          "bearing_deg": 355.2275759093177,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.9889905339515868
+        },
+        {
+          "station": [
+            278.7150585779872,
+            1503.1596338786198
+          ],
+          "bearing_deg": 355.35498556575294,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.6095859948325675
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_017",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        -1432.2026367723472,
+        476.0584301706096
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -1439.6040019151278,
+            122.70892095794608
+          ],
+          "bearing_deg": 89.67118653551202,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.8711457009754562
+        },
+        {
+          "station": [
+            -1419.5464298998052,
+            1069.743539026473
+          ],
+          "bearing_deg": 268.86242989449414,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.08367901738022088
+        },
+        {
+          "station": [
+            -1415.0754562472007,
+            1846.3215443767617
+          ],
+          "bearing_deg": 270.2668926956235,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.9830063019201671
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_018",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        799.493773705746,
+        -529.0986798986029
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            1458.7941870294258,
+            -372.444652315064
+          ],
+          "bearing_deg": 194.31278693005984,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.9467954036764312
+        },
+        {
+          "station": [
+            -182.18767654335704,
+            -764.3576206345015
+          ],
+          "bearing_deg": 13.6959493369285,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.21923514424184387
+        },
+        {
+          "station": [
+            -136.35334469305246,
+            -760.3907872714286
+          ],
+          "bearing_deg": 12.949586747778955,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.9327217509016208
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_019",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        -1303.2901131198746,
+        289.1135356131241
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            -1121.9776747002381,
+            560.524811682096
+          ],
+          "bearing_deg": 236.7988483433933,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.5431884873274626
+        },
+        {
+          "station": [
+            -1827.8651853634533,
+            -497.98422408704505
+          ],
+          "bearing_deg": 55.610750017555596,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.7070835867706475
+        },
+        {
+          "station": [
+            -1973.062775469558,
+            -730.9789542541538
+          ],
+          "bearing_deg": 56.47350845208097,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": -0.23837643599177505
+        }
+      ],
+      "simulation_seed": 20260911
+    },
+    {
+      "case_id": "near_parallel_020",
+      "case_kind": "near_parallel_random",
+      "true_source": [
+        873.9187182749953,
+        164.75570494535032
+      ],
+      "expected_truth_retained": true,
+      "observations": [
+        {
+          "station": [
+            750.7567324399289,
+            -349.01633638650344
+          ],
+          "bearing_deg": 77.37380194566563,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.8544234064417291
+        },
+        {
+          "station": [
+            1111.285392723882,
+            1162.3510544402116
+          ],
+          "bearing_deg": 257.6121935043678,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.9962104310196265
+        },
+        {
+          "station": [
+            1063.467249759888,
+            993.4084242756924
+          ],
+          "bearing_deg": 257.8947866945902,
+          "half_angle_deg": 1.0,
+          "sampled_error_deg": 0.7791316194397659
+        }
+      ],
+      "simulation_seed": 20260911
+    }
+  ]
+}
