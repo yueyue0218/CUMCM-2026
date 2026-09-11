@@ -113,12 +113,12 @@ def _convex_hull(points: list[Point], tolerance: float) -> list[Point]:
 
     lower: list[Point] = []
     for point in ordered:
-        while len(lower) >= 2 and cross(lower[-2], lower[-1], point) <= tolerance:
+        while len(lower) >= 2 and cross(lower[-2], lower[-1], point) <= 0.0:
             lower.pop()
         lower.append(point)
     upper: list[Point] = []
     for point in reversed(ordered):
-        while len(upper) >= 2 and cross(upper[-2], upper[-1], point) <= tolerance:
+        while len(upper) >= 2 and cross(upper[-2], upper[-1], point) <= 0.0:
             upper.pop()
         upper.append(point)
     return lower[:-1] + upper[:-1]
