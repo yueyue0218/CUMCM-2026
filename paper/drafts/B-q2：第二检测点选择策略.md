@@ -63,7 +63,18 @@ h_s(g)=\operatorname{atan2}(g_y-s_y,g_x-s_x),
 \tag{6}
 \]
 
-并以 \(\operatorname{wrap}(\alpha)\in[-\pi,\pi)\) 表示环形角差。首次检测结果为示向度 \(\theta\) 时，
+并以 \(\operatorname{wrap}(\alpha)\in[-\pi,\pi)\) 表示环形角差。对全向干扰源，首次检测响应应先按距离分类：
+
+\[
+Y_1=
+\begin{cases}
+\mathrm{near},&d_S(g)\le5,\\
+\mathrm{direction}(\theta),&5<d_S(g)\le r,\\
+\mathrm{no\_signal},&d_S(g)>r.
+\end{cases}
+\]
+
+若 \(Y_1=\mathrm{near}\)，则保留 \(\mathcal B(S,5)\) 内的全部可能位置，并直接在 \(S\) 处执行光学定位和清除，不再选择第二检测点。本问所研究的情形是 \(Y_1=\mathrm{direction}(\theta)\)，故条件事件本身蕴含 \(d_S(g)>5\)，其观测似然为
 
 \[
 L_1(\theta\mid g,r,S)
@@ -155,7 +166,7 @@ K_1=
 \tag{14}
 \]
 
-其中，\(5\,\mathrm m\) 内排除单独保存，不强行并入凸集 \(K_1\)。
+其中，\(d_S(g)>5\) 仅是收到 \(\mathrm{direction}\) 后的条件约束，并不表示 \(5\,\mathrm m\) 内为无源盲区。若首次响应为 \(\mathrm{near}\)，应改用 \(\Omega\cap\mathcal B(S,5)\) 作为位置支持集并直接进入清除流程；只有在已观测到示向度的当前分支中，才将 \(5\,\mathrm m\) 内区域从 \(\mathcal F_1\) 排除。
 
 ### 3 定位区域的面积、直径与覆盖半径
 
@@ -264,7 +275,7 @@ D(K)\le20\sqrt3\,\mathrm m
 
 ### 4 第二检测点的候选区域
 
-#### 4.1 保证接收区域
+#### 4.1 极端稳健接收域
 
 令
 
@@ -309,9 +320,9 @@ q:\sup_{g\in\mathcal S_1}\|q-g\|\le1000
 \tag{28}
 \]
 
-式（28）把无限约束化为有限圆盘交，且保持“必能接收”的保证。
+式（28）把无限约束化为有限圆盘交，且保持“必能接收”的保证。然而，该集合同时按最短接收半径覆盖全部可能源位置，通常明显压缩选点自由度，并可能带来较大的移动时间。因此，\(\widehat Q_{\mathrm g}\) 仅作为极端稳健方案和接收风险校验基准，不再作为主策略的硬候选域。
 
-#### 4.2 局部坐标下的显式条件
+#### 4.2 时间可达域的局部表达
 
 令
 
@@ -322,37 +333,31 @@ q=S+a u+b n .
 \tag{29}
 \]
 
-不利用目标圆域对楔形的进一步裁剪时，可用
+当本次移动与检测的可用时间为 \(T_{\max}>5\) 时，允许的最大移动距离为
 
 \[
-T=\operatorname{conv}
-\{S,\ S+1500u+w n,\ S+1500u-w n\},
-\qquad w=1500\tan\delta
+R_T=5(T_{\max}-5).
 \tag{30}
 \]
 
-保守外包 \(K_1\)。于是第二检测点的一个显式保证接收子区域为
+因此，时间可达域在局部坐标下可直接写为
 
 \[
 \boxed{
-\widehat Q_{\mathrm g}^{\,T}
+M(T_{\max})
 =
 \left\{S+a u+b n:
-\begin{array}{l}
-a^2+b^2\le1000^2,\\
-(a-1500)^2+(b-w)^2\le1000^2,\\
-(a-1500)^2+(b+w)^2\le1000^2
-\end{array}
+a^2+b^2\le R_T^2
 \right\}.
 }
 \tag{31}
 \]
 
-主模型取 \(\delta=1^\circ\) 时 \(w\approx26.183\,\mathrm m\)；敏感性情景取 \(\delta=1.005^\circ\) 时 \(w\approx26.314\,\mathrm m\)。式（31）同时要求检测点覆盖楔形近端与两个远端，因而自然形成“沿示向方向前进并适度横移”的候选区域。
+式（31）只刻画物理可达性，不再强制检测点同时位于三个半径 \(1000\,\mathrm m\) 的圆盘内。纵向位移 \(a\) 与横向位移 \(b\) 的比例由后验接收概率和综合目标共同确定。
 
 #### 4.3 高概率接收区域与时间约束
 
-若保证接收区域为空，或其与任务剩余时间约束无交，则根据联合后验定义接收概率
+根据联合后验定义第二检测点的接收概率
 
 \[
 \rho(q)
@@ -371,32 +376,32 @@ Q_\eta=\{q:\rho(q)\ge\eta\},\qquad 0<\eta<1.
 \tag{33}
 \]
 
-若本次移动与检测的可用时间为 \(T_{\max}\)，则
+给定名义接收置信水平 \(\eta_0\)，为避免固定阈值导致候选域为空，定义有效阈值
 
 \[
-M(T_{\max})
+\eta_{\mathrm{eff}}
 =
-\left\{
-q:\frac{\|q-S\|}{5}+5\le T_{\max}
+\min\left\{
+\eta_0,
+\max_{q\in M(T_{\max})}\rho(q)
 \right\}.
 \tag{34}
 \]
 
-最终候选区域按条件选取：
+最终候选区域取为
 
 \[
 \boxed{
-\mathcal C=
-\begin{cases}
-\widehat Q_{\mathrm g}\cap M(T_{\max}),
-&\widehat Q_{\mathrm g}\cap M(T_{\max})\ne\varnothing,\\[2pt]
-Q_\eta\cap M(T_{\max}),
-&\widehat Q_{\mathrm g}\cap M(T_{\max})=\varnothing .
-\end{cases}}
+\mathcal C
+=
+\left\{
+q\in M(T_{\max}):
+\rho(q)\ge\eta_{\mathrm{eff}}
+\right\}.
 \tag{35}
 \]
 
-第一种情形提供确定性接收保证；第二种情形是受时间或几何限制时的概率退化方案。
+若 \(Q_{\eta_0}\cap M(T_{\max})\ne\varnothing\)，则 \(\eta_{\mathrm{eff}}=\eta_0\)；否则阈值自动降至时间可达域内的最大接收概率，只保留接收概率最高的可达点。由此，候选域同时反映时间约束和接收可靠性，而 \(\widehat Q_{\mathrm g}\cap\mathcal C\) 仅作为其中具有绝对接收保证的可选子集。
 
 ### 5 第二次检测的分段贝叶斯更新
 
@@ -610,39 +615,57 @@ T(q)=\frac{\|q-S\|}{5}+5.
 \tag{51}
 \]
 
-为避免将“米、平方米、秒”以任意权重直接相加，采用字典序目标：
+取尺度量
+
+\[
+D_0=D(K_1),\qquad
+A_0=\mathcal A(K_1),\qquad
+T_0=T_{\max}.
+\]
+
+当 \(A_0>0\) 时，将定位直径、区域面积与移动检测时间无量纲化，并构造综合损失
 
 \[
 \boxed{
-q^*
-\in
-\operatorname*{arg\,lexmin}_{q\in\mathcal C}
-\left(
-\Psi_D(q),\,
-\Psi_A(q),\,
-T(q)
-\right).
+J_{\boldsymbol\omega}(q)
+=
+\omega_D\frac{\Psi_D(q)}{D_0}
++\omega_A\frac{\Psi_A(q)}{A_0}
++\omega_T\frac{T(q)}{T_0},
+\qquad
+q^*\in\arg\min_{q\in\mathcal C}J_{\boldsymbol\omega}(q).
 }
 \tag{52}
 \]
 
-其中仅对预测概率为正的观测结果计入期望；约定空集的面积与直径均为零。即先最小化期望定位直径；若多个检测点的直径指标在计算精度内相同，则依次选择期望面积更小、移动检测时间更短者。由此得到的最优策略可写为
+其中仅对预测概率为正的观测结果计入期望，并约定空集的面积与直径均为零。权重满足
 
 \[
 \boxed{
-\text{先沿示向方向覆盖远端，再以横向位移增大两次方位线交角，并由后验期望直径确定二者比例。}
+\omega_D,\omega_A,\omega_T\ge0,\qquad
+\omega_D+\omega_A+\omega_T=1,\qquad
+\omega_T>0.
 }
 \tag{53}
 \]
 
-若不愿为测向误差补充概率密度，则式（49）中的期望不可辨识，应改用仅依赖硬边界的极小极大准则：
+由于 \(\omega_T>0\)，任意额外移动都会产生显式损失，时间项不会像字典序目标那样退化失效。若初始区域退化为零面积集合，则删除面积项并对其余权重重新归一化。
+
+若不愿为测向误差补充概率密度，则式（49）中的期望不可辨识，应采用兼顾时间成本的极小极大准则：
 
 \[
 q_{\mathrm{mm}}^*
 \in
 \arg\min_{q\in\mathcal C}
-\sup_{z\in\mathcal Z(q)}
-D\!\left(K_2(z,q)\right).
+\left[
+\omega_D
+\frac{\displaystyle\sup_{z\in\mathcal Z(q)}
+D\!\left(K_2(z,q)\right)}{D_0}
++\omega_A
+\frac{\displaystyle\sup_{z\in\mathcal Z(q)}
+\mathcal A\!\left(K_2(z,q)\right)}{A_0}
++\omega_T\frac{T(q)}{T_0}
+\right].
 \tag{54}
 \]
 
@@ -652,13 +675,31 @@ D\!\left(K_2(z,q)\right).
 \boxed{
 \text{选点准则}=
 \begin{cases}
-\text{贝叶斯期望直径最小化，式（52）},
+\text{贝叶斯综合期望损失最小化，式（52）},
 & f_\varepsilon\ \text{已给定},\\[2pt]
-\text{最坏情形直径最小化，式（54）},
+\text{几何最坏损失与时间成本联合最小化，式（54）},
 & \text{仅已知误差硬界}.
 \end{cases}}
 \tag{55}
 \]
+
+为降低主观权重对结论的影响，在给定权重集合 \(\mathcal W\) 上进行参数扫描，并保留非支配检测点构成 Pareto 集
+
+\[
+\mathcal P=
+\left\{
+q\in\mathcal C:
+\nexists q'\in\mathcal C,\
+\begin{array}{l}
+\Psi_D(q')\le\Psi_D(q),\
+\Psi_A(q')\le\Psi_A(q),\
+T(q')\le T(q),\\
+\text{且至少一个不等式严格成立}
+\end{array}
+\right\}.
+\]
+
+若 \(q^*(\boldsymbol\omega)\) 在一段权重区间内保持不变或仅小幅移动，则所选策略对时间—精度偏好具有稳定性；否则报告 Pareto 集，由任务剩余时间决定最终选点。
 
 ### 8 第二次观测后的条件决策
 
@@ -795,9 +836,9 @@ Q_{0.9,s}=\operatorname{Quantile}_{0.9}
 
 ### 10 模型结论
 
-本问以问题一的定位区域为几何基础，将源位置与固定接收半径组成联合隐状态，通过首次示向结果形成联合后验；随后分别构造保证接收区域 \(Q_{\mathrm g}\) 与高概率接收区域 \(Q_\eta\)，并以期望定位直径、期望面积和移动检测时间构成字典序目标。第二次观测按照 \(\mathrm{near}\)、\(\mathrm{direction}\) 和 \(\mathrm{no\_signal}\) 分段更新，距离后验则通过可信区间覆盖率进行校准检验。
+本问以问题一的定位区域为几何基础，将源位置与固定接收半径组成联合隐状态，并在首次响应分类后形成联合后验；其中 \(\mathrm{near}\) 直接进入清除流程，只有 \(\mathrm{direction}\) 分支进入第二检测点选择。随后以时间可达域和后验接收概率构造候选区域，将绝对保证接收域 \(Q_{\mathrm g}\) 降为稳健性参考，并以无量纲的期望定位直径、期望面积和移动检测时间构成综合损失。第二次观测继续按照 \(\mathrm{near}\)、\(\mathrm{direction}\) 和 \(\mathrm{no\_signal}\) 分段更新，距离后验则通过可信区间覆盖率进行校准检验。
 
-该模型的核心不是预设“始终垂直于首次示向方向移动”，而是在式（31）的可接收几何约束下，同时配置纵向推进量 \(a\) 与横向基线 \(b\)，再由式（52）确定最优比例。由式（62）—（66）可在相同移动成本下量化其相对垂直布点在平均直径、尾部风险、接收率及可清除概率方面的优势。
+该模型的核心不是预设“始终垂直于首次示向方向移动”，而是在式（31）的时间可达域内同时配置纵向推进量 \(a\) 与横向基线 \(b\)，再由式（52）的时间—精度综合损失确定最优比例。权重扫描与 Pareto 集用于检验策略选择的稳定性；式（62）—（66）则可在相同移动成本下量化其相对垂直布点在平均直径、尾部风险、接收率及可清除概率方面的优势。
 
 ### P.S. 建模衔接说明（不纳入正式论文）
 
