@@ -358,6 +358,39 @@ checks['excluded_center_is_valid_action'] = dict(
     certified_cover_radius_m=10, center_excluded_as_source=True,
     action_valid=True)
 
+# All nine local grid points fail, yet a point beyond the 8-neighborhood works.
+segment = [(Fraction('-7.4234'), Fraction('-18.5681')),
+           (Fraction('7.4314'), Fraction('18.5689'))]
+def local_radius_squared(center):
+    return max(sum((p[k]-center[k])**2 for k in range(2)) for p in segment)
+local_nine = [(Fraction(i, 100), Fraction(j, 100))
+              for i in (-1, 0, 1) for j in (-1, 0, 1)]
+outside_neighbor = (Fraction('-.02'), Fraction('.01'))
+minimum_local = min(map(local_radius_squared, local_nine))
+outside_squared = local_radius_squared(outside_neighbor)
+assert minimum_local > 400 and outside_squared < 400
+checks['eight_neighbors_not_global'] = dict(
+    endpoints_m=[[float(x) for x in p] for p in segment], grid_step_m=.01,
+    continuous_center_m=[.004, .0004], local_points_checked=len(local_nine),
+    all_local_points_infeasible=True, best_local_radius_m=math.sqrt(float(minimum_local)),
+    outside_point_m=[-.02, .01], outside_radius_m=math.sqrt(float(outside_squared)),
+    conclusion='local_failure_does_not_certify_global_infeasibility')
+
+# Fixed-center arc distance: interior radial maximum, endpoint maximum, concentric.
+arc_distance_checks = []
+for label, a, b, z, expected in [
+    ('radial_inside', math.pi/2, 3*math.pi/2, (10, 0), 15),
+    ('radial_outside', -math.pi/2, math.pi/2, (10, 0), math.sqrt(125)),
+    ('concentric', math.pi/2, 3*math.pi/2, (0, 0), 5),
+]:
+    samples = np.linspace(a, b, 10001)
+    boundary = 5*np.column_stack((np.cos(samples), np.sin(samples)))
+    sampled = float(np.linalg.norm(boundary-np.array(z), axis=1).max())
+    assert abs(sampled-expected) < 1e-12
+    arc_distance_checks.append(dict(case=label, analytic_distance_m=expected,
+                                    sampled_check_error_m=abs(sampled-expected)))
+checks['fixed_center_arc_distance'] = arc_distance_checks
+
 out = root / 'results/tables/q1_revision_validation.json'
 out.parent.mkdir(parents=True, exist_ok=True)
 out.write_text(json.dumps(checks, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')

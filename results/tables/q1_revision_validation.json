@@ -272,5 +272,48 @@
     "certified_cover_radius_m": 10,
     "center_excluded_as_source": true,
     "action_valid": true
-  }
+  },
+  "eight_neighbors_not_global": {
+    "endpoints_m": [
+      [
+        -7.4234,
+        -18.5681
+      ],
+      [
+        7.4314,
+        18.5689
+      ]
+    ],
+    "grid_step_m": 0.01,
+    "continuous_center_m": [
+      0.004,
+      0.0004
+    ],
+    "local_points_checked": 9,
+    "all_local_points_infeasible": true,
+    "best_local_radius_m": 20.000743815418467,
+    "outside_point_m": [
+      -0.02,
+      0.01
+    ],
+    "outside_radius_m": 19.99890324917844,
+    "conclusion": "local_failure_does_not_certify_global_infeasibility"
+  },
+  "fixed_center_arc_distance": [
+    {
+      "case": "radial_inside",
+      "analytic_distance_m": 15,
+      "sampled_check_error_m": 0.0
+    },
+    {
+      "case": "radial_outside",
+      "analytic_distance_m": 11.180339887498949,
+      "sampled_check_error_m": 0.0
+    },
+    {
+      "case": "concentric",
+      "analytic_distance_m": 5,
+      "sampled_check_error_m": 8.881784197001252e-16
+    }
+  ]
 }
