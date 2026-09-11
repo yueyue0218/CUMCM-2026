@@ -618,16 +618,26 @@ r_*(\mathcal S_2)\le20
 
 ### 7 最小期望定位直径模型
 
-第二次检测结果尚未发生时，其后验预测分布为
+第二次检测结果尚未发生时，\(Z_q\) 同时包含离散响应类型与连续示向角。为避免混用概率质量与概率密度，对方向响应定义预测次密度
 
 \[
-p(z\mid H_1,q)
-=
+\begin{aligned}
+\lambda_{\mathrm{dir}}(z\mid H_1,q)
+&:=
 \int_{\Omega}\int_{1000}^{1500}
 L_2(z\mid g,r,q)\pi_1(g,r\mid H_1)
-\,\mathrm dr\,\mathrm dg .
+\,\mathrm dr\,\mathrm dg\\
+&=
+\Pr(\mathrm{direction}\mid H_1,q)\,
+p(z\mid\mathrm{direction},H_1,q),
+\qquad z\in[-\pi,\pi),\\
+\int_{-\pi}^{\pi}\lambda_{\mathrm{dir}}(z\mid H_1,q)\,\mathrm dz
+&=\Pr(\mathrm{direction}\mid H_1,q).
+\end{aligned}
 \tag{48}
 \]
+
+式（48）的乘积分解仅在 \(\Pr(\mathrm{direction}\mid H_1,q)>0\) 时使用；若该概率为零，则约定 \(\lambda_{\mathrm{dir}}(z\mid H_1,q)\equiv0\)，无须定义相应的条件角度密度。
 
 定义第二次检测后的期望定位直径
 
@@ -643,7 +653,7 @@ D\!\left(K_2^{\mathrm{no}}(q)\right)\\
 &+
 \int_{-\pi}^{\pi}
 D\!\left(K_2^{\mathrm{dir}}(z,q)\right)
-p(z,\mathrm{direction}\mid H_1,q)\,\mathrm dz .
+\lambda_{\mathrm{dir}}(z\mid H_1,q)\,\mathrm dz .
 \end{aligned}
 \tag{49}
 \]
@@ -660,7 +670,20 @@ p(z,\mathrm{direction}\mid H_1,q)\,\mathrm dz .
 \tag{50}
 \]
 
-以及单次移动检测时间
+式（49）与式（50）的方向响应分支通常难以解析积分。数值求解时，将角度区间等分为 \(M\) 段，令
+
+\[
+\Delta z=\frac{2\pi}{M},\qquad
+z_\ell=-\pi+\left(\ell+\frac12\right)\Delta z,\qquad
+\int_{-\pi}^{\pi}\phi(z)\lambda_{\mathrm{dir}}(z\mid H_1,q)\,\mathrm dz
+\approx
+\Delta z\sum_{\ell=0}^{M-1}
+\phi(z_\ell)\lambda_{\mathrm{dir}}(z_\ell\mid H_1,q),
+\]
+
+其中 \(\phi(z)\) 分别取 \(D(K_2^{\mathrm{dir}}(z,q))\) 与 \(\mathcal A(K_2^{\mathrm{dir}}(z,q))\)。采用步长逐级折半的复合中点求积，并以相邻两级的目标函数相对差不超过 \(\tau_{\mathrm{int}}\)、最优局部坐标差不超过 \(\tau_\xi\) 作为积分离散化停止准则；同时校验三类响应的预测概率之和为 \(1\)。
+
+单次移动检测时间定义为
 
 \[
 T(q)=\frac{\|q-S\|}{5}+5.
