@@ -114,6 +114,38 @@ class GreenMeasureTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             green_area_centroid([CircularArc((0, 0), 2, 0, 0)])
 
+    def test_translated_unit_square_retains_area_and_centroid(self):
+        area, centroid = polygon_area_centroid([
+            (1_000_000, 0), (1_000_001, 0),
+            (1_000_001, 1), (1_000_000, 1),
+        ])
+        self.assertAlmostEqual(area, 1.0, places=12)
+        self.assertAlmostEqual(centroid[0], 1_000_000.5, places=12)
+        self.assertAlmostEqual(centroid[1], 0.5, places=12)
+
+    def test_translated_full_circle_retains_area_and_center(self):
+        area, centroid = green_area_centroid([
+            CircularArc((1e12, -1e12), 2, 0, 2 * math.pi)
+        ])
+        self.assertAlmostEqual(area, 4 * math.pi, places=10)
+        self.assertAlmostEqual(centroid[0], 1e12, places=10)
+        self.assertAlmostEqual(centroid[1], -1e12, places=10)
+
+    def test_large_coordinate_boundary_with_half_metre_gap_is_open(self):
+        origin = 1e12
+        side = 2_000_000
+        with self.assertRaises(ValueError):
+            green_area_centroid([
+                LineSegment((origin, origin), (origin + side, origin)),
+                LineSegment(
+                    (origin + side, origin), (origin + side, origin + side)
+                ),
+                LineSegment(
+                    (origin + side, origin + side), (origin, origin + side)
+                ),
+                LineSegment((origin, origin + side), (origin + 0.5, origin)),
+            ])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -211,33 +211,55 @@ def green_area_centroid(
     if not elements:
         raise ValueError("boundary must contain at least one element")
 
-    coordinate_scale = 1.0
-    for index, element in enumerate(elements):
-        following = elements[(index + 1) % len(elements)]
-        coordinate_scale = max(
-            coordinate_scale,
-            *(abs(value) for point in (element.start, element.end) for value in point),
+    origin = elements[0].start
+
+    def local_point(point: Point) -> Point:
+        return point[0] - origin[0], point[1] - origin[1]
+
+    local_elements: list[BoundaryElement] = []
+    boundary_scale = 0.0
+    for element in elements:
+        if isinstance(element, LineSegment):
+            local_element: BoundaryElement = LineSegment(
+                local_point(element.start), local_point(element.end)
+            )
+        else:
+            local_element = CircularArc(
+                local_point(element.center), element.radius,
+                element.start_angle, element.sweep_angle,
+            )
+            boundary_scale = max(boundary_scale, element.radius)
+        local_elements.append(local_element)
+        boundary_scale = max(
+            boundary_scale,
+            *(abs(value) for point in (local_element.start, local_element.end)
+              for value in point),
         )
-        gap = math.dist(element.end, following.start)
-        if gap > 1e-12 * coordinate_scale:
+
+    length_tolerance = 1e-12 * max(boundary_scale, 1e-300)
+    for index, element in enumerate(local_elements):
+        following = local_elements[(index + 1) % len(local_elements)]
+        if math.dist(element.end, following.start) > length_tolerance:
             raise ValueError("boundary elements must form a closed boundary")
 
-    area = 0.0
-    x_moment = 0.0
-    y_moment = 0.0
-    for element in elements:
-        contribution = (
+    contributions = [
+        (
             _line_contributions(element) if isinstance(element, LineSegment)
             else _arc_contributions(element)
         )
-        area += contribution[0]
-        x_moment += contribution[1]
-        y_moment += contribution[2]
+        for element in local_elements
+    ]
+    area = math.fsum(contribution[0] for contribution in contributions)
+    x_moment = math.fsum(contribution[1] for contribution in contributions)
+    y_moment = math.fsum(contribution[2] for contribution in contributions)
 
-    area_tolerance = 1e-12 * coordinate_scale * coordinate_scale
+    area_tolerance = 1e-12 * max(boundary_scale * boundary_scale, 1e-300)
     if abs(area) <= area_tolerance:
         raise ValueError("boundary encloses negligible area")
-    return area, (x_moment / area, y_moment / area)
+    return area, (
+        origin[0] + x_moment / area,
+        origin[1] + y_moment / area,
+    )
 
 
 def polygon_area_centroid(vertices: Sequence[Point]) -> tuple[float, Point]:
