@@ -217,12 +217,13 @@ def green_area_centroid(
         return point[0] - origin[0], point[1] - origin[1]
 
     local_elements: list[BoundaryElement] = []
+    local_endpoints: list[tuple[Point, Point]] = []
     boundary_scale = 0.0
     for element in elements:
+        endpoints = local_point(element.start), local_point(element.end)
+        local_endpoints.append(endpoints)
         if isinstance(element, LineSegment):
-            local_element: BoundaryElement = LineSegment(
-                local_point(element.start), local_point(element.end)
-            )
+            local_element: BoundaryElement = LineSegment(*endpoints)
         else:
             local_element = CircularArc(
                 local_point(element.center), element.radius,
@@ -232,14 +233,13 @@ def green_area_centroid(
         local_elements.append(local_element)
         boundary_scale = max(
             boundary_scale,
-            *(abs(value) for point in (local_element.start, local_element.end)
-              for value in point),
+            *(abs(value) for point in endpoints for value in point),
         )
 
     length_tolerance = 1e-12 * max(boundary_scale, 1e-300)
-    for index, element in enumerate(local_elements):
-        following = local_elements[(index + 1) % len(local_elements)]
-        if math.dist(element.end, following.start) > length_tolerance:
+    for index, (_, end) in enumerate(local_endpoints):
+        following_start = local_endpoints[(index + 1) % len(local_endpoints)][0]
+        if math.dist(end, following_start) > length_tolerance:
             raise ValueError("boundary elements must form a closed boundary")
 
     contributions = [

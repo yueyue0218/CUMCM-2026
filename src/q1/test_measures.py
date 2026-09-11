@@ -146,6 +146,25 @@ class GreenMeasureTests(unittest.TestCase):
                 LineSegment((origin, origin + side), (origin + 0.5, origin)),
             ])
 
+    def test_translated_rotated_semicircle_connects_to_its_chord(self):
+        center = (1e12, -1e12)
+        start_angle = 0.3
+        arc = CircularArc(center, 2, start_angle, math.pi)
+        area, centroid = green_area_centroid([
+            arc, LineSegment(arc.end, arc.start)
+        ])
+        centroid_offset = 8.0 / (3.0 * math.pi)
+        middle_angle = start_angle + math.pi / 2.0
+        self.assertAlmostEqual(area, 2 * math.pi, places=3)
+        self.assertAlmostEqual(
+            centroid[0], center[0] + centroid_offset * math.cos(middle_angle),
+            places=4,
+        )
+        self.assertAlmostEqual(
+            centroid[1], center[1] + centroid_offset * math.sin(middle_angle),
+            places=4,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
