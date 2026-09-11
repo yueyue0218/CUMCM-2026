@@ -40,6 +40,10 @@ class SimulatorError(RuntimeError):
     """Base exception for simulator transport or protocol failures."""
 
 
+class SimulatorConnectionError(SimulatorError):
+    """The simulator could not be reached after network retries."""
+
+
 class SimulatorHTTPError(SimulatorError):
     def __init__(self, status: int, response: Mapping[str, object] | None = None):
         super().__init__(f"simulator returned HTTP {status}: {response}")
@@ -100,6 +104,16 @@ class SimulatorState:
 class JsonlRunLogger:
     """Write replayable request/response logs and run metadata."""
 
+    _SENSITIVE_KEYS = {
+        "mobile",
+        "password",
+        "phone",
+        "phone_number",
+        "robot_id",
+        "secret",
+        "token",
+    }
+
     def __init__(self, run_directory: str | Path, config: Mapping[str, object]):
         self.run_directory = Path(run_directory)
         self.run_directory.mkdir(parents=True, exist_ok=False)
@@ -108,14 +122,34 @@ class JsonlRunLogger:
     def _write_json(self, filename: str, value: Mapping[str, object]) -> None:
         path = self.run_directory / filename
         path.write_text(
-            json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+            json.dumps(self._redact(value), ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
         )
 
     def append(self, filename: str, value: Mapping[str, object]) -> None:
         path = self.run_directory / filename
         with path.open("a", encoding="utf-8", newline="\n") as stream:
-            stream.write(json.dumps(value, ensure_ascii=False, separators=(",", ":")))
+            stream.write(
+                json.dumps(
+                    self._redact(value),
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                )
+            )
             stream.write("\n")
+
+    @classmethod
+    def _redact(cls, value: object) -> object:
+        if isinstance(value, Mapping):
+            return {
+                key: "<redacted>"
+                if str(key).lower() in cls._SENSITIVE_KEYS
+                else cls._redact(item)
+                for key, item in value.items()
+            }
+        if isinstance(value, (list, tuple)):
+            return [cls._redact(item) for item in value]
+        return value
 
     def request(self, value: Mapping[str, object]) -> None:
         sanitized = dict(value)
@@ -182,7 +216,9 @@ class SimulatorClient:
         self.request_ids = request_ids or RequestIdSequence()
         self.logger = logger
         self.state = SimulatorState()
-        self._action_lock = threading.Lock()
+        # The lock covers response validation and the corresponding state update,
+        # not just the HTTP exchange, so concurrent callers cannot reorder state.
+        self._action_lock = threading.RLock()
 
     def _payload(self, request_id: str, **fields: object) -> JsonObject:
         return {
@@ -223,7 +259,7 @@ class SimulatorClient:
                             }
                         )
                     if attempt >= self.max_network_retries:
-                        raise SimulatorError(
+                        raise SimulatorConnectionError(
                             f"network failure after {attempt + 1} attempts"
                         ) from error
                     time.sleep(self.retry_backoff_s * (2**attempt))
@@ -245,7 +281,7 @@ class SimulatorClient:
                             "response": response,
                         }
                     )
-                if not 200 <= status < 300:
+                if status != 200:
                     raise SimulatorHTTPError(status, response)
                 if response.get("accepted") is not True:
                     raise ActionRejected(response)
@@ -253,19 +289,22 @@ class SimulatorClient:
         raise AssertionError("unreachable")
 
     def enter(self) -> JsonObject:
-        request_id = self.request_ids.next("enter")
-        response = self._perform("/enter", self._payload(request_id))
-        remaining = response.get("remaining_real_duration_s")
-        if not isinstance(remaining, int):
-            raise ProtocolError("accepted /enter lacks integer remaining_real_duration_s")
-        self._update_virtual_time(response)
-        self.state.remaining_real_duration_s = remaining
-        self.state.real_deadline_monotonic = time.monotonic() + remaining
-        self.state.entered = True
-        self.state.exited = False
-        self.state.position = (0.0, 0.0)
-        self.state.current_channel = 1
-        return response
+        with self._action_lock:
+            request_id = self.request_ids.next("enter")
+            response = self._perform("/enter", self._payload(request_id))
+            remaining = response.get("remaining_real_duration_s")
+            if not isinstance(remaining, int) or isinstance(remaining, bool):
+                raise ProtocolError(
+                    "accepted /enter lacks integer remaining_real_duration_s"
+                )
+            self._update_virtual_time(response)
+            self.state.remaining_real_duration_s = remaining
+            self.state.real_deadline_monotonic = time.monotonic() + remaining
+            self.state.entered = True
+            self.state.exited = False
+            self.state.position = (0.0, 0.0)
+            self.state.current_channel = 1
+            return response
 
     def remaining_real_time_s(self) -> float | None:
         """Return a decreasing local estimate based on the /enter allowance."""
@@ -274,59 +313,64 @@ class SimulatorClient:
         return None if deadline is None else max(0.0, deadline - time.monotonic())
 
     def measure(self, position: tuple[float, float], channel: int) -> MeasureResult:
-        self._validate_action(position, channel)
-        request_id = self.request_ids.next("measure")
-        response = self._perform(
-            "/measure",
-            self._payload(
-                request_id,
-                position={"x": position[0], "y": position[1]},
-                channel=channel,
-            ),
-        )
-        result = response.get("measure_result")
-        if result not in {"no_signal", "near", "direction"}:
-            raise ProtocolError(f"unknown measure_result: {result!r}")
-        svd_deg: float | None = None
-        if result == "direction":
-            raw_bearing = response.get("svd_deg")
-            if not isinstance(raw_bearing, (int, float)):
-                raise ProtocolError("direction response lacks numeric svd_deg")
-            svd_deg = float(raw_bearing)
-        self._update_virtual_time(response)
-        self.state.position = (float(position[0]), float(position[1]))
-        self.state.current_channel = channel
-        return MeasureResult(result=result, svd_deg=svd_deg, response=response)
+        with self._action_lock:
+            self._validate_action(position, channel)
+            request_id = self.request_ids.next("measure")
+            response = self._perform(
+                "/measure",
+                self._payload(
+                    request_id,
+                    position={"x": position[0], "y": position[1]},
+                    channel=channel,
+                ),
+            )
+            result = response.get("measure_result")
+            if result not in {"no_signal", "near", "direction"}:
+                raise ProtocolError(f"unknown measure_result: {result!r}")
+            svd_deg: float | None = None
+            if result == "direction":
+                raw_bearing = response.get("svd_deg")
+                if not isinstance(raw_bearing, (int, float)) or isinstance(
+                    raw_bearing, bool
+                ):
+                    raise ProtocolError("direction response lacks numeric svd_deg")
+                svd_deg = float(raw_bearing)
+            self._update_virtual_time(response)
+            self.state.position = (float(position[0]), float(position[1]))
+            self.state.current_channel = channel
+            return MeasureResult(result=result, svd_deg=svd_deg, response=response)
 
     def clear(self, position: tuple[float, float], channel: int) -> ClearResult:
-        self._validate_action(position, channel)
-        request_id = self.request_ids.next("clear")
-        response = self._perform(
-            "/clear",
-            self._payload(
-                request_id,
-                position={"x": position[0], "y": position[1]},
-                channel=channel,
-            ),
-        )
-        result = response.get("clear_result")
-        if result not in {"success", "no_target_in_range"}:
-            raise ProtocolError(f"unknown clear_result: {result!r}")
-        self._update_virtual_time(response)
-        self.state.position = (float(position[0]), float(position[1]))
-        # Deliberately do not update current_channel: /clear never switches it.
-        return ClearResult(result=result, response=response)
+        with self._action_lock:
+            self._validate_action(position, channel)
+            request_id = self.request_ids.next("clear")
+            response = self._perform(
+                "/clear",
+                self._payload(
+                    request_id,
+                    position={"x": position[0], "y": position[1]},
+                    channel=channel,
+                ),
+            )
+            result = response.get("clear_result")
+            if result not in {"success", "no_target_in_range"}:
+                raise ProtocolError(f"unknown clear_result: {result!r}")
+            self._update_virtual_time(response)
+            self.state.position = (float(position[0]), float(position[1]))
+            # Deliberately do not update current_channel: /clear never switches it.
+            return ClearResult(result=result, response=response)
 
     def exit(self) -> JsonObject:
-        request_id = self.request_ids.next("exit")
-        response = self._perform("/exit", self._payload(request_id))
-        self._update_virtual_time(response)
-        self.state.exited = True
-        return response
+        with self._action_lock:
+            self._validate_active_session()
+            request_id = self.request_ids.next("exit")
+            response = self._perform("/exit", self._payload(request_id))
+            self._update_virtual_time(response)
+            self.state.exited = True
+            return response
 
     def _validate_action(self, position: tuple[float, float], channel: int) -> None:
-        if not self.state.entered or self.state.exited:
-            raise SimulatorError("enter an active test before sending an action")
+        self._validate_active_session()
         if not isinstance(channel, int) or isinstance(channel, bool) or not 1 <= channel <= 20:
             raise ValueError("channel must be an integer in 1..20")
         if len(position) != 2 or not all(
@@ -338,8 +382,12 @@ class SimulatorClient:
         ):
             raise ValueError("position must contain two finite coordinates within limits")
 
+    def _validate_active_session(self) -> None:
+        if not self.state.entered or self.state.exited:
+            raise SimulatorError("enter an active test before sending an action")
+
     def _update_virtual_time(self, response: Mapping[str, object]) -> None:
         value = response.get("virtual_time_s")
-        if not isinstance(value, (int, float)):
+        if not isinstance(value, (int, float)) or isinstance(value, bool):
             raise ProtocolError("accepted response lacks numeric virtual_time_s")
         self.state.virtual_time_s = float(value)
