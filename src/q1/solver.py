@@ -15,9 +15,21 @@ from src.q1.measures import (
 )
 
 
+def _finite_number(value: object, field: str) -> float:
+    if isinstance(value, bool):
+        raise ValueError(f"{field} must be a finite number")
+    try:
+        parsed = float(value)
+    except (TypeError, ValueError, OverflowError) as error:
+        raise ValueError(f"{field} must be a finite number") from error
+    if not math.isfinite(parsed):
+        raise ValueError(f"{field} must be a finite number")
+    return parsed
+
+
 def _positive_finite(payload: Mapping[str, object], key: str, default: float) -> float:
-    value = float(payload.get(key, default))
-    if not math.isfinite(value) or value <= 0.0:
+    value = _finite_number(payload.get(key, default), key)
+    if value <= 0.0:
         raise ValueError(f"{key} must be a positive finite number")
     return value
 
@@ -44,11 +56,28 @@ def _parse_observations(payload: Mapping[str, object]) -> list[Observation]:
                 or len(station) != 2):
             raise ValueError(f"observations[{index}].station must contain two values")
         try:
-            bearing = raw["bearing_deg"]
+            bearing = _finite_number(
+                raw["bearing_deg"], f"observations[{index}].bearing_deg"
+            )
+            half_angle = _finite_number(
+                raw.get("half_angle_deg", 1.0),
+                f"observations[{index}].half_angle_deg",
+            )
+            if not 0.0 < half_angle < 90.0:
+                raise ValueError(
+                    f"observations[{index}].half_angle_deg must be in (0, 90)"
+                )
             observation = Observation(
-                (float(station[0]), float(station[1])),
-                float(bearing),
-                float(raw.get("half_angle_deg", 1.0)),
+                (
+                    _finite_number(
+                        station[0], f"observations[{index}].station[0]"
+                    ),
+                    _finite_number(
+                        station[1], f"observations[{index}].station[1]"
+                    ),
+                ),
+                bearing,
+                half_angle,
             )
         except KeyError as error:
             raise ValueError(
@@ -121,6 +150,7 @@ def solve_case(payload: Mapping[str, object]) -> dict[str, object]:
         "output_decimals": decimals,
         "output_center": None,
         "rounded_center_max_distance_m": None,
+        "clearance_margin_m": None,
     }
     if region.status == "empty":
         return {
@@ -177,6 +207,7 @@ def solve_case(payload: Mapping[str, object]) -> dict[str, object]:
         **control_base,
         "output_center": _point_list(output_center),
         "rounded_center_max_distance_m": rounded_max_distance,
+        "clearance_margin_m": clear_radius - rounded_max_distance,
     }
 
     if not arena_contains_region:

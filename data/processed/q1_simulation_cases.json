@@ -6,7 +6,7 @@
     "regular_random": 50,
     "near_parallel_random": 20,
     "random_total": 70,
-    "random_consistent_cases": 70,
+    "random_truth_cases": 70,
     "analytic_checks": 8,
     "boundary_checks": 16
   },

@@ -44,8 +44,8 @@ P=\bigcap_i\{(x,y):a_i x+b_i y\le c_i\},
 }
 ```
 
-- `observations` 必须是数组。每项必须含二元有限坐标 `station` 和有限数 `bearing_deg`；`half_angle_deg` 可省略，默认 `1.0`，且必须满足 `0 < half_angle_deg < 90`。
-- `arena_radius_m` 和 `clear_radius_m` 可省略，默认分别为 `1800.0` 和 `20.0`，两者必须为正有限数。
+- `observations` 必须是数组。每项必须含二元有限坐标 `station` 和有限数 `bearing_deg`；`half_angle_deg` 可省略，默认 `1.0`，且必须满足 `0 < half_angle_deg < 90`。坐标、方位角和半角均拒绝 JSON 布尔值。
+- `arena_radius_m` 和 `clear_radius_m` 可省略，默认分别为 `1800.0` 和 `20.0`，两者必须为正有限数且不能是 JSON 布尔值。
 - `output_decimals` 可省略，默认 `6`，必须是 `[0, 15]` 内的整数。它只控制动作中心 `control.output_center` 的坐标舍入，不会提前舍入几何计算。
 - `case_id` 可选；存在时会原样带入对应输出。仿真案例中的 `case_kind`、`true_source`、`sampled_error_deg` 等元数据不参与正式求解。
 
@@ -57,7 +57,7 @@ P=\bigcap_i\{(x,y):a_i x+b_i y\le c_i\},
 
 - `region` 描述纯测向区域 `P`。`region.status` 为 `empty`、`unbounded`、`point`、`segment` 或 `polygon`；非空有界状态在 `region.vertices` 中给出逆时针凸顶点。`polygon` 另给出 `region.area_m2` 和 `region.centroid`。`region.max_violation` 是返回顶点对原半平面不等式的最大原始残差；`region.arena_contains_region` 表示有界 `P` 是否整体位于以原点为圆心、半径 `control.arena_radius_m` 的圆域内。
 - `problem_1` 给出题目一几何量。区域直径为 `D=max_{p,q in P} ||p-q||`，写入 `problem_1.diameter_m`；`problem_1.farthest_pair` 是确定性的最远点对。同时用旋转卡壳和穷举计算直径，并在 `problem_1.diameter_discrepancy_m` 中报告差值。`problem_1.diameter_circle` 的圆心是最远点对中点、半径为 `D/2`，其中 `problem_1.diameter_circle.covers` 表示该圆是否覆盖全部顶点。`problem_1.minimum_enclosing_circle` 给出 Welzl 最小包围圆的内部圆心、半径和最大覆盖残差。
-- `control` 单独报告物理约束，不会改变 `P`。`control.output_center` 是按 `control.output_decimals` 舍入后的动作中心，`control.rounded_center_max_distance_m` 是该舍入中心到 `P` 顶点的可靠最大距离；所用目标圆域和清除半径分别记录在 `control.arena_radius_m` 与 `control.clear_radius_m`。
+- `control` 单独报告物理约束，不会改变 `P`。`control.output_center` 是按 `control.output_decimals` 舍入后的动作中心，`control.rounded_center_max_distance_m` 是该舍入中心到 `P` 顶点的可靠最大距离；所用目标圆域和清除半径分别记录在 `control.arena_radius_m` 与 `control.clear_radius_m`。可审计裕量定义为 `control.clearance_margin_m = control.clear_radius_m - control.rounded_center_max_distance_m`：正值表示尚有余量，零为几何边界，负值表示舍入中心超出清除半径；空集和无界区域为 `null`。状态判定仍按下述带尺度容差的距离平方比较执行，因此裕量是原始有符号诊断量。
 
 `P` 可以为空或无界。空集的 `problem_1.diameter_m` 为 `null`，`control.status` 为 `NO_FEASIBLE_REGION`；无界区域的 `problem_1.diameter_m` 使用 JSON 兼容字符串 `"infinity"`，`control.status` 为 `UNBOUNDED_REGION`，二者均不输出有限覆盖圆。
 
@@ -73,7 +73,7 @@ P=\bigcap_i\{(x,y):a_i x+b_i y\le c_i\},
 - 半平面裁剪和点包含默认绝对容差为 `1e-9`；仿真真值保留检查使用 `1e-8` 的不等式残差容差。
 - 旋转卡壳直径必须与全顶点对穷举结果在 `1e-10 * max(1, D_exhaustive, D_calipers)` 内一致。
 - 直径圆覆盖、目标圆域包含、清除阈值和动作中心复核使用尺度相关的 `1e-12` 容差；清除判定比较距离平方，避免开方或显示舍入改变边界结论。
-- Welzl 算法默认固定种子 `20260911`，内部覆盖采用尺度相关 `1e-12` 容差，返回前再以尺度相关 `1e-10` 容差复核所有点并报告 `max_residual_m`。
+- 最小包围圆使用默认固定种子 `20260911` 的迭代随机增量算法，不依赖 Python 递归深度；内部覆盖采用尺度相关 `1e-12` 容差，返回前再以尺度相关 `1e-10` 容差复核所有点并报告 `max_residual_m`。
 - 线段和有向圆弧的面积、质心使用格林公式。圆弧显式保存起角和逆时针扫角，扫角允许 `0` 或 `2*pi`，不会从两个端点角猜测短弧。
 
 ## 固定仿真与边界案例
@@ -82,7 +82,7 @@ P=\bigcap_i\{(x,y):a_i x+b_i y\le c_i\},
 
 观测边界案例为 `cross_zero`、`error_at_positive_bound`、`error_at_negative_bound`、`unbounded_single_observation`、`empty_conflicting_observations`、`duplicate_observations`、`near_parallel_intersection`、`source_on_arena_boundary`。解析检查为 `point_region`、`segment_region`、`equilateral_diameter_circle_failure`、`square_diameter_circle_success`、`clear_radius_exactly_20`、`clear_radius_above_20`、`arc_crosses_zero`、`rounded_center_counterexample`。
 
-随机真值在半径 1800 m 圆域内按面积均匀抽样；每例使用 3 个距真值 200--1400 m 的测站，并加入 `[-1, 1]` deg 的字面测角误差。生成顺序固定为观测边界、常规随机、近平行随机。JSON 保留 Python 浮点全精度，Markdown 数值显示 6 位小数；在相同代码、Python/NumPy/SciPy 环境下重复执行生成命令，应得到无 Git 差异的四份文件。报告中的 `PASS` 表示预先声明的边界不变量通过，不表示对所有测站布局或真实噪声的统计性能保证。
+随机真值在半径 1800 m 圆域内按面积均匀抽样；每例使用 3 个距真值 200--1400 m 的测站，并加入 `[-1, 1]` deg 的字面测角误差。汇总中的“随机有界区域真值保留”逐例读取对应 `solve_case` 返回的闭凸区域，并检查真值是否位于其中；“随机输入半平面一致性”只检查同一真值是否满足原始测向楔形，是单列的输入构造诊断。生成顺序固定为观测边界、常规随机、近平行随机。JSON 保留 Python 浮点全精度，Markdown 数值显示 6 位小数；在相同代码、Python/NumPy/SciPy 环境下重复执行生成命令，应得到无 Git 差异的四份文件。报告中的 `PASS` 表示预先声明的边界不变量通过，不表示对所有测站布局或真实噪声的统计性能保证。
 
 ## 文件地图
 

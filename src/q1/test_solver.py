@@ -1,3 +1,4 @@
+import math
 import unittest
 
 from src.q1.solver import solve_case
@@ -38,11 +39,17 @@ class IntegratedSolverTests(unittest.TestCase):
         self.assertLessEqual(
             result["control"]["rounded_center_max_distance_m"], 20.0
         )
+        self.assertAlmostEqual(
+            result["control"]["clearance_margin_m"],
+            20.0 - result["control"]["rounded_center_max_distance_m"],
+            places=12,
+        )
 
     def test_empty_case_never_claims_clear_ready(self):
         result = solve_case({"observations": self.conflicting_observations})
         self.assertEqual(result["region"]["status"], "empty")
         self.assertEqual(result["control"]["status"], "NO_FEASIBLE_REGION")
+        self.assertIsNone(result["control"]["clearance_margin_m"])
         self.assertIsNone(result["problem_1"]["diameter_m"])
 
     def test_unbounded_case_has_explicit_non_success_state(self):
@@ -52,6 +59,36 @@ class IntegratedSolverTests(unittest.TestCase):
         self.assertEqual(result["region"]["status"], "unbounded")
         self.assertEqual(result["problem_1"]["diameter_m"], "infinity")
         self.assertEqual(result["control"]["status"], "UNBOUNDED_REGION")
+        self.assertIsNone(result["control"]["clearance_margin_m"])
+
+    def test_boolean_numeric_solver_fields_are_rejected_by_field_name(self):
+        cases = (
+            ({"observations": [{"station": [True, 0], "bearing_deg": 0}]},
+             "observations[0].station[0]"),
+            ({"observations": [{"station": [0, False], "bearing_deg": 0}]},
+             "observations[0].station[1]"),
+            ({"observations": [{"station": [0, 0], "bearing_deg": True}]},
+             "observations[0].bearing_deg"),
+            ({"observations": [{
+                "station": [0, 0], "bearing_deg": 0, "half_angle_deg": False,
+            }]}, "observations[0].half_angle_deg"),
+            ({"observations": [], "arena_radius_m": True}, "arena_radius_m"),
+            ({"observations": [], "clear_radius_m": False}, "clear_radius_m"),
+        )
+        for payload, field_name in cases:
+            with self.subTest(field_name=field_name):
+                escaped_field = field_name.replace("[", r"\[").replace("]", r"\]")
+                with self.assertRaisesRegex(ValueError, escaped_field):
+                    solve_case(payload)
+
+    def test_oversized_integer_is_rejected_as_a_field_specific_value_error(self):
+        with self.assertRaisesRegex(ValueError, r"observations\[0\]\.station\[0\]"):
+            solve_case({
+                "observations": [{
+                    "station": [10 ** 400, 0],
+                    "bearing_deg": 0,
+                }],
+            })
 
     def test_arena_clipping_does_not_replace_the_pure_region(self):
         result = solve_case({
@@ -95,6 +132,7 @@ class IntegratedSolverTests(unittest.TestCase):
         self.assertEqual(result["control"]["output_center"], [0.0, 0.0])
         self.assertGreater(result["control"]["rounded_center_max_distance_m"], 0.5)
         self.assertEqual(result["control"]["status"], "COVERAGE_UNCERTAIN")
+        self.assertLess(result["control"]["clearance_margin_m"], 0.0)
         self.assertEqual(
             result["control"]["reason"], "rounded_center_exceeds_clear_radius"
         )
@@ -124,6 +162,25 @@ class IntegratedSolverTests(unittest.TestCase):
         ]
         result = solve_case({"observations": observations})
         self.assertEqual(result["region"]["status"], "polygon")
+        self.assertLessEqual(
+            result["problem_1"]["minimum_enclosing_circle"]["max_residual_m"],
+            1e-9,
+        )
+
+    def test_many_observations_complete_end_to_end_without_recursion(self):
+        observation_count = 501
+        observations = []
+        for index in range(observation_count):
+            angle = 2.0 * math.pi * index / observation_count
+            observations.append({
+                "station": [1000.0 * math.cos(angle), 1000.0 * math.sin(angle)],
+                "bearing_deg": (math.degrees(angle) + 180.0) % 360.0,
+            })
+
+        result = solve_case({"observations": observations})
+
+        self.assertEqual(result["region"]["status"], "polygon")
+        self.assertGreaterEqual(len(result["region"]["vertices"]), 1000)
         self.assertLessEqual(
             result["problem_1"]["minimum_enclosing_circle"]["max_residual_m"],
             1e-9,

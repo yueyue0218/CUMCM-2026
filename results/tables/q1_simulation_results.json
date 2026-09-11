@@ -6,7 +6,7 @@
     "regular_random": 50,
     "near_parallel_random": 20,
     "random_total": 70,
-    "random_consistent_cases": 70,
+    "random_truth_cases": 70,
     "analytic_checks": 8,
     "boundary_checks": 16
   },
@@ -17,9 +17,12 @@
     "segment": 0,
     "polygon": 76
   },
-  "random_consistent_truth_retention_count": 70,
-  "random_consistent_truth_case_count": 70,
-  "random_consistent_truth_retention_rate": 1.0,
+  "random_region_truth_retention_count": 70,
+  "random_region_truth_case_count": 70,
+  "random_region_truth_retention_rate": 1.0,
+  "random_input_halfplane_consistency_count": 70,
+  "random_input_halfplane_case_count": 70,
+  "random_input_halfplane_consistency_rate": 1.0,
   "diameter_m_quantiles": {
     "minimum": 9.100892061155012,
     "q25": 26.667470153776854,
@@ -56,12 +59,14 @@
       },
       "expected": {
         "region_status": "polygon",
-        "truth_retained": true,
+        "region_truth_retained": true,
+        "input_halfplane_consistent": true,
         "crosses_zero": true
       },
       "actual": {
         "region_status": "polygon",
-        "truth_retained": true,
+        "region_truth_retained": true,
+        "input_halfplane_consistent": true,
         "crosses_zero": true
       },
       "pass": true
@@ -83,12 +88,14 @@
       },
       "expected": {
         "region_status": "polygon",
-        "truth_retained": true,
+        "region_truth_retained": true,
+        "input_halfplane_consistent": true,
         "sampled_error_deg": 1.0
       },
       "actual": {
         "region_status": "polygon",
-        "truth_retained": true,
+        "region_truth_retained": true,
+        "input_halfplane_consistent": true,
         "sampled_error_deg": 1.0
       },
       "pass": true
@@ -110,12 +117,14 @@
       },
       "expected": {
         "region_status": "polygon",
-        "truth_retained": true,
+        "region_truth_retained": true,
+        "input_halfplane_consistent": true,
         "sampled_error_deg": -1.0
       },
       "actual": {
         "region_status": "polygon",
-        "truth_retained": true,
+        "region_truth_retained": true,
+        "input_halfplane_consistent": true,
         "sampled_error_deg": -1.0
       },
       "pass": true
@@ -135,11 +144,11 @@
       },
       "expected": {
         "region_status": "unbounded",
-        "truth_retained": true
+        "input_halfplane_consistent": true
       },
       "actual": {
         "region_status": "unbounded",
-        "truth_retained": true
+        "input_halfplane_consistent": true
       },
       "pass": true
     },
@@ -178,12 +187,14 @@
       },
       "expected": {
         "region_status": "polygon",
-        "truth_retained": true,
+        "region_truth_retained": true,
+        "input_halfplane_consistent": true,
         "has_duplicate": true
       },
       "actual": {
         "region_status": "polygon",
-        "truth_retained": true,
+        "region_truth_retained": true,
+        "input_halfplane_consistent": true,
         "has_duplicate": true
       },
       "pass": true
@@ -205,11 +216,13 @@
       },
       "expected": {
         "region_status": "polygon",
-        "truth_retained": true
+        "region_truth_retained": true,
+        "input_halfplane_consistent": true
       },
       "actual": {
         "region_status": "polygon",
-        "truth_retained": true
+        "region_truth_retained": true,
+        "input_halfplane_consistent": true
       },
       "pass": true
     },
@@ -231,12 +244,14 @@
       },
       "expected": {
         "region_status": "polygon",
-        "truth_retained": true,
+        "region_truth_retained": true,
+        "input_halfplane_consistent": true,
         "source_radius_m": 1800.0
       },
       "actual": {
         "region_status": "polygon",
-        "truth_retained": true,
+        "region_truth_retained": true,
+        "input_halfplane_consistent": true,
         "source_radius_m": 1800.0
       },
       "pass": true
@@ -439,7 +454,8 @@
         "control_status": "CLEAR_READY",
         "diameter_m": 40.0,
         "required_radius_m": 20.0,
-        "rounded_center_max_distance_m": 20.0
+        "rounded_center_max_distance_m": 20.0,
+        "clearance_margin_m": 0.0
       },
       "actual": {
         "region_status": "polygon",
@@ -447,7 +463,8 @@
         "control_status": "CLEAR_READY",
         "diameter_m": 40.0,
         "required_radius_m": 20.0,
-        "rounded_center_max_distance_m": 20.0
+        "rounded_center_max_distance_m": 20.0,
+        "clearance_margin_m": 0.0
       },
       "pass": true
     },
@@ -481,7 +498,8 @@
         "control_status": "SINGLE_DISK_IMPOSSIBLE",
         "diameter_m": 40.000002,
         "required_radius_m": 20.000001,
-        "rounded_center_max_distance_m": 20.000001
+        "rounded_center_max_distance_m": 20.000001,
+        "clearance_margin_m": -1e-06
       },
       "actual": {
         "region_status": "polygon",
@@ -489,7 +507,8 @@
         "control_status": "SINGLE_DISK_IMPOSSIBLE",
         "diameter_m": 40.000002,
         "required_radius_m": 20.000001,
-        "rounded_center_max_distance_m": 20.000001
+        "rounded_center_max_distance_m": 20.000001,
+        "clearance_margin_m": -1.0000000010279564e-06
       },
       "pass": true
     },
@@ -547,7 +566,8 @@
       },
       "expected": {
         "status": "COVERAGE_UNCERTAIN",
-        "rounded_center_exceeds_radius": true
+        "rounded_center_exceeds_radius": true,
+        "clearance_margin_m": "< 0"
       },
       "actual": {
         "status": "COVERAGE_UNCERTAIN",
@@ -556,7 +576,8 @@
           0.0,
           0.0
         ],
-        "rounded_center_max_distance_m": 0.6929646455628161
+        "rounded_center_max_distance_m": 0.6929646455628161,
+        "clearance_margin_m": -0.19296464556281612
       },
       "pass": true
     }

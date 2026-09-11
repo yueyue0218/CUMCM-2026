@@ -3,7 +3,6 @@ import itertools
 import random
 import unittest
 
-from src.q1 import enclosing_circle
 from src.q1.enclosing_circle import minimum_enclosing_circle
 
 
@@ -95,6 +94,20 @@ class MinimumEnclosingCircleTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             minimum_enclosing_circle([(0, 0), (math.inf, 1)])
 
+    def test_more_than_one_thousand_distinct_points_avoid_recursion_limit(self):
+        points = [
+            (math.cos(2.0 * math.pi * index / 1200),
+             math.sin(2.0 * math.pi * index / 1200))
+            for index in range(1200)
+        ]
+
+        circle = minimum_enclosing_circle(points)
+
+        self.assertAlmostEqual(circle.center[0], 0.0, places=12)
+        self.assertAlmostEqual(circle.center[1], 0.0, places=12)
+        self.assertAlmostEqual(circle.radius, 1.0, places=12)
+        self.assertLessEqual(circle.max_residual, 1e-10)
+
     def test_six_point_forced_boundary_regression(self):
         points = [
             (17, -11), (-3, -20), (-10, 8),
@@ -121,18 +134,6 @@ class MinimumEnclosingCircleTests(unittest.TestCase):
                     places=9,
                 )
                 self.assertLessEqual(circle.max_residual, 1e-9)
-
-    def test_collinear_forced_boundary_fallback_keeps_prefix_points(self):
-        circle = enclosing_circle._collinear_boundary_fallback(
-            prefix=[(0.0, 10.0)],
-            boundary=((-2.0, 0.0), (0.0, 0.0), (2.0, 0.0)),
-        )
-        self.assertAlmostEqual(circle.center[0], 0.0, places=12)
-        self.assertAlmostEqual(circle.center[1], 4.8, places=12)
-        self.assertAlmostEqual(circle.radius, 5.2, places=12)
-        for point in [(0.0, 10.0), (-2.0, 0.0), (0.0, 0.0), (2.0, 0.0)]:
-            self.assertLessEqual(math.dist(circle.center, point), circle.radius)
-
 
 if __name__ == "__main__":
     unittest.main()

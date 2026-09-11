@@ -266,7 +266,9 @@ def generate_cases(
     return cases
 
 
-def _truth_retained(case: Mapping[str, object]) -> bool:
+def _input_halfplanes_consistent(case: Mapping[str, object]) -> bool:
+    """Return whether the declared truth satisfies the raw input wedges."""
+
     source = case["true_source"]
     observations = case["observations"]
     planes = []
@@ -279,6 +281,54 @@ def _truth_retained(case: Mapping[str, object]) -> bool:
         planes.extend(bearing_halfplanes(observation))
     return point_satisfies(
         (float(source[0]), float(source[1])), planes, tolerance=1e-8
+    )
+
+
+def _region_truth_retained(
+    case: Mapping[str, object],
+    result: Mapping[str, object],
+    tolerance: float = 1e-8,
+) -> bool:
+    """Return whether the truth lies in the solver's returned bounded region."""
+
+    source = case["true_source"]
+    point = (float(source[0]), float(source[1]))
+    region = result["region"]
+    status = region["status"]
+    vertices = [
+        (float(vertex[0]), float(vertex[1]))
+        for vertex in region["vertices"]
+    ]
+    if status == "point" and len(vertices) == 1:
+        return math.dist(point, vertices[0]) <= tolerance
+    if status == "segment" and len(vertices) == 2:
+        first, second = vertices
+        dx = second[0] - first[0]
+        dy = second[1] - first[1]
+        squared_length = dx * dx + dy * dy
+        if squared_length == 0.0:
+            return math.dist(point, first) <= tolerance
+        projection = (
+            (point[0] - first[0]) * dx + (point[1] - first[1]) * dy
+        ) / squared_length
+        projection = min(1.0, max(0.0, projection))
+        closest = (first[0] + projection * dx, first[1] + projection * dy)
+        return math.dist(point, closest) <= tolerance
+    if status != "polygon" or len(vertices) < 3:
+        return False
+
+    signed_distances = []
+    for first, second in zip(vertices, vertices[1:] + vertices[:1]):
+        dx = second[0] - first[0]
+        dy = second[1] - first[1]
+        edge_length = math.hypot(dx, dy)
+        if edge_length == 0.0:
+            continue
+        cross = dx * (point[1] - first[1]) - dy * (point[0] - first[0])
+        signed_distances.append(cross / edge_length)
+    return bool(signed_distances) and (
+        all(distance >= -tolerance for distance in signed_distances)
+        or all(distance <= tolerance for distance in signed_distances)
     )
 
 
@@ -343,31 +393,58 @@ def _observation_boundary_check(
             if "sampled_error_deg" in observation
         ],
     }
+    input_consistent = (
+        _input_halfplanes_consistent(case) if "true_source" in case else None
+    )
+    region_retained = (
+        _region_truth_retained(case, result) if "true_source" in case else None
+    )
     if case_id == "cross_zero":
-        expected = {"region_status": "polygon", "truth_retained": True, "crosses_zero": True}
+        expected = {
+            "region_status": "polygon",
+            "region_truth_retained": True,
+            "input_halfplane_consistent": True,
+            "crosses_zero": True,
+        }
         bearings = [float(item["bearing_deg"]) for item in case["observations"]]
         actual = {
             "region_status": status,
-            "truth_retained": _truth_retained(case),
+            "region_truth_retained": region_retained,
+            "input_halfplane_consistent": input_consistent,
             "crosses_zero": any(bearing > 359.0 for bearing in bearings),
         }
     elif case_id == "error_at_positive_bound":
-        expected = {"region_status": "polygon", "truth_retained": True, "sampled_error_deg": 1.0}
+        expected = {
+            "region_status": "polygon",
+            "region_truth_retained": True,
+            "input_halfplane_consistent": True,
+            "sampled_error_deg": 1.0,
+        }
         actual = {
             "region_status": status,
-            "truth_retained": _truth_retained(case),
+            "region_truth_retained": region_retained,
+            "input_halfplane_consistent": input_consistent,
             "sampled_error_deg": case["observations"][0]["sampled_error_deg"],
         }
     elif case_id == "error_at_negative_bound":
-        expected = {"region_status": "polygon", "truth_retained": True, "sampled_error_deg": -1.0}
+        expected = {
+            "region_status": "polygon",
+            "region_truth_retained": True,
+            "input_halfplane_consistent": True,
+            "sampled_error_deg": -1.0,
+        }
         actual = {
             "region_status": status,
-            "truth_retained": _truth_retained(case),
+            "region_truth_retained": region_retained,
+            "input_halfplane_consistent": input_consistent,
             "sampled_error_deg": case["observations"][0]["sampled_error_deg"],
         }
     elif case_id == "unbounded_single_observation":
-        expected = {"region_status": "unbounded", "truth_retained": True}
-        actual = {"region_status": status, "truth_retained": _truth_retained(case)}
+        expected = {"region_status": "unbounded", "input_halfplane_consistent": True}
+        actual = {
+            "region_status": status,
+            "input_halfplane_consistent": input_consistent,
+        }
     elif case_id == "empty_conflicting_observations":
         expected = {"region_status": "empty"}
         actual = {"region_status": status}
@@ -381,21 +458,41 @@ def _observation_boundary_check(
             )
             for item in observations
         ]
-        expected = {"region_status": "polygon", "truth_retained": True, "has_duplicate": True}
+        expected = {
+            "region_status": "polygon",
+            "region_truth_retained": True,
+            "input_halfplane_consistent": True,
+            "has_duplicate": True,
+        }
         actual = {
             "region_status": status,
-            "truth_retained": _truth_retained(case),
+            "region_truth_retained": region_retained,
+            "input_halfplane_consistent": input_consistent,
             "has_duplicate": len(keys) != len(set(keys)),
         }
     elif case_id == "near_parallel_intersection":
-        expected = {"region_status": "polygon", "truth_retained": True}
-        actual = {"region_status": status, "truth_retained": _truth_retained(case)}
-    elif case_id == "source_on_arena_boundary":
-        source = case["true_source"]
-        expected = {"region_status": "polygon", "truth_retained": True, "source_radius_m": 1800.0}
+        expected = {
+            "region_status": "polygon",
+            "region_truth_retained": True,
+            "input_halfplane_consistent": True,
+        }
         actual = {
             "region_status": status,
-            "truth_retained": _truth_retained(case),
+            "region_truth_retained": region_retained,
+            "input_halfplane_consistent": input_consistent,
+        }
+    elif case_id == "source_on_arena_boundary":
+        source = case["true_source"]
+        expected = {
+            "region_status": "polygon",
+            "region_truth_retained": True,
+            "input_halfplane_consistent": True,
+            "source_radius_m": 1800.0,
+        }
+        actual = {
+            "region_status": status,
+            "region_truth_retained": region_retained,
+            "input_halfplane_consistent": input_consistent,
             "source_radius_m": math.hypot(float(source[0]), float(source[1])),
         }
     else:
@@ -523,6 +620,7 @@ def _analytic_boundary_checks() -> list[dict[str, object]]:
                 "diameter_m": 40.0,
                 "required_radius_m": 20.0,
                 "rounded_center_max_distance_m": 20.0,
+                "clearance_margin_m": 0.0,
             },
             {
                 "region_status": exact_clearance["region"]["status"],
@@ -537,6 +635,9 @@ def _analytic_boundary_checks() -> list[dict[str, object]]:
                 "rounded_center_max_distance_m": exact_clearance["control"][
                     "rounded_center_max_distance_m"
                 ],
+                "clearance_margin_m": exact_clearance["control"][
+                    "clearance_margin_m"
+                ],
             },
         ),
         _check(
@@ -550,6 +651,7 @@ def _analytic_boundary_checks() -> list[dict[str, object]]:
                 "diameter_m": 40.000002,
                 "required_radius_m": 20.000001,
                 "rounded_center_max_distance_m": 20.000001,
+                "clearance_margin_m": -0.000001,
             },
             {
                 "region_status": above_clearance["region"]["status"],
@@ -563,6 +665,9 @@ def _analytic_boundary_checks() -> list[dict[str, object]]:
                 ]["radius_m"],
                 "rounded_center_max_distance_m": above_clearance["control"][
                     "rounded_center_max_distance_m"
+                ],
+                "clearance_margin_m": above_clearance["control"][
+                    "clearance_margin_m"
                 ],
             },
             above_clearance["region"]["status"] == "polygon"
@@ -584,6 +689,11 @@ def _analytic_boundary_checks() -> list[dict[str, object]]:
             and math.isclose(
                 above_clearance["control"]["rounded_center_max_distance_m"],
                 20.000001,
+                abs_tol=1e-10,
+            )
+            and math.isclose(
+                above_clearance["control"]["clearance_margin_m"],
+                -0.000001,
                 abs_tol=1e-10,
             ),
         ),
@@ -607,15 +717,21 @@ def _analytic_boundary_checks() -> list[dict[str, object]]:
             "rounded_center_counterexample",
             "analytic",
             rounded_payload,
-            {"status": "COVERAGE_UNCERTAIN", "rounded_center_exceeds_radius": True},
+            {
+                "status": "COVERAGE_UNCERTAIN",
+                "rounded_center_exceeds_radius": True,
+                "clearance_margin_m": "< 0",
+            },
             {
                 "status": rounded["control"]["status"],
                 "rounded_center_exceeds_radius": rounded["control"]["rounded_center_max_distance_m"] > 0.5,
                 "output_center": rounded["control"]["output_center"],
                 "rounded_center_max_distance_m": rounded["control"]["rounded_center_max_distance_m"],
+                "clearance_margin_m": rounded["control"]["clearance_margin_m"],
             },
             rounded["control"]["status"] == "COVERAGE_UNCERTAIN"
-            and rounded["control"]["rounded_center_max_distance_m"] > 0.5,
+            and rounded["control"]["rounded_center_max_distance_m"] > 0.5
+            and rounded["control"]["clearance_margin_m"] < 0.0,
         ),
     ]
 
@@ -632,13 +748,20 @@ def run_simulation(cases: Sequence[Mapping[str, object]]) -> dict[str, object]:
         for status in ("empty", "unbounded", "point", "segment", "polygon")
     }
 
-    random_consistent = [
-        case
-        for case, _ in solved
+    random_truth_cases = [
+        (case, result)
+        for case, result in solved
         if case.get("case_kind") in {"regular_random", "near_parallel_random"}
         and case.get("expected_truth_retained") is True
     ]
-    retained_count = sum(_truth_retained(case) for case in random_consistent)
+    region_retained_count = sum(
+        _region_truth_retained(case, result)
+        for case, result in random_truth_cases
+    )
+    input_consistent_count = sum(
+        _input_halfplanes_consistent(case)
+        for case, _ in random_truth_cases
+    )
     diameters: list[float] = []
     radii: list[float] = []
     discrepancies: list[float] = []
@@ -673,15 +796,22 @@ def run_simulation(cases: Sequence[Mapping[str, object]]) -> dict[str, object]:
             "regular_random": kind_counts["regular_random"],
             "near_parallel_random": kind_counts["near_parallel_random"],
             "random_total": random_cases,
-            "random_consistent_cases": len(random_consistent),
+            "random_truth_cases": len(random_truth_cases),
             "analytic_checks": len(ANALYTIC_BOUNDARY_IDS),
             "boundary_checks": len(boundary_checks),
         },
         "region_status_distribution": status_distribution,
-        "random_consistent_truth_retention_count": retained_count,
-        "random_consistent_truth_case_count": len(random_consistent),
-        "random_consistent_truth_retention_rate": (
-            retained_count / len(random_consistent) if random_consistent else 1.0
+        "random_region_truth_retention_count": region_retained_count,
+        "random_region_truth_case_count": len(random_truth_cases),
+        "random_region_truth_retention_rate": (
+            region_retained_count / len(random_truth_cases)
+            if random_truth_cases else 1.0
+        ),
+        "random_input_halfplane_consistency_count": input_consistent_count,
+        "random_input_halfplane_case_count": len(random_truth_cases),
+        "random_input_halfplane_consistency_rate": (
+            input_consistent_count / len(random_truth_cases)
+            if random_truth_cases else 1.0
         ),
         "diameter_m_quantiles": _quantiles(diameters),
         "minimum_radius_m_quantiles": _quantiles(radii),
@@ -728,7 +858,8 @@ def _parameters_markdown(summary: Mapping[str, object]) -> str:
         "## 单位与数值容差",
         "",
         "- 坐标、直径和半径单位：m；面积单位：m²；角度单位：deg。",
-        "- 真值半平面包含容差：1.000000e-8 m（不等式残差尺度）。",
+        "- 返回有界区域真值保留：逐例使用对应 `solve_case` 的闭凸多边形（含边界）判断，点/线段退化区域按 1.000000e-8 m 距离容差判断。",
+        "- 输入半平面一致性：另以 1.000000e-8 m 不等式残差容差检查真值是否满足原始测向楔形，不替代返回区域真值保留指标。",
         "- 正式求解器直径交叉校验相对容差：1.000000e-10；Welzl 最终覆盖复核相对容差：1.000000e-10。",
         "- Markdown 浮点数统一显示 6 位小数；JSON 保留 Python 浮点全精度。",
         "",
@@ -753,7 +884,8 @@ def _results_markdown(summary: Mapping[str, object]) -> str:
         "## 汇总统计",
         "",
         f"- 观测案例数：{summary['counts']['total_observation_cases']}。",
-        f"- 随机一致案例真值保留：{summary['random_consistent_truth_retention_count']}/{summary['random_consistent_truth_case_count']}，比例 {_markdown_value(summary['random_consistent_truth_retention_rate'])}。",
+        f"- 随机有界区域真值保留：{summary['random_region_truth_retention_count']}/{summary['random_region_truth_case_count']}，比例 {_markdown_value(summary['random_region_truth_retention_rate'])}。",
+        f"- 随机输入半平面一致性：{summary['random_input_halfplane_consistency_count']}/{summary['random_input_halfplane_case_count']}，比例 {_markdown_value(summary['random_input_halfplane_consistency_rate'])}。",
         f"- 区域状态分布：{_markdown_value(summary['region_status_distribution'])}。",
         f"- 直径分位数（m）：{_markdown_value(summary['diameter_m_quantiles'])}。",
         f"- 最小包围圆半径分位数（m）：{_markdown_value(summary['minimum_radius_m_quantiles'])}。",
@@ -811,7 +943,8 @@ def main() -> int:
     write_outputs(root, cases, summary)
     if (
         summary["boundary_fail_count"]
-        or summary["random_consistent_truth_retention_rate"] != 1.0
+        or summary["random_region_truth_retention_rate"] != 1.0
+        or summary["random_input_halfplane_consistency_rate"] != 1.0
     ):
         return 1
     return 0

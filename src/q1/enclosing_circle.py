@@ -94,19 +94,6 @@ def _forced_boundary_circle(boundary: tuple[Point, ...]) -> Circle:
     return _smallest_covering_circle(boundary)
 
 
-def _collinear_boundary_fallback(
-    prefix: Iterable[Point], boundary: tuple[Point, Point, Point]
-) -> Circle:
-    """Solve all active points when a numerical 3-boundary is collinear.
-
-    Three exactly collinear points cannot all be forced boundary points of a
-    finite circle. Rather than discard the still-unprocessed prefix, solve the
-    exceptional active set exhaustively and deterministically.
-    """
-
-    return _smallest_covering_circle((*prefix, *boundary))
-
-
 def minimum_enclosing_circle(
     points: Iterable[Point], seed: int = 20260911
 ) -> Circle:
@@ -123,24 +110,22 @@ def minimum_enclosing_circle(
     shuffled = sorted(set(original))
     random.Random(seed).shuffle(shuffled)
 
-    def welzl(prefix_count: int, boundary: tuple[Point, ...]) -> Circle:
-        if prefix_count == 0:
-            return _forced_boundary_circle(boundary)
-        if len(boundary) == 3:
-            circle = _three_point_circle(*boundary)
-            if circle is not None:
-                return circle
-            return _collinear_boundary_fallback(
-                shuffled[:prefix_count], boundary
-            )
+    circle = _forced_boundary_circle(())
+    for first_index, first in enumerate(shuffled):
+        if _contains(circle, first):
+            continue
+        circle = _forced_boundary_circle((first,))
+        for second_index in range(first_index):
+            second = shuffled[second_index]
+            if _contains(circle, second):
+                continue
+            circle = _forced_boundary_circle((first, second))
+            for third_index in range(second_index):
+                third = shuffled[third_index]
+                if _contains(circle, third):
+                    continue
+                circle = _forced_boundary_circle((first, second, third))
 
-        point = shuffled[prefix_count - 1]
-        circle = welzl(prefix_count - 1, boundary)
-        if _contains(circle, point):
-            return circle
-        return welzl(prefix_count - 1, boundary + (point,))
-
-    circle = welzl(len(shuffled), ())
     residuals = [math.dist(circle.center, point) - circle.radius
                  for point in original]
     max_residual = max(residuals, default=0.0)

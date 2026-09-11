@@ -1,9 +1,16 @@
+import copy
 import json
 import tempfile
 import unittest
 from pathlib import Path
 
-from src.q1.simulate_cases import generate_cases, run_simulation, write_outputs
+from src.q1.simulate_cases import (
+    _region_truth_retained,
+    generate_cases,
+    run_simulation,
+    write_outputs,
+)
+from src.q1.solver import solve_case
 
 
 OBSERVATION_BOUNDARY_IDS = {
@@ -43,9 +50,34 @@ class SimulationTests(unittest.TestCase):
     def test_every_consistent_random_case_retains_truth(self):
         cases = generate_cases(seed=20260911, regular_count=10, near_parallel_count=5)
         summary = run_simulation(cases)
-        self.assertEqual(summary["random_consistent_truth_retention_rate"], 1.0)
+        self.assertEqual(summary["random_region_truth_retention_rate"], 1.0)
+        self.assertEqual(summary["random_input_halfplane_consistency_rate"], 1.0)
+        self.assertNotIn("random_consistent_truth_retention_rate", summary)
         self.assertNotIn("consistent_truth_retention_rate", summary)
         self.assertEqual(summary["diameter_crosscheck_max_abs_error_m"], 0.0)
+
+    def test_region_truth_retention_fails_for_perturbed_solver_region(self):
+        case = generate_cases(seed=20260911, regular_count=1, near_parallel_count=0)[-1]
+        result = solve_case(case)
+        self.assertTrue(_region_truth_retained(case, result))
+
+        perturbed = copy.deepcopy(result)
+        perturbed["region"]["vertices"] = [
+            [vertex[0] + 10000.0, vertex[1] + 10000.0]
+            for vertex in perturbed["region"]["vertices"]
+        ]
+        self.assertFalse(_region_truth_retained(case, perturbed))
+
+    def test_region_truth_retention_handles_closed_point_and_segment(self):
+        point_case = {"true_source": [1.0, 2.0]}
+        point_result = {"region": {"status": "point", "vertices": [[1.0, 2.0]]}}
+        segment_case = {"true_source": [1.0, 0.0]}
+        segment_result = {
+            "region": {"status": "segment", "vertices": [[0.0, 0.0], [1.0, 0.0]]}
+        }
+
+        self.assertTrue(_region_truth_retained(point_case, point_result))
+        self.assertTrue(_region_truth_retained(segment_case, segment_result))
 
     def test_generation_contains_every_observation_boundary_and_requested_counts(self):
         cases = generate_cases(seed=20260911, regular_count=4, near_parallel_count=2)
@@ -66,9 +98,12 @@ class SimulationTests(unittest.TestCase):
         self.assertTrue(all(check["pass"] for check in checks.values()))
         self.assertEqual(summary["counts"]["regular_random"], 4)
         self.assertEqual(summary["counts"]["near_parallel_random"], 2)
-        self.assertEqual(summary["random_consistent_truth_case_count"], 6)
-        self.assertEqual(summary["random_consistent_truth_retention_count"], 6)
-        self.assertEqual(summary["counts"]["random_consistent_cases"], 6)
+        self.assertEqual(summary["random_region_truth_case_count"], 6)
+        self.assertEqual(summary["random_region_truth_retention_count"], 6)
+        self.assertEqual(summary["random_input_halfplane_case_count"], 6)
+        self.assertEqual(summary["random_input_halfplane_consistency_count"], 6)
+        self.assertEqual(summary["counts"]["random_truth_cases"], 6)
+        self.assertNotIn("random_consistent_cases", summary["counts"])
         self.assertNotIn("consistent_cases", summary["counts"])
         self.assertEqual(
             sum(summary["region_status_distribution"].values()), len(cases)
@@ -111,6 +146,9 @@ class SimulationTests(unittest.TestCase):
         self.assertAlmostEqual(
             exact["actual"]["rounded_center_max_distance_m"], 20.0, places=10
         )
+        self.assertAlmostEqual(
+            exact["actual"]["clearance_margin_m"], 0.0, places=10
+        )
 
         above = checks["clear_radius_above_20"]
         self.assertIn("observations", above["parameters"])
@@ -124,6 +162,9 @@ class SimulationTests(unittest.TestCase):
         )
         self.assertAlmostEqual(
             above["actual"]["required_radius_m"], 20.000001, places=10
+        )
+        self.assertAlmostEqual(
+            above["actual"]["clearance_margin_m"], -0.000001, places=10
         )
 
     def test_write_outputs_creates_parseable_json_and_complete_markdown(self):
@@ -161,7 +202,8 @@ class SimulationTests(unittest.TestCase):
             self.assertIn("通过", first_section)
             self.assertIn("失败", first_section)
             self.assertIn("1.000000", results_markdown)
-            self.assertIn("随机一致案例真值保留", results_markdown)
+            self.assertIn("随机有界区域真值保留", results_markdown)
+            self.assertIn("随机输入半平面一致性", results_markdown)
             self.assertNotIn("- 一致案例真值保留", results_markdown)
 
 
