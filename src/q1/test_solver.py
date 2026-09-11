@@ -99,6 +99,36 @@ class IntegratedSolverTests(unittest.TestCase):
             result["control"]["reason"], "rounded_center_exceeds_clear_radius"
         )
 
+    def test_solver_survives_observation_polygon_with_obtuse_welzl_boundary(self):
+        observations = [
+            {
+                "station": [-1120.0803785748826, -69.94355919170671],
+                "bearing_deg": 3.2920049514572436,
+            },
+            {
+                "station": [1116.5584179542661, 796.7031177618093],
+                "bearing_deg": 214.80819535429012,
+            },
+            {
+                "station": [-198.75821632131968, -28.335831098290488],
+                "bearing_deg": 8.393848848275573,
+            },
+            {
+                "station": [189.37550499544096, -378.9266495508098],
+                "bearing_deg": 116.24359542714485,
+            },
+            {
+                "station": [44.28028899381225, -739.7086375349706],
+                "bearing_deg": 92.79516427692383,
+            },
+        ]
+        result = solve_case({"observations": observations})
+        self.assertEqual(result["region"]["status"], "polygon")
+        self.assertLessEqual(
+            result["problem_1"]["minimum_enclosing_circle"]["max_residual_m"],
+            1e-9,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

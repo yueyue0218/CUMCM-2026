@@ -57,27 +57,54 @@ def _three_point_circle(
     return Circle(center, math.dist(center, first), 0.0)
 
 
-def _smallest_boundary_circle(boundary: tuple[Point, ...]) -> Circle:
-    if not boundary:
+def _smallest_covering_circle(points: Iterable[Point]) -> Circle:
+    points = tuple(points)
+    if not points:
         return Circle((0.0, 0.0), 0.0, 0.0)
 
-    candidates = [_one_point_circle(point) for point in boundary]
+    candidates = [_one_point_circle(point) for point in points]
     candidates.extend(
         _two_point_circle(first, second)
-        for first, second in itertools.combinations(boundary, 2)
+        for first, second in itertools.combinations(points, 2)
     )
-    for points in itertools.combinations(boundary, 3):
-        candidate = _three_point_circle(*points)
+    for triple in itertools.combinations(points, 3):
+        candidate = _three_point_circle(*triple)
         if candidate is not None:
             candidates.append(candidate)
 
     covering = [
         circle for circle in candidates
-        if all(_contains(circle, point) for point in boundary)
+        if all(_contains(circle, point) for point in points)
     ]
     if not covering:
         raise RuntimeError("could not construct a circle for boundary points")
     return min(covering, key=lambda circle: (circle.radius, circle.center))
+
+
+def _forced_boundary_circle(boundary: tuple[Point, ...]) -> Circle:
+    if not boundary:
+        return Circle((0.0, 0.0), 0.0, 0.0)
+    if len(boundary) == 1:
+        return _one_point_circle(boundary[0])
+    if len(boundary) == 2:
+        return _two_point_circle(*boundary)
+    circle = _three_point_circle(*boundary)
+    if circle is not None:
+        return circle
+    return _smallest_covering_circle(boundary)
+
+
+def _collinear_boundary_fallback(
+    prefix: Iterable[Point], boundary: tuple[Point, Point, Point]
+) -> Circle:
+    """Solve all active points when a numerical 3-boundary is collinear.
+
+    Three exactly collinear points cannot all be forced boundary points of a
+    finite circle. Rather than discard the still-unprocessed prefix, solve the
+    exceptional active set exhaustively and deterministically.
+    """
+
+    return _smallest_covering_circle((*prefix, *boundary))
 
 
 def minimum_enclosing_circle(
@@ -97,8 +124,15 @@ def minimum_enclosing_circle(
     random.Random(seed).shuffle(shuffled)
 
     def welzl(prefix_count: int, boundary: tuple[Point, ...]) -> Circle:
-        if prefix_count == 0 or len(boundary) == 3:
-            return _smallest_boundary_circle(boundary)
+        if prefix_count == 0:
+            return _forced_boundary_circle(boundary)
+        if len(boundary) == 3:
+            circle = _three_point_circle(*boundary)
+            if circle is not None:
+                return circle
+            return _collinear_boundary_fallback(
+                shuffled[:prefix_count], boundary
+            )
 
         point = shuffled[prefix_count - 1]
         circle = welzl(prefix_count - 1, boundary)
