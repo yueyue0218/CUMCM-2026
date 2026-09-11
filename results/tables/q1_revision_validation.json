@@ -1,0 +1,319 @@
+{
+  "full_disk": {
+    "area_error_m2": 0.0,
+    "centroid_error_m": 2.6958767089841215e-13
+  },
+  "half_disk": {
+    "area_error_m2": 0.0,
+    "centroid_error_m": 2.665833957910461e-13
+  },
+  "near_half_disk": {
+    "area_error_m2": 7.105427357601002e-15,
+    "centroid_error_m": 7.137684862622321e-16
+  },
+  "sector": {
+    "inscribed_area_gap_m2": 1.1466181604191661e-07,
+    "centroid_error_m": 1.213493305933284e-09,
+    "radius_m": 900.137095239517
+  },
+  "symmetric_0.8": {
+    "diameter_m": 27.93252919658778,
+    "difference_m": 3.836930773104541e-13
+  },
+  "symmetric_1": {
+    "diameter_m": 34.920769491747876,
+    "difference_m": 4.973799150320701e-14
+  },
+  "symmetric_1.005": {
+    "diameter_m": 35.09551631971823,
+    "difference_m": 1.8474111129762605e-13
+  },
+  "symmetric_1.2": {
+    "diameter_m": 41.91241804078879,
+    "difference_m": 3.623767952376511e-13
+  },
+  "triangle_acute": {
+    "diameter_circle_covers": false
+  },
+  "triangle_right": {
+    "diameter_circle_covers": true
+  },
+  "triangle_obtuse": {
+    "diameter_circle_covers": true
+  },
+  "jung_examples": [
+    {
+      "case": "equilateral_jung_boundary",
+      "diameter_m": 34.64101615137755,
+      "radius_m": 20.0,
+      "jung_screen": "exists",
+      "can_cover_with_20m": true,
+      "diameter_circle_covers": false,
+      "radius_squared_check_error": 5.684341886080802e-14
+    },
+    {
+      "case": "square_d36",
+      "diameter_m": 36.0,
+      "radius_m": 18.0,
+      "jung_screen": "undetermined",
+      "can_cover_with_20m": true,
+      "diameter_circle_covers": true,
+      "radius_squared_check_error": 0.0
+    },
+    {
+      "case": "equilateral_d36",
+      "diameter_m": 36.0,
+      "radius_m": 20.784609690826528,
+      "jung_screen": "undetermined",
+      "can_cover_with_20m": false,
+      "diameter_circle_covers": false,
+      "radius_squared_check_error": 0.0
+    },
+    {
+      "case": "square_d40",
+      "diameter_m": 40.0,
+      "radius_m": 20.0,
+      "jung_screen": "undetermined",
+      "can_cover_with_20m": true,
+      "diameter_circle_covers": true,
+      "radius_squared_check_error": 5.684341886080802e-14
+    },
+    {
+      "case": "equilateral_d40",
+      "diameter_m": 40.0,
+      "radius_m": 23.094010767585033,
+      "jung_screen": "undetermined",
+      "can_cover_with_20m": false,
+      "diameter_circle_covers": false,
+      "radius_squared_check_error": 1.1368683772161603e-13
+    }
+  ],
+  "jung_squared_thresholds": [
+    {
+      "diameter_squared_m2": "1199.99999999",
+      "screen": "exists"
+    },
+    {
+      "diameter_squared_m2": "1200",
+      "screen": "exists"
+    },
+    {
+      "diameter_squared_m2": "1200.00000001",
+      "screen": "undetermined"
+    },
+    {
+      "diameter_squared_m2": "1599.99999999",
+      "screen": "undetermined"
+    },
+    {
+      "diameter_squared_m2": "1600",
+      "screen": "undetermined"
+    },
+    {
+      "diameter_squared_m2": "1600.00000001",
+      "screen": "impossible_for_entire_region"
+    }
+  ],
+  "oriented_arc_examples": [
+    {
+      "case": "atan2_seam",
+      "sweep_deg": 2,
+      "has_antipodal_pair": false,
+      "green_vs_polygon_error_m2": 2.1432855490388647e-13
+    },
+    {
+      "case": "zero_seam",
+      "sweep_deg": 2,
+      "has_antipodal_pair": false,
+      "green_vs_polygon_error_m2": 2.1671553440683056e-13
+    },
+    {
+      "case": "major_arc",
+      "sweep_deg": 358,
+      "has_antipodal_pair": true,
+      "green_vs_polygon_error_m2": 1.270515539886219e-06
+    },
+    {
+      "case": "zero_arc",
+      "sweep_deg": 0,
+      "has_antipodal_pair": false,
+      "green_vs_polygon_error_m2": 0.0
+    },
+    {
+      "case": "full_circle",
+      "sweep_deg": 360,
+      "has_antipodal_pair": true,
+      "green_vs_polygon_error_m2": 1.2919282283974098e-06
+    },
+    {
+      "case": "semicircle",
+      "sweep_deg": 180,
+      "has_antipodal_pair": true,
+      "green_vs_polygon_error_m2": 1.6149105164231514e-07
+    },
+    {
+      "case": "over_semicircle",
+      "sweep_deg": 181,
+      "has_antipodal_pair": true,
+      "green_vs_polygon_error_m2": 1.6419761550423573e-07
+    },
+    {
+      "case": "under_semicircle",
+      "sweep_deg": 179,
+      "has_antipodal_pair": false,
+      "green_vs_polygon_error_m2": 1.5881457215982664e-07
+    }
+  ],
+  "separate_arc_antipodes": {
+    "arcs_deg": [
+      [
+        10,
+        20
+      ],
+      [
+        190,
+        200
+      ]
+    ],
+    "witness_deg": [
+      15,
+      195
+    ],
+    "diameter_m": 3600
+  },
+  "rounded_center_counterexample": {
+    "optimal_center_m": 0.004,
+    "optimal_radius_m": 20.0,
+    "output_center_m": 0.0,
+    "output_radius_m": 20.004,
+    "conclusion": "exists_but_output_not_clear_ready"
+  },
+  "predictive_area_examples": {
+    "prior_area_m2": 10178760.197630929,
+    "predicted_area_m2": {
+      "direction": 39269.90816987241,
+      "near": 78.53981633974483,
+      "no_signal": 10178760.197630929
+    },
+    "reduction_m2": {
+      "direction": 10139490.289461056,
+      "near": 10178681.657814588,
+      "no_signal": 0.0
+    },
+    "direction_polygon_error_m2": 2.0016159396618605e-08,
+    "scope": "convex_envelope_only_no_probability_model"
+  },
+  "nonconvex_exclusion_example": {
+    "envelope_radius_m": 10,
+    "excluded_radius_m": 5,
+    "feasible_points": [
+      [
+        -6,
+        0
+      ],
+      [
+        6,
+        0
+      ]
+    ],
+    "midpoint_excluded": true
+  },
+  "calipers_vs_exhaustive": {
+    "random_seed": 20260911,
+    "grid_subsets": 512,
+    "random_point_sets": 200,
+    "special_point_sets": 2,
+    "nondegenerate_polygons": 660,
+    "cyclic_start_runs": 3489,
+    "equal_area_events": 3168,
+    "max_pointer_advances": 21,
+    "exact_squared_distance_discrepancy": 0,
+    "scope": "integer_polygon_diameter_only_not_full_localization_solver"
+  },
+  "output_grid_neighbor": {
+    "endpoints_m": [
+      [
+        14.1449,
+        14.1449
+      ],
+      [
+        -14.1351,
+        -14.1351
+      ]
+    ],
+    "grid_step_m": 0.01,
+    "continuous_center_m": [
+      0.0049,
+      0.0049
+    ],
+    "rounded_center_m": [
+      0,
+      0
+    ],
+    "rounded_radius_m": 20.003909418411194,
+    "feasible_neighbor_m": [
+      0.01,
+      0
+    ],
+    "neighbor_radius_m": 19.997122443491715,
+    "scope": "certified_feasible_candidate_not_claimed_grid_optimum"
+  },
+  "grid_boundary_impossible": {
+    "unique_center_m": 0.004,
+    "grid_step_m": 0.01,
+    "proof": "length_40_segment_requires_unique_midpoint_which_is_not_on_grid"
+  },
+  "excluded_center_is_valid_action": {
+    "source_region": "5 < norm(G) <= 10",
+    "action_center_m": [
+      0,
+      0
+    ],
+    "certified_cover_radius_m": 10,
+    "center_excluded_as_source": true,
+    "action_valid": true
+  },
+  "eight_neighbors_not_global": {
+    "endpoints_m": [
+      [
+        -7.4234,
+        -18.5681
+      ],
+      [
+        7.4314,
+        18.5689
+      ]
+    ],
+    "grid_step_m": 0.01,
+    "continuous_center_m": [
+      0.004,
+      0.0004
+    ],
+    "local_points_checked": 9,
+    "all_local_points_infeasible": true,
+    "best_local_radius_m": 20.000743815418467,
+    "outside_point_m": [
+      -0.02,
+      0.01
+    ],
+    "outside_radius_m": 19.99890324917844,
+    "conclusion": "local_failure_does_not_certify_global_infeasibility"
+  },
+  "fixed_center_arc_distance": [
+    {
+      "case": "radial_inside",
+      "analytic_distance_m": 15,
+      "sampled_check_error_m": 0.0
+    },
+    {
+      "case": "radial_outside",
+      "analytic_distance_m": 11.180339887498949,
+      "sampled_check_error_m": 0.0
+    },
+    {
+      "case": "concentric",
+      "analytic_distance_m": 5,
+      "sampled_check_error_m": 8.881784197001252e-16
+    }
+  ]
+}
