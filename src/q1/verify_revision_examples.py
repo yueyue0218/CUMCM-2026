@@ -330,6 +330,34 @@ checks['calipers_vs_exhaustive'] = dict(
     max_pointer_advances=max_advances, exact_squared_distance_discrepancy=0,
     scope='integer_polygon_diameter_only_not_full_localization_solver')
 
+# A neighboring output grid point can work even when coordinate-wise rounding fails.
+# All squared distances are exact rationals; the region is the endpoint segment.
+grid_endpoints = [(Fraction('14.1449'), Fraction('14.1449')),
+                  (Fraction('-14.1351'), Fraction('-14.1351'))]
+def segment_radius_squared(center):
+    return max(sum((p[k]-center[k])**2 for k in range(2)) for p in grid_endpoints)
+rounded_center = (Fraction(0), Fraction(0))
+neighbor = (Fraction('0.01'), Fraction(0))
+assert segment_radius_squared(rounded_center) > 400
+assert segment_radius_squared(neighbor) < 400
+checks['output_grid_neighbor'] = dict(
+    endpoints_m=[[float(x) for x in p] for p in grid_endpoints],
+    grid_step_m=.01, continuous_center_m=[.0049, .0049],
+    rounded_center_m=[0, 0], rounded_radius_m=math.sqrt(float(segment_radius_squared(rounded_center))),
+    feasible_neighbor_m=[.01, 0], neighbor_radius_m=math.sqrt(float(segment_radius_squared(neighbor))),
+    scope='certified_feasible_candidate_not_claimed_grid_optimum')
+# For the earlier length-40 segment, any radius-20 circle has its unique midpoint.
+assert optimal_radius == 20 and (optimal_center/Fraction('.01')).denominator != 1
+checks['grid_boundary_impossible'] = dict(
+    unique_center_m=float(optimal_center), grid_step_m=.01,
+    proof='length_40_segment_requires_unique_midpoint_which_is_not_on_grid')
+# The source-excluded center of the annulus still covers the whole outer envelope.
+assert excluded_radius < outer_radius <= 20
+checks['excluded_center_is_valid_action'] = dict(
+    source_region='5 < norm(G) <= 10', action_center_m=[0, 0],
+    certified_cover_radius_m=10, center_excluded_as_source=True,
+    action_valid=True)
+
 out = root / 'results/tables/q1_revision_validation.json'
 out.parent.mkdir(parents=True, exist_ok=True)
 out.write_text(json.dumps(checks, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')

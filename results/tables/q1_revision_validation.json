@@ -229,5 +229,48 @@
     "max_pointer_advances": 21,
     "exact_squared_distance_discrepancy": 0,
     "scope": "integer_polygon_diameter_only_not_full_localization_solver"
+  },
+  "output_grid_neighbor": {
+    "endpoints_m": [
+      [
+        14.1449,
+        14.1449
+      ],
+      [
+        -14.1351,
+        -14.1351
+      ]
+    ],
+    "grid_step_m": 0.01,
+    "continuous_center_m": [
+      0.0049,
+      0.0049
+    ],
+    "rounded_center_m": [
+      0,
+      0
+    ],
+    "rounded_radius_m": 20.003909418411194,
+    "feasible_neighbor_m": [
+      0.01,
+      0
+    ],
+    "neighbor_radius_m": 19.997122443491715,
+    "scope": "certified_feasible_candidate_not_claimed_grid_optimum"
+  },
+  "grid_boundary_impossible": {
+    "unique_center_m": 0.004,
+    "grid_step_m": 0.01,
+    "proof": "length_40_segment_requires_unique_midpoint_which_is_not_on_grid"
+  },
+  "excluded_center_is_valid_action": {
+    "source_region": "5 < norm(G) <= 10",
+    "action_center_m": [
+      0,
+      0
+    ],
+    "certified_cover_radius_m": 10,
+    "center_excluded_as_source": true,
+    "action_valid": true
   }
 }
