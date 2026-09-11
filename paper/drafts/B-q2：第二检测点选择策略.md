@@ -333,6 +333,23 @@ q=S+a u+b n .
 \tag{29}
 \]
 
+为避免混淆全局位置与局部位移，定义正交基矩阵及局部决策变量
+
+\[
+B_\theta=[\,u\ \ n\,],\qquad
+\xi=(a,b)^{\mathsf T},\qquad
+q(\xi)=S+B_\theta\xi .
+\]
+
+由于 \(B_\theta^{\mathsf T}B_\theta=I_2\)，有
+
+\[
+L(q)=\|q-S\|=\|B_\theta\xi\|
+=\|\xi\|=\sqrt{a^2+b^2}.
+\]
+
+后文中的优化变量统一取 \(\xi\in\mathbb R^2\)，而似然、后验及几何集合仍以对应的全局检测位置 \(q(\xi)\) 表示；两种写法通过 \(q=S+B_\theta\xi\) 一一对应。
+
 当本次移动与检测的可用时间为 \(T_{\max}>5\) 时，允许的最大移动距离为
 
 \[
@@ -403,6 +420,15 @@ q\in M(T_{\max}):
 \]
 
 若 \(Q_{\eta_0}\cap M(T_{\max})\ne\varnothing\)，则 \(\eta_{\mathrm{eff}}=\eta_0\)；否则阈值自动降至时间可达域内的最大接收概率，只保留接收概率最高的可达点。由此，候选域同时反映时间约束和接收可靠性，而 \(\widehat Q_{\mathrm g}\cap\mathcal C\) 仅作为其中具有绝对接收保证的可选子集。
+
+将全局候选域映射到局部决策空间，记
+
+\[
+\Xi=
+\left\{
+\xi\in\mathbb R^2:q(\xi)\in\mathcal C
+\right\}.
+\]
 
 ### 5 第二次检测的分段贝叶斯更新
 
@@ -493,7 +519,32 @@ K_1\setminus\mathcal B^\circ(q,1000),
 \tag{40}
 \]
 
-其中，\(\mathrm{direction}\) 情形的 \(5\,\mathrm m\) 内排除及 \(\mathrm{no\_signal}\) 情形的非凸排除均单独保存。若 \(q\in Q_{\mathrm g}\)，则第三种结果的预测概率为零。
+其中，\(\mathrm{direction}\) 情形的 \(5\,\mathrm m\) 内排除及 \(\mathrm{no\_signal}\) 情形的圆盘排除均单独保存。特别地，
+
+\[
+E_2^{\mathrm{no}}(q)
+=K_1\setminus\mathcal B^\circ(q,1000)
+\]
+
+是 \(\mathcal S_2(\mathrm{no\_signal},q)\) 的非凸闭合外包。贝叶斯更新仍以式（38）—（39）的精确支持集和后验密度为准；需要保守几何认证时才使用 \(E_2^{\mathrm{no}}(q)\)，二者均不以凸包代替面积。若直径或最小覆盖圆算法要求凸输入，则另取闭合凸包
+
+\[
+K_{2,\mathrm c}^{\mathrm{no}}(q)
+=\overline{\operatorname{conv}}
+\left(E_2^{\mathrm{no}}(q)\right).
+\]
+
+对任意非空紧集 \(E\)，均有
+
+\[
+D(E)=D\!\left(\overline{\operatorname{conv}}E\right),
+\qquad
+r_*(E)=r_*\!\left(\overline{\operatorname{conv}}E\right),
+\]
+
+故对同一集合 \(E\) 而言，凸包化不会改变直径与最小覆盖圆半径：计算精确后验指标时取 \(E=\mathcal S_2\)，进行保守外包认证时取 \(E=E_2^{\mathrm{no}}\)。但一般有
+\(\mathcal A(E)\ne
+\mathcal A(\overline{\operatorname{conv}}E)\)，因此面积指标必须由相应的原非凸集合计算。若 \(q\in Q_{\mathrm g}\)，则 \(\mathrm{no\_signal}\) 的预测概率为零。
 
 ### 6 距离后验检验
 
@@ -628,13 +679,15 @@ T_0=T_{\max}.
 
 \[
 \boxed{
-J_{\boldsymbol\omega}(q)
+J_{\boldsymbol\omega}(\xi)
 =
-\omega_D\frac{\Psi_D(q)}{D_0}
-+\omega_A\frac{\Psi_A(q)}{A_0}
-+\omega_T\frac{T(q)}{T_0},
+\omega_D\frac{\Psi_D(q(\xi))}{D_0}
++\omega_A\frac{\Psi_A(q(\xi))}{A_0}
++\omega_T\frac{T(q(\xi))}{T_0},
 \qquad
-q^*\in\arg\min_{q\in\mathcal C}J_{\boldsymbol\omega}(q).
+\xi^*\in\arg\min_{\xi\in\Xi}J_{\boldsymbol\omega}(\xi),
+\qquad
+q^*=q(\xi^*).
 }
 \tag{52}
 \]
@@ -655,20 +708,44 @@ q^*\in\arg\min_{q\in\mathcal C}J_{\boldsymbol\omega}(q).
 若不愿为测向误差补充概率密度，则式（49）中的期望不可辨识，应采用兼顾时间成本的极小极大准则：
 
 \[
-q_{\mathrm{mm}}^*
+\xi_{\mathrm{mm}}^*
 \in
-\arg\min_{q\in\mathcal C}
+\arg\min_{\xi\in\Xi}
 \left[
 \omega_D
-\frac{\displaystyle\sup_{z\in\mathcal Z(q)}
-D\!\left(K_2(z,q)\right)}{D_0}
+\frac{\displaystyle\sup_{z\in\mathcal Z(q(\xi))}
+D\!\left(K_2(z,q(\xi))\right)}{D_0}
 +\omega_A
-\frac{\displaystyle\sup_{z\in\mathcal Z(q)}
-\mathcal A\!\left(K_2(z,q)\right)}{A_0}
-+\omega_T\frac{T(q)}{T_0}
-\right].
+\frac{\displaystyle\sup_{z\in\mathcal Z(q(\xi))}
+\mathcal A\!\left(K_2(z,q(\xi))\right)}{A_0}
++\omega_T\frac{T(q(\xi))}{T_0}
+\right],
+\qquad
+q_{\mathrm{mm}}^*=q(\xi_{\mathrm{mm}}^*).
 \tag{54}
 \]
+
+其中，先定义第二次检测的混合响应空间
+
+\[
+\mathcal Y=
+\{\mathrm{near},\mathrm{no\_signal}\}
+\sqcup[-\pi,\pi),
+\]
+
+再将几何上可能发生的有效响应集合限定为
+
+\[
+\boxed{
+\mathcal Z(q)=
+\left\{
+z\in\mathcal Y:
+\mathcal S_2(z,q)\ne\varnothing
+\right\}.
+}
+\]
+
+其中角度 \(z\in[-\pi,\pi)\) 表示 \(\mathrm{direction}(z)\)，符号 \(\sqcup\) 表示离散响应与连续角度的互不相交并。由此，式（54）的上确界只遍历与当前支持集相容的观测，不包含后验支持为空、实际不可能发生的角度或响应。
 
 因此，选点模式按可用信息分类为
 
