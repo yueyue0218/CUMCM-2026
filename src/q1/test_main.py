@@ -6,6 +6,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from src.q1.main import _write_results
+
 
 ROOT = Path(__file__).resolve().parents[2]
 ENTRY_POINT = ROOT / "src" / "q1" / "main.py"
@@ -59,6 +61,17 @@ class CommandLineEntryPointTests(unittest.TestCase):
             self.assertNotEqual(completed.returncode, 0)
             self.assertIn("cases must be a list", completed.stderr)
             self.assertNotIn("Traceback", completed.stderr)
+
+    def test_serialization_failure_cleans_up_temporary_output(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            output_path = directory / "output.json"
+
+            with self.assertRaises(ValueError):
+                _write_results(output_path, [{"not_finite": float("nan")}])
+
+            self.assertFalse(output_path.exists())
+            self.assertEqual(list(directory.glob(f".{output_path.name}.*.tmp")), [])
 
 
 if __name__ == "__main__":

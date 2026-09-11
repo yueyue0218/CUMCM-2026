@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import sys
 import tempfile
@@ -43,14 +44,20 @@ def _cases(payload: object) -> list[Mapping[str, object]]:
 
 def _write_results(path: Path, results: list[dict[str, object]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile(
-        mode="w", encoding="utf-8", dir=path.parent, prefix=f".{path.name}.",
-        suffix=".tmp", delete=False,
-    ) as temporary:
-        temporary_path = Path(temporary.name)
-        json.dump(results, temporary, ensure_ascii=False, allow_nan=False, indent=2)
-        temporary.write("\n")
-    temporary_path.replace(path)
+    temporary_path: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=path.parent, prefix=f".{path.name}.",
+            suffix=".tmp", delete=False,
+        ) as temporary:
+            temporary_path = Path(temporary.name)
+            json.dump(results, temporary, ensure_ascii=False, allow_nan=False, indent=2)
+            temporary.write("\n")
+        temporary_path.replace(path)
+    finally:
+        if temporary_path is not None:
+            with contextlib.suppress(OSError):
+                temporary_path.unlink()
 
 
 def main() -> int:
