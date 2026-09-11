@@ -55,17 +55,17 @@ P=\bigcap_i\{(x,y):a_i x+b_i y\le c_i\},
 
 每个结果分为三个部分：
 
-- `region` 描述纯测向区域 `P`。`status` 为 `empty`、`unbounded`、`point`、`segment` 或 `polygon`；非空有界状态给出逆时针凸顶点。`polygon` 另给出 `area_m2` 和 `centroid`。`max_violation` 是返回顶点对原半平面不等式的最大原始残差。
-- `problem_1` 给出题目一几何量。区域直径为 `D=max_{p,q in P} ||p-q||`，`farthest_pair` 是确定性的最远点对；同时用旋转卡壳和穷举计算直径并在 `diameter_discrepancy_m` 中报告差值。`diameter_circle` 的圆心是最远点对中点、半径为 `D/2`，`covers` 表示该圆是否覆盖全部顶点。`minimum_enclosing_circle` 给出 Welzl 最小包围圆的内部圆心、半径和最大覆盖残差。
-- `control` 单独报告物理约束，不会改变 `P`。`arena_contains_region` 表示有界 `P` 是否整体位于以原点为圆心、半径 `arena_radius_m` 的圆域内；`output_center` 是按 `output_decimals` 舍入后的动作中心，`rounded_center_max_distance_m` 是该舍入中心到 `P` 顶点的可靠最大距离。
+- `region` 描述纯测向区域 `P`。`region.status` 为 `empty`、`unbounded`、`point`、`segment` 或 `polygon`；非空有界状态在 `region.vertices` 中给出逆时针凸顶点。`polygon` 另给出 `region.area_m2` 和 `region.centroid`。`region.max_violation` 是返回顶点对原半平面不等式的最大原始残差；`region.arena_contains_region` 表示有界 `P` 是否整体位于以原点为圆心、半径 `control.arena_radius_m` 的圆域内。
+- `problem_1` 给出题目一几何量。区域直径为 `D=max_{p,q in P} ||p-q||`，写入 `problem_1.diameter_m`；`problem_1.farthest_pair` 是确定性的最远点对。同时用旋转卡壳和穷举计算直径，并在 `problem_1.diameter_discrepancy_m` 中报告差值。`problem_1.diameter_circle` 的圆心是最远点对中点、半径为 `D/2`，其中 `problem_1.diameter_circle.covers` 表示该圆是否覆盖全部顶点。`problem_1.minimum_enclosing_circle` 给出 Welzl 最小包围圆的内部圆心、半径和最大覆盖残差。
+- `control` 单独报告物理约束，不会改变 `P`。`control.output_center` 是按 `control.output_decimals` 舍入后的动作中心，`control.rounded_center_max_distance_m` 是该舍入中心到 `P` 顶点的可靠最大距离；所用目标圆域和清除半径分别记录在 `control.arena_radius_m` 与 `control.clear_radius_m`。
 
-`P` 可以为空或无界。空集的直径为 `null`，控制状态为 `NO_FEASIBLE_REGION`；无界区域的直径使用 JSON 兼容字符串 `"infinity"`，控制状态为 `UNBOUNDED_REGION`，二者均不输出有限覆盖圆。
+`P` 可以为空或无界。空集的 `problem_1.diameter_m` 为 `null`，`control.status` 为 `NO_FEASIBLE_REGION`；无界区域的 `problem_1.diameter_m` 使用 JSON 兼容字符串 `"infinity"`，`control.status` 为 `UNBOUNDED_REGION`，二者均不输出有限覆盖圆。
 
 控制状态含义如下：
 
-- `CLEAR_READY`：有界 `P` 整体在目标圆域内，并且已经用舍入后的 `output_center` 复核其最大距离不超过 `clear_radius_m`。仅内部最小包围圆满足阈值并不足以产生此状态。
+- `CLEAR_READY`：有界 `P` 的 `region.arena_contains_region` 为 `true`，并且已经用舍入后的 `control.output_center` 复核 `control.rounded_center_max_distance_m` 不超过 `control.clear_radius_m`。仅内部最小包围圆满足阈值并不足以产生此状态。
 - `SINGLE_DISK_IMPOSSIBLE`：在无需目标圆域裁剪的已认证集合上，最小包围圆半径严格超过清除半径，单个圆盘无法覆盖。
-- `COVERAGE_UNCERTAIN`：需要目标圆域裁剪，或动作中心舍入后越过清除阈值。实现不会用多边形近似圆域；当 `P` 超出目标圆域时，以 `reason="arena_clipping_required"` 保守报告，而不近似裁剪后给出结论。
+- `COVERAGE_UNCERTAIN`：需要目标圆域裁剪，或动作中心舍入后越过清除阈值。实现不会用多边形近似圆域；当 `P` 超出目标圆域时，以 `control.reason="arena_clipping_required"` 保守报告，而不近似裁剪后给出结论。
 
 ## 数值策略与容差
 
