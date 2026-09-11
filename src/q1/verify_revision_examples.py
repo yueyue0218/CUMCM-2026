@@ -7,6 +7,7 @@ from pathlib import Path
 import json
 import math
 from fractions import Fraction
+import random
 import numpy as np
 
 root = Path(__file__).resolve().parents[2]
@@ -245,6 +246,89 @@ assert np.linalg.norm(witnesses.mean(axis=0)) <= excluded_radius
 checks['nonconvex_exclusion_example'] = dict(
     envelope_radius_m=outer_radius, excluded_radius_m=excluded_radius,
     feasible_points=witnesses.tolist(), midpoint_excluded=True)
+
+# Section 2.2 caliper formulas, checked against exhaustive pairs using exact integers.
+# This validates the diameter step, not floating predicates or region construction.
+def turn(a, b, c):
+    return (b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0])
+
+
+def integer_hull(points):
+    points = sorted(set(points))
+    if len(points) <= 1:
+        return points
+    halves = []
+    for sequence in (points, reversed(points)):
+        half = []
+        for point in sequence:
+            while len(half) >= 2 and turn(half[-2], half[-1], point) <= 0:
+                half.pop()
+            half.append(point)
+        halves.append(half[:-1])
+    return halves[0]+halves[1]
+
+
+def calipers_integer(vertices):
+    m = len(vertices)
+    assert m >= 3
+    assert all(turn(vertices[i-1], vertices[i], vertices[(i+1) % m]) > 0
+               for i in range(m))
+    def vertex(k):
+        return vertices[(k-1) % m]
+    def area(i, j):
+        return turn(vertex(i), vertex(i+1), vertex(j))
+    j, maximum, witness, advances, ties = 2, 0, None, 0, 0
+    for i in range(1, m+1):
+        while j+1 < i+m and area(i, j+1) > area(i, j):
+            j += 1
+            advances += 1
+        candidates = [(i, j), (i+1, j)]
+        if j+1 < i+m and area(i, j+1) == area(i, j):
+            candidates += [(i, j+1), (i+1, j+1)]
+            ties += 1
+        for p, q in candidates:
+            a, b = vertex(p), vertex(q)
+            squared = (a[0]-b[0])**2+(a[1]-b[1])**2
+            if squared > maximum:
+                maximum, witness = squared, (a, b)
+    assert advances < 2*m
+    return maximum, witness, advances, ties
+
+
+grid = [(x, y) for x in range(3) for y in range(3)]
+point_sets = [[point for bit, point in enumerate(grid) if mask & (1 << bit)]
+              for mask in range(1 << len(grid))]
+rng = random.Random(20260911)
+point_sets += [[(rng.randrange(-2000, 2001), rng.randrange(-2000, 2001))
+               for _ in range(rng.randrange(3, 61))] for _ in range(200)]
+point_sets += [[(0, 0), (4, 0), (4, 3), (0, 3)],
+               [(0, 0), (10**12, 1), (10**12, 2), (0, 1)]]
+polygons, runs, tie_events, max_advances = 0, 0, 0, 0
+for points in point_sets:
+    hull = integer_hull(points)
+    if len(hull) < 3:
+        continue
+    polygons += 1
+    reference = max((a[0]-b[0])**2+(a[1]-b[1])**2
+                    for i, a in enumerate(hull) for b in hull[i+1:])
+    # Every cyclic starting vertex tests the wraparound and monotone pointer.
+    for shift in range(len(hull)):
+        rotated = hull[shift:]+hull[:shift]
+        value, witness, advances, ties = calipers_integer(rotated)
+        assert value == reference
+        a, b = witness
+        assert (a[0]-b[0])**2+(a[1]-b[1])**2 == reference
+        runs += 1
+        tie_events += ties
+        max_advances = max(max_advances, advances)
+assert tie_events > 0
+assert calipers_integer([(0, 0), (4, 0), (4, 3), (0, 3)])[0] == 25
+checks['calipers_vs_exhaustive'] = dict(
+    random_seed=20260911, grid_subsets=512, random_point_sets=200,
+    special_point_sets=2, nondegenerate_polygons=polygons,
+    cyclic_start_runs=runs, equal_area_events=tie_events,
+    max_pointer_advances=max_advances, exact_squared_distance_discrepancy=0,
+    scope='integer_polygon_diameter_only_not_full_localization_solver')
 
 out = root / 'results/tables/q1_revision_validation.json'
 out.parent.mkdir(parents=True, exist_ok=True)

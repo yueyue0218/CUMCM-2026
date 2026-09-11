@@ -69,3 +69,12 @@
 - 输出：[q1_revision_validation.json](../results/tables/q1_revision_validation.json)，新增 `oriented_arc_examples`、`separate_arc_antipodes`、`rounded_center_counterexample`、`predictive_area_examples`、`nonconvex_exclusion_example`。
 - 范围：原解析例与Jung边界例继续通过；未实现通用可靠角区间运算、完整Welzl/圆弧求解器、状态机、多点规划或模拟器实验。浮点差异仅为这些特定算例的比较值。
 - 正文位置：第1.1、3.4、4.2、4.4—4.5、5.5节；二次审查逐条判断见 [落实记录](q1-review-response.md)。
+
+## 2026-09-11 — 第2.2节旋转卡壳与穷举法对照
+
+- 目的：独立核验公式中的面积递增、等面积双端点分支及跨周索引推进，不在论文中列实现代码。
+- 命令：`python src/q1/verify_revision_examples.py`；结果为 `results/tables/q1_revision_validation.json` 的 `calipers_vs_exhaustive`。
+- 输入：3×3整数格点的全部512个子集；种子20260911生成200组3—60个点的整数点集，坐标范围[-2000,2000]；4×3矩形及顶点(0,0)、(10^12,1)、(10^12,2)、(0,1)的细长平行四边形。以上为几何测试，非模拟器源位置场景。
+- 方法：整理凸包并去除冗余共线点，筛出660个非退化多边形；每个多边形轮换全部起始顶点，用精确整数叉积执行面积推进，以全部顶点对穷举独立核验最大距离平方及返回端点。
+- 结果：3489次计算全部一致，距离平方差为0；累计进入等面积分支3168次，单次运行的指针推进次数最大21，且各次均小于顶点数的两倍；4×3矩形直径平方为25。
+- 范围：仅核验有序凸多边形的直径计算。没有据此认证半平面求交、浮点谓词、圆弧极值、Welzl或模拟器流程；所有原有解析例继续通过。

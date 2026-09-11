@@ -22,6 +22,7 @@
   - 产物：[q1 基础模型草稿](paper/drafts/B-q1：基础模型建立.md)
   - 记录：`notes/modeling.md`、`notes/assumptions.md`、`notes/symbols.md`、`notes/experiments.md`、`notes/q1-review-response.md`
   - 算例核验：`python src/q1/verify_revision_examples.py`；结果为 `results/tables/q1_revision_validation.json`（非完整求解器）
+  - 第2节补充：已用公式明确方向归一化、区域裁剪、穷举与旋转卡壳运作；3489次整数多边形对照通过，待队友复核表达与适用范围
   - 分支：`q1/baseline-model`；目标分支：`main`
   - 验收：独立核对P/K/真实可行集口径、Jung判据、Welzl边界集、圆弧扫角与对踵点、预测面积及清除状态；解析例、Jung阈值和二次审查边界例已复算，完整求解器、历史随机实验与模拟器验证仍待补齐；复核通过并合并后改为 `DONE`
 - [ ] `TODO` 生成结果、图表和结论

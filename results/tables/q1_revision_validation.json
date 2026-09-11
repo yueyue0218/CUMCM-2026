@@ -217,5 +217,17 @@
       ]
     ],
     "midpoint_excluded": true
+  },
+  "calipers_vs_exhaustive": {
+    "random_seed": 20260911,
+    "grid_subsets": 512,
+    "random_point_sets": 200,
+    "special_point_sets": 2,
+    "nondegenerate_polygons": 660,
+    "cyclic_start_runs": 3489,
+    "equal_area_events": 3168,
+    "max_pointer_advances": 21,
+    "exact_squared_distance_discrepancy": 0,
+    "scope": "integer_polygon_diameter_only_not_full_localization_solver"
   }
 }
