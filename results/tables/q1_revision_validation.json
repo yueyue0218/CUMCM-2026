@@ -40,5 +40,78 @@
   },
   "triangle_obtuse": {
     "diameter_circle_covers": true
-  }
+  },
+  "jung_examples": [
+    {
+      "case": "equilateral_jung_boundary",
+      "diameter_m": 34.64101615137755,
+      "radius_m": 20.0,
+      "jung_screen": "exists",
+      "can_cover_with_20m": true,
+      "diameter_circle_covers": false,
+      "radius_squared_check_error": 5.684341886080802e-14
+    },
+    {
+      "case": "square_d36",
+      "diameter_m": 36.0,
+      "radius_m": 18.0,
+      "jung_screen": "undetermined",
+      "can_cover_with_20m": true,
+      "diameter_circle_covers": true,
+      "radius_squared_check_error": 0.0
+    },
+    {
+      "case": "equilateral_d36",
+      "diameter_m": 36.0,
+      "radius_m": 20.784609690826528,
+      "jung_screen": "undetermined",
+      "can_cover_with_20m": false,
+      "diameter_circle_covers": false,
+      "radius_squared_check_error": 0.0
+    },
+    {
+      "case": "square_d40",
+      "diameter_m": 40.0,
+      "radius_m": 20.0,
+      "jung_screen": "undetermined",
+      "can_cover_with_20m": true,
+      "diameter_circle_covers": true,
+      "radius_squared_check_error": 5.684341886080802e-14
+    },
+    {
+      "case": "equilateral_d40",
+      "diameter_m": 40.0,
+      "radius_m": 23.094010767585033,
+      "jung_screen": "undetermined",
+      "can_cover_with_20m": false,
+      "diameter_circle_covers": false,
+      "radius_squared_check_error": 1.1368683772161603e-13
+    }
+  ],
+  "jung_squared_thresholds": [
+    {
+      "diameter_squared_m2": "1199.99999999",
+      "screen": "exists"
+    },
+    {
+      "diameter_squared_m2": "1200",
+      "screen": "exists"
+    },
+    {
+      "diameter_squared_m2": "1200.00000001",
+      "screen": "undetermined"
+    },
+    {
+      "diameter_squared_m2": "1599.99999999",
+      "screen": "undetermined"
+    },
+    {
+      "diameter_squared_m2": "1600",
+      "screen": "undetermined"
+    },
+    {
+      "diameter_squared_m2": "1600.00000001",
+      "screen": "impossible_for_entire_region"
+    }
+  ]
 }

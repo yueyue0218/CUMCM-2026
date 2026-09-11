@@ -6,6 +6,7 @@ Requires numpy; outputs results/tables/q1_revision_validation.json.
 from pathlib import Path
 import json
 import math
+from fractions import Fraction
 import numpy as np
 
 root = Path(__file__).resolve().parents[2]
@@ -90,6 +91,63 @@ for vertex,expect,label in [([.5,math.sqrt(3)/2],False,'acute'),([.5,.5],True,'r
     covered=bool(((q-mid)**2).sum(axis=1).max() <= sq[a,b]/4+1e-14)
     assert covered == expect
     checks[f'triangle_{label}']=dict(diameter_circle_covers=covered)
+
+# Jung screening uses exact squared diameters, so rounded displays cannot move a threshold.
+def jung_screen(diameter_squared):
+    if diameter_squared <= 1200:
+        return 'exists'
+    if diameter_squared > 1600:
+        return 'impossible_for_entire_region'
+    return 'undetermined'
+
+jung_cases = []
+for label, shape, d2 in [
+    ('equilateral_jung_boundary', 'equilateral', Fraction(1200)),
+    ('square_d36', 'square', Fraction(1296)),
+    ('equilateral_d36', 'equilateral', Fraction(1296)),
+    ('square_d40', 'square', Fraction(1600)),
+    ('equilateral_d40', 'equilateral', Fraction(1600)),
+]:
+    diameter = math.sqrt(float(d2))
+    if shape == 'equilateral':
+        points = np.array([[0, 0], [diameter, 0],
+                           [diameter/2, diameter*math.sqrt(3)/2]])
+        center = points.mean(axis=0)
+        exact_radius_squared = d2 / 3
+    else:
+        side = diameter / math.sqrt(2)
+        points = np.array([[0, 0], [side, 0], [side, side], [0, side]])
+        center = np.array([side/2, side/2])
+        exact_radius_squared = d2 / 4
+    pair_squared = ((points[:, None, :] - points[None, :, :])**2).sum(axis=2)
+    radius_squared = float(((points-center)**2).sum(axis=1).max())
+    assert abs(float(pair_squared.max())-float(d2)) < 1e-9
+    assert abs(radius_squared-float(exact_radius_squared)) < 1e-9
+    assert d2/4 <= exact_radius_squared <= d2/3
+    a, b = np.unravel_index(pair_squared.argmax(), pair_squared.shape)
+    midpoint = (points[a]+points[b])/2
+    midpoint_radius_squared = float(((points-midpoint)**2).sum(axis=1).max())
+    assert (midpoint_radius_squared <= float(d2)/4 + 1e-9) == (shape == 'square')
+    jung_cases.append(dict(
+        case=label, diameter_m=diameter,
+        radius_m=math.sqrt(float(exact_radius_squared)),
+        jung_screen=jung_screen(d2),
+        can_cover_with_20m=exact_radius_squared <= 400,
+        diameter_circle_covers=shape == 'square',
+        radius_squared_check_error=abs(radius_squared-float(exact_radius_squared)),
+    ))
+
+threshold_checks = []
+for d2_text, expected in [
+    ('1199.99999999', 'exists'), ('1200', 'exists'),
+    ('1200.00000001', 'undetermined'), ('1599.99999999', 'undetermined'),
+    ('1600', 'undetermined'), ('1600.00000001', 'impossible_for_entire_region'),
+]:
+    result = jung_screen(Fraction(d2_text))
+    assert result == expected
+    threshold_checks.append(dict(diameter_squared_m2=d2_text, screen=result))
+checks['jung_examples'] = jung_cases
+checks['jung_squared_thresholds'] = threshold_checks
 
 out = root / 'results/tables/q1_revision_validation.json'
 out.parent.mkdir(parents=True, exist_ok=True)
