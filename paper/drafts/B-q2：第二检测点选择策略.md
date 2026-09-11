@@ -728,79 +728,249 @@ q^*=q(\xi^*).
 
 由于 \(\omega_T>0\)，任意额外移动都会产生显式损失，时间项不会像字典序目标那样退化失效。若初始区域退化为零面积集合，则删除面积项并对其余权重重新归一化。
 
-若不愿为测向误差补充概率密度，则式（49）中的期望不可辨识，应采用兼顾时间成本的极小极大准则：
+#### 7.1 鲁棒不确定集合
+
+式（52）刻画标称概率模型下的平均性能，但其最优解未必能承受误差边界或接收距离的轻微失配。为此，引入位置、测角、接收距离和时间计算的非负安全裕量
+\(\eta_g,\eta_\theta,\eta_r,\eta_T\)，并定义
 
 \[
+\boxed{
+\mathcal S_1^{\mathrm{rob}}
+=
+\left(\mathcal S_1\oplus\mathcal B(0,\eta_g)\right)\cap\Omega,
+\qquad
+\delta_{\mathrm{rob}}=\delta+\eta_\theta,
+\qquad
+[r_{\min},r_{\max}]
+=
+[1000-\eta_r,\ 1500+\eta_r].
+}
+\tag{54}
+\]
+
+其中要求 \(r_{\min}>5\)，\(\oplus\) 表示 Minkowski 和。用
+\(\mathcal S_1^{\mathrm{rob}}\)、\(\delta_{\mathrm{rob}}\) 和
+\([r_{\min},r_{\max}]\) 替换式（39）—（40）中的相应集合与参数，分别得到鲁棒支持集
+\(\mathcal S_2^{\mathrm{rob}}(z,q)\) 及其闭合外包
+\(K_2^{\mathrm{rob}}(z,q)\)。若真实误差与接收距离均落在式（54）的扩大边界内，则
+
+\[
+\boxed{
+\mathcal S_2^{\mathrm{true}}(z,q)
+\subseteq
+\mathcal S_2^{\mathrm{rob}}(z,q)
+\subseteq
+K_2^{\mathrm{rob}}(z,q).
+}
+\tag{55}
+\]
+
+#### 7.2 鲁棒可行域与最坏性能
+
+定义带时间裕量的安全可行域和保证接收域
+
+\[
+\boxed{
+\begin{aligned}
+\Xi_{\mathrm{safe}}
+&=
+\left\{
+\xi\in\Xi:
+T(q(\xi))\le T_{\max}-\eta_T
+\right\},\\
+\Xi_{\mathrm{rec}}
+&=
+\left\{
+\xi\in\Xi_{\mathrm{safe}}:
+\sup_{g\in\mathcal S_1^{\mathrm{rob}}}
+\|q(\xi)-g\|\le r_{\min}
+\right\}.
+\end{aligned}}
+\tag{56}
+\]
+
+若任务要求第二次检测必然收到 \(\mathrm{near}\) 或
+\(\mathrm{direction}\)，则取 \(\Xi_{\mathrm{adm}}=\Xi_{\mathrm{rec}}\)；
+否则取 \(\Xi_{\mathrm{adm}}=\Xi_{\mathrm{safe}}\)，并将
+\(\mathrm{no\_signal}\) 保留在最坏情况分析中。特别地，
+\(\Xi_{\mathrm{rec}}=\varnothing\) 表明在当前时间和误差边界下不存在保证接收的策略，此时不得宣称绝对接收保证。
+
+第二次检测的混合响应空间及鲁棒有效响应集合为
+
+\[
+\boxed{
+\mathcal Y=
+\{\mathrm{near},\mathrm{no\_signal}\}
+\sqcup[-\pi,\pi),
+\qquad
+\mathcal Z_{\mathrm{rob}}(q)
+=
+\left\{
+z\in\mathcal Y:
+\mathcal S_2^{\mathrm{rob}}(z,q)\ne\varnothing
+\right\}.
+}
+\tag{57}
+\]
+
+其中角度 \(z\in[-\pi,\pi)\) 表示 \(\mathrm{direction}(z)\)，符号
+\(\sqcup\) 表示离散响应与连续角度的互不相交并。对任意
+\(\xi\in\Xi_{\mathrm{safe}}\)，定义
+
+\[
+\boxed{
+\begin{aligned}
+\overline D(\xi)
+&=
+\sup_{z\in\mathcal Z_{\mathrm{rob}}(q(\xi))}
+D\!\left(K_2^{\mathrm{rob}}(z,q(\xi))\right),\\
+\overline A(\xi)
+&=
+\sup_{z\in\mathcal Z_{\mathrm{rob}}(q(\xi))}
+\mathcal A\!\left(K_2^{\mathrm{rob}}(z,q(\xi))\right),\\
+\overline r(\xi)
+&=
+\sup_{z\in\mathcal Z_{\mathrm{rob}}(q(\xi))}
+r_*\!\left(K_2^{\mathrm{rob}}(z,q(\xi))\right).
+\end{aligned}}
+\tag{58}
+\]
+
+#### 7.3 带最坏约束的选点模型
+
+当 \(f_\varepsilon\) 可信时，推荐在标称贝叶斯目标外加入最坏性能上界：
+
+\[
+\boxed{
+\begin{aligned}
+\xi_{\mathrm{rob}}^*
+\in\arg\min_{\xi\in\Xi_{\mathrm{adm}}}\quad
+&J_{\boldsymbol\omega}(\xi),\\
+\mathrm{s.t.}\quad
+&\overline D(\xi)\le D_{\lim},\\
+&\overline A(\xi)\le A_{\lim},
+\qquad
+q_{\mathrm{rob}}^*=q(\xi_{\mathrm{rob}}^*).
+\end{aligned}}
+\tag{59}
+\]
+
+其中，\(D_{\lim}\) 与 \(A_{\lim}\) 分别为任务允许的最坏定位直径和面积上界；若题设未给出固定阈值，则通过可行性扫描与鲁棒 Pareto 前沿给出二者的可达范围，再由剩余任务时间确定取值。
+
+若任务要求第二次检测后必然具备一次光学覆盖条件，则再加入
+
+\[
+\boxed{\overline r(\xi)\le20.}
+\tag{60}
+\]
+
+若只知道误差硬界而没有可信概率密度，则式（49）的期望不可辨识，改用纯极小极大模型
+
+\[
+\boxed{
 \xi_{\mathrm{mm}}^*
 \in
-\arg\min_{\xi\in\Xi}
+\arg\min_{\xi\in\Xi_{\mathrm{adm}}}
 \left[
-\omega_D
-\frac{\displaystyle\sup_{z\in\mathcal Z(q(\xi))}
-D\!\left(K_2(z,q(\xi))\right)}{D_0}
-+\omega_A
-\frac{\displaystyle\sup_{z\in\mathcal Z(q(\xi))}
-\mathcal A\!\left(K_2(z,q(\xi))\right)}{A_0}
+\omega_D\frac{\overline D(\xi)}{D_0}
++\omega_A\frac{\overline A(\xi)}{A_0}
 +\omega_T\frac{T(q(\xi))}{T_0}
 \right],
 \qquad
 q_{\mathrm{mm}}^*=q(\xi_{\mathrm{mm}}^*).
-\tag{54}
+}
+\tag{61}
 \]
 
-其中，先定义第二次检测的混合响应空间
-
-\[
-\mathcal Y=
-\{\mathrm{near},\mathrm{no\_signal}\}
-\sqcup[-\pi,\pi),
-\]
-
-再将几何上可能发生的有效响应集合限定为
+式（59）优先保证标称平均性能，式（61）则完全由不确定集合决定。由式（55）及集合指标的单调性，对任一实际响应 \(z\) 均有
 
 \[
 \boxed{
-\mathcal Z(q)=
-\left\{
-z\in\mathcal Y:
-\mathcal S_2(z,q)\ne\varnothing
-\right\}.
-}
+\begin{aligned}
+D\!\left(\mathcal S_2^{\mathrm{true}}(z,q)\right)
+&\le\overline D(\xi),\\
+\mathcal A\!\left(\mathcal S_2^{\mathrm{true}}(z,q)\right)
+&\le\overline A(\xi),\\
+r_*\!\left(\mathcal S_2^{\mathrm{true}}(z,q)\right)
+&\le\overline r(\xi).
+\end{aligned}}
+\tag{62}
 \]
 
-其中角度 \(z\in[-\pi,\pi)\) 表示 \(\mathrm{direction}(z)\)，符号 \(\sqcup\) 表示离散响应与连续角度的互不相交并。由此，式（54）的上确界只遍历与当前支持集相容的观测，不包含后验支持为空、实际不可能发生的角度或响应。
+因此，式（59）—（60）的约束一旦成立，即可分别给出定位直径、区域面积和一次覆盖半径的确定性上界，而不依赖蒙特卡洛样本是否覆盖到最不利状态。
 
-因此，选点模式按可用信息分类为
+#### 7.4 最坏情况的数值认证
+
+有限角度网格上的最大值一般只是方向响应分支最坏损失的下界，不能直接作为鲁棒保证。令
+\(\mathcal L_{\mathrm{rob}}(z,\xi)\) 表示直径、面积、覆盖半径或式（61）中的加权损失。若其关于连续示向角 \(z\) 的 Lipschitz 常数为
+\(L_z(\xi)\)，则对最大网格间距 \(\Delta z\) 有
+
+\[
+\boxed{
+\sup_{\substack{
+z\in[-\pi,\pi)\\
+z\in\mathcal Z_{\mathrm{rob}}(q(\xi))
+}}
+\mathcal L_{\mathrm{rob}}(z,\xi)
+\le
+\max_\ell\mathcal L_{\mathrm{rob}}(z_\ell,\xi)
++\frac{L_z(\xi)\Delta z}{2}.
+}
+\tag{63}
+\]
+
+完整的最坏损失取式（63）右端与可行离散响应
+\(\mathrm{near}\)、\(\mathrm{no\_signal}\) 损失的最大值。若无法给出可靠的 \(L_z(\xi)\)，则对角度区间采用自适应区间细分或分支定界，直接计算每个子区间的损失上界。记 \(J_{\mathrm{rob}}^*\) 为所选鲁棒模型的全局最优目标值，\(\widehat J_{\mathrm{rob}}\) 为经上界认证的可行解目标值；再记全局优化误差和角度离散误差分别为
+\(\varepsilon_{\mathrm{opt}}\) 与 \(\varepsilon_{\mathrm{grid}}\)，最终应报告
+
+\[
+\boxed{
+0\le
+\widehat J_{\mathrm{rob}}-J_{\mathrm{rob}}^*
+\le
+\varepsilon_{\mathrm{opt}}+\varepsilon_{\mathrm{grid}}.
+}
+\tag{64}
+\]
+
+选点模式据此按条件分类为
 
 \[
 \boxed{
 \text{选点准则}=
 \begin{cases}
-\text{贝叶斯综合期望损失最小化，式（52）},
-& f_\varepsilon\ \text{已给定},\\[2pt]
-\text{几何最坏损失与时间成本联合最小化，式（54）},
-& \text{仅已知误差硬界}.
+\text{贝叶斯目标与最坏约束联合优化，式（59）},
+&f_\varepsilon\ \text{可信},\
+\Xi_{\mathrm{adm}}\ne\varnothing,\\[2pt]
+\text{几何最坏损失与时间成本联合最小化，式（61）},
+&\text{仅已知误差硬界},\
+\Xi_{\mathrm{adm}}\ne\varnothing,\\[2pt]
+\text{退回 }\Xi_{\mathrm{safe}}\text{ 并显式保留无信号分支},
+&\Xi_{\mathrm{rec}}=\varnothing.
 \end{cases}}
-\tag{55}
+\tag{65}
 \]
+
+后文以 \(q^*\) 统称按照式（65）选出的
+\(q_{\mathrm{rob}}^*\) 或 \(q_{\mathrm{mm}}^*\)。
 
 为降低主观权重对结论的影响，在给定权重集合 \(\mathcal W\) 上进行参数扫描，并保留非支配检测点构成 Pareto 集
 
 \[
-\mathcal P=
+\mathcal P_{\mathrm{rob}}=
 \left\{
-q\in\mathcal C:
-\nexists q'\in\mathcal C,\
+q(\xi):\xi\in\Xi_{\mathrm{adm}},\
+\nexists \xi'\in\Xi_{\mathrm{adm}},\
 \begin{array}{l}
-\Psi_D(q')\le\Psi_D(q),\
-\Psi_A(q')\le\Psi_A(q),\
-T(q')\le T(q),\\
+\overline D(\xi')\le\overline D(\xi),\
+\overline A(\xi')\le\overline A(\xi),\
+T(q(\xi'))\le T(q(\xi)),\\
 \text{且至少一个不等式严格成立}
 \end{array}
 \right\}.
 \]
 
-若 \(q^*(\boldsymbol\omega)\) 在一段权重区间内保持不变或仅小幅移动，则所选策略对时间—精度偏好具有稳定性；否则报告 Pareto 集，由任务剩余时间决定最终选点。
+若 \(q^*(\boldsymbol\omega)\) 在一段权重区间内保持不变或仅小幅移动，则所选策略对时间—精度偏好具有稳定性；否则报告鲁棒 Pareto 集，由任务剩余时间和允许的最坏损失共同决定最终选点。
 
 ### 8 第二次观测后的条件决策
 
@@ -812,37 +982,43 @@ a^*(z)=
 \begin{cases}
 \text{在 }q\text{ 处定位并清除},
 &z=\mathrm{near},\\[2pt]
-\text{移动至最小覆盖圆圆心 }c^*\text{ 后定位并清除},
-&z=\mathrm{direction},\ r_*(\mathcal S_2)\le20,\\[2pt]
+\text{移动至鲁棒最小覆盖圆圆心 }c_{\mathrm{rob}}^*\text{ 后定位并清除},
+&z=\mathrm{direction},\
+r_*(K_2^{\mathrm{rob}}(z,q))\le20,\\[2pt]
 \text{保留后验并继续测量},
-&z=\mathrm{direction},\ r_*(\mathcal S_2)>20,\\[2pt]
+&z=\mathrm{direction},\
+r_*(K_2^{\mathrm{rob}}(z,q))>20,\\[2pt]
 \text{按 }\pi_2\text{ 更新并重新选点},
 &z=\mathrm{no\_signal},\\[2pt]
-\text{检查观测、角度环绕及数值容差},
+\text{检查观测并扩大鲁棒误差边界},
 &\displaystyle\int L_2\pi_1=0.
 \end{cases}}
-\tag{56}
+\tag{66}
 \]
 
 其中
 
 \[
-c^*\in\arg\min_c\max_{g\in\mathcal S_2}\|g-c\|.
-\tag{57}
+c_{\mathrm{rob}}^*
+\in
+\arg\min_c
+\max_{g\in K_2^{\mathrm{rob}}(z,q)}
+\|g-c\|.
+\tag{67}
 \]
 
-后验为空或归一化常数为零表示新观测与既有硬约束冲突，不能将该频道误判为已清除。
+后验为空或归一化常数为零表示新观测与既有硬约束冲突，不能将该频道误判为已清除。此时应先检查观测、角度环绕和数值容差；若观测可信，则扩大式（54）的相应安全裕量并重新计算，而不是强行归一化空后验。
 
 ### 9 蒙特卡洛验证与垂直布点比较
 
-为量化所提策略相对“沿首次示向轴垂直移动”的优势，采用成对蒙特卡洛试验。每个样本按式（5）生成 \((G,R)\)，以首次观测似然式（7）加权或筛选，使样本服从 \(\pi_1(g,r\mid H_1)\)；第二次检测时保持同一 \(R\) 不变，并仅对新检测位置生成一次独立测向误差。该过程避免将样本错误地直接均匀撒在 \(K_1\) 中。
+为量化所提策略相对“沿首次示向轴垂直移动”的优势，采用成对蒙特卡洛试验。该试验只评价标称平均性能和有限样本下的经验稳定性，不能替代式（55）、式（62）—（64）给出的确定性鲁棒认证。每个样本按式（5）生成 \((G,R)\)，以首次观测似然式（7）加权或筛选，使样本服从 \(\pi_1(g,r\mid H_1)\)；第二次检测时保持同一 \(R\) 不变，并仅对新检测位置生成一次独立测向误差。该过程避免将样本错误地直接均匀撒在 \(K_1\) 中。
 
 令
 
 \[
 L=\|q^*-S\|,\qquad
 q_\perp^\pm=S\pm L n ,
-\tag{58}
+\tag{68}
 \]
 
 则 \(q^*\) 与垂直布点 \(q_\perp^\pm\) 的移动距离相同，二者的时间成本可比。对两侧垂直点分别评价，取性能较好者作为保守对照：
@@ -851,7 +1027,7 @@ q_\perp^\pm=S\pm L n ,
 q_\perp
 \in
 \arg\min_{q\in\{q_\perp^+,q_\perp^-\}}\Psi_D(q).
-\tag{59}
+\tag{69}
 \]
 
 对策略 \(s\in\{*,\perp\}\)，定义
@@ -861,7 +1037,7 @@ q_\perp
 \qquad
 Q_{0.9,s}=\operatorname{Quantile}_{0.9}
 \{D_s^{(1)},\ldots,D_s^{(N)}\},
-\tag{60}
+\tag{70}
 \]
 
 \[
@@ -872,7 +1048,7 @@ Q_{0.9,s}=\operatorname{Quantile}_{0.9}
 \widehat P_{40,s}
 =\frac1N\sum_{k=1}^{N}
 \mathbf 1_{\{D_s^{(k)}\le40\}}.
-\tag{61}
+\tag{71}
 \]
 
 所提策略相对垂直布点的量化优势分别为
@@ -889,7 +1065,7 @@ Q_{0.9,s}=\operatorname{Quantile}_{0.9}
 \frac{Q_{0.9,\perp}-Q_{0.9,*}}
 {Q_{0.9,\perp}}\times100\%,
 }
-\tag{62}
+\tag{72}
 \]
 
 \[
@@ -904,7 +1080,7 @@ Q_{0.9,s}=\operatorname{Quantile}_{0.9}
 \widehat P_{40,*}
 -\widehat P_{40,\perp}.
 }
-\tag{63}
+\tag{73}
 \]
 
 为排除“优势仅来自垂直点无信号较多”的解释，还应在两种策略均收到 \(\mathrm{direction}\) 的配对样本集合
@@ -914,7 +1090,7 @@ Q_{0.9,s}=\operatorname{Quantile}_{0.9}
 =
 \{k:Z_*^{(k)}=\mathrm{direction},
 \ Z_\perp^{(k)}=\mathrm{direction}\}
-\tag{64}
+\tag{74}
 \]
 
 上重新计算 \(\Gamma_D^{\mathrm{both}}\)。若
@@ -923,23 +1099,23 @@ Q_{0.9,s}=\operatorname{Quantile}_{0.9}
 \Gamma_D>0,\quad
 \Delta P_{\mathrm{rec}}>0,\quad
 \Gamma_D^{\mathrm{both}}>0,
-\tag{65}
+\tag{75}
 \]
 
 则可分别从总体定位效果、接收可靠性和纯交会几何三个层面说明所提策略优于等距离垂直布点。另以式（44）检验距离可信区间覆盖率，并对成对差值
 
 \[
 \Delta D_k=D_\perp^{(k)}-D_*^{(k)}
-\tag{66}
+\tag{76}
 \]
 
 进行 Bootstrap，若其均值的 \(95\%\) 置信区间整体大于零，则优势具有统计稳定性。具体百分比应由最终参数、实际首次检测位置及独立仿真结果计算，不沿用基于“\(K_1\) 内均匀后验”简化所得的数值。
 
 ### 10 模型结论
 
-本问以问题一的定位区域为几何基础，将源位置与固定接收半径组成联合隐状态，并在首次响应分类后形成联合后验；其中 \(\mathrm{near}\) 直接进入清除流程，只有 \(\mathrm{direction}\) 分支进入第二检测点选择。随后以时间可达域和后验接收概率构造候选区域，将绝对保证接收域 \(Q_{\mathrm g}\) 降为稳健性参考，并以无量纲的期望定位直径、期望面积和移动检测时间构成综合损失。第二次观测继续按照 \(\mathrm{near}\)、\(\mathrm{direction}\) 和 \(\mathrm{no\_signal}\) 分段更新，距离后验则通过可信区间覆盖率进行校准检验。
+本问以问题一的定位区域为几何基础，将源位置与固定接收半径组成联合隐状态，并在首次响应分类后形成联合后验；其中 \(\mathrm{near}\) 直接进入清除流程，只有 \(\mathrm{direction}\) 分支进入第二检测点选择。随后以时间可达域和后验接收概率构造标称候选区域，并以无量纲的期望定位直径、期望面积和移动检测时间构成综合损失。在此基础上，通过扩大位置、测角、接收距离和时间误差边界，进一步构造安全可行域与保证接收域，并对最坏定位直径、面积和最小覆盖圆半径施加确定性上界。第二次观测继续按照 \(\mathrm{near}\)、\(\mathrm{direction}\) 和 \(\mathrm{no\_signal}\) 分段更新，距离后验则通过可信区间覆盖率进行校准检验。
 
-该模型的核心不是预设“始终垂直于首次示向方向移动”，而是在式（31）的时间可达域内同时配置纵向推进量 \(a\) 与横向基线 \(b\)，再由式（52）的时间—精度综合损失确定最优比例。权重扫描与 Pareto 集用于检验策略选择的稳定性；式（62）—（66）则可在相同移动成本下量化其相对垂直布点在平均直径、尾部风险、接收率及可清除概率方面的优势。
+该模型的核心不是预设“始终垂直于首次示向方向移动”，而是在式（31）的时间可达域内同时配置纵向推进量 \(a\) 与横向基线 \(b\)。当概率模型可信时，由式（59）在贝叶斯平均性能与最坏情形约束之间取得平衡；仅有误差硬界时，则由式（61）直接最小化最坏损失。式（62）—（64）给出可审计的确定性与数值误差保证，鲁棒 Pareto 集用于检验时间—精度偏好的稳定性；式（72）—（76）只负责量化其相对垂直布点的经验优势。
 
 ### P.S. 建模衔接说明（不纳入正式论文）
 
@@ -950,10 +1126,14 @@ Q_{0.9,s}=\operatorname{Quantile}_{0.9}
 \[
 \mathcal I_2=
 \left(
-\pi_2,\ \mathcal S_2,\ K_2,
-\mathcal A(K_2),\ D(K_2),\ r_*(K_2),\ c^*
+\pi_2,\ \mathcal S_2,\ \mathcal S_2^{\mathrm{rob}},
+\ K_2^{\mathrm{rob}},
+\mathcal A(K_2^{\mathrm{rob}}),\
+D(K_2^{\mathrm{rob}}),\
+r_*(K_2^{\mathrm{rob}}),\
+c_{\mathrm{rob}}^*
 \right).
-\tag{67}
+\tag{77}
 \]
 
-其中，\(\pi_2\) 用于后续检测点的概率排序，\(\mathcal S_2\) 保存全部精确硬约束，\(K_2\) 是可靠几何计算所需的闭合外包，\(r_*(K_2)\le20\) 可作为“允许尝试保证清除”的状态条件。后续全局模型只负责在多个频道之间安排移动、检测和清除顺序，不得把高后验概率误写成已经保证清除，也不得在新观测后把 \(\pi_2\) 重置为 \(K_2\) 上的均匀分布。
+其中，\(\pi_2\) 用于后续检测点的概率排序，\(\mathcal S_2\) 保存标称精确约束，\(\mathcal S_2^{\mathrm{rob}}\) 与 \(K_2^{\mathrm{rob}}\) 分别保存扩大误差边界后的支持集及闭合外包；\(r_*(K_2^{\mathrm{rob}})\le20\) 才可作为“允许尝试保证清除”的鲁棒状态条件。后续全局模型只负责在多个频道之间安排移动、检测和清除顺序，不得把高后验概率误写成已经保证清除，也不得在新观测后把 \(\pi_2\) 重置为 \(K_2^{\mathrm{rob}}\) 上的均匀分布。
