@@ -398,6 +398,7 @@ Q_\eta=\{q:\rho(q)\ge\eta\},\qquad 0<\eta<1.
 q\in M(T_{\max}):
 \rho(q)\ge\eta_{\mathrm{eff}}
 \right\}.
+}
 \tag{35}
 \]
 
