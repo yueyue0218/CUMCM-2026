@@ -11,3 +11,5 @@
 每个分问题形成可运行实现后以 `main.py` 为入口，路径相对于仓库根目录。官方输入只读，生成内容写入 `results/` 或对应的 `runs/` 独立目录。Notebook 中确认有效的算法必须迁移到这里。
 
 当前Q3默认策略为 `efficient`（集中检测、联合路线、动态覆盖证明）。分层验证及运行方式见 [q3/EFFICIENCY.md](q3/EFFICIENCY.md)，原模型策略继续保留。
+
+Q4：`q4/informed.py` 为最终算法；`q4/refined.py` 为上一版对照；`q4/controller.py` 的 adaptive 和 seven_grid 为另两种对照。`q4/compare.py` 在相同合成场景上评价各组，`q4/replay.py` 核验保存动作。运行命令见 [Q4 说明](q4/README.md)。
