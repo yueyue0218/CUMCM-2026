@@ -1,0 +1,15 @@
+# Q3 run
+
+- Run type: practice
+- Case code: None
+- Strategy: efficient_v2
+- Algorithm version: route-pool-v2
+- Git commit: db2816a559b0fb1bdf9b605642ec8e5bc5144ae6
+- Formal tags: None
+- Termination: all_cleared
+- Failure: None
+- Exit failure: None
+
+- Exit skipped: None
+
+Self-recorded protocol evidence; official encrypted logs are exported separately.

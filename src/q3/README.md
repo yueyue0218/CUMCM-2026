@@ -36,7 +36,13 @@ python src/q3/main.py --robot-id "当前登录队号"
 
 参数：`--strategy efficient_v2|efficient|complete|scan|planner|ppo|hybrid`、`--checkpoint`、`--policy-threads`、`--base-url`、`--run-root`、`--virtual-limit-s`、`--exit-reserve-s`。ppo/hybrid 必须提供模型，进入模拟器前检查特征版本；planner 不需模型。虚拟时限默认 360000 秒，只可降低；现实时间使用 `/enter` 的实际回执，动作前为当前请求及退出请求预留完整重试时间。虚拟动作预算包含移动、实际切频和检测/清除成本。
 
-本入口记录 `run_type=practice`，它不能检测模拟器界面选择的模块。正式测试须先按 `docs/formal_test_checklist.md` 完成团队验收与版本冻结；本次没有执行任何官方演练或正式测试。
+默认入口记录 `run_type=practice`，并写入 `runs/q3/practice/`；程序不能自动检测模拟器界面选择的模块。正式测试须先按 `docs/formal_test_checklist.md` 完成团队验收与版本冻结，在当前提交创建 `q3-formal-*` 标签，并使用界面显示的案例编码运行：
+
+```powershell
+python src/q3/main.py --robot-id "当前登录队号" --run-type formal --case-code "界面案例编码"
+```
+
+正式模式要求运行输入干净且当前提交带有 `q3-formal-*` 标签，否则会在调用 `/enter` 前拒绝运行；记录写入 `runs/q3/formal/`。为避免三次正式测试之间被自身产物阻塞，既有 `runs/q3/practice/`、`runs/q3/formal/` 和 `support/q3_official_logs/` 未跟踪证据可以保留，其他未提交文件及任何已跟踪改动仍会拒绝。`config.json` 和 `summary.json` 均保存案例编码、策略、算法版本、提交哈希、仓库整体脏状态、运行输入状态及正式标签。`--run-root` 仍可覆盖默认目录，但不会改变 `run_type`。本次没有执行任何官方正式测试。
 
 每次运行生成 `runs/q3/practice/<时间>_<策略>/`，包含 `config.json`、`requests.jsonl`、`responses.jsonl`、`summary.json`、`notes.md`。日志脱敏队号，失败也保存已取得的证据。若请求结果无法确认，则保留原请求与最后确认时刻、停止新请求，不再发送 `/exit`；摘要标注 `pending_action` 和 `exit_skipped_reason`。正常完成、已确认的拒绝及预算退出仍主动调用 `/exit`。返回码：0 为策略正常完成（scan 仅表示发现扫描完成）；1 为程序、通信或退出异常；2 为完整策略因预算或模型冲突未完成。
 

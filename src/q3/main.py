@@ -52,6 +52,58 @@ def _git_dirty() -> bool:
     return result.returncode != 0 or bool(result.stdout.strip())
 
 
+def _formal_runtime_inputs_dirty() -> bool:
+    """Reject mutable runtime inputs while allowing generated Q3 evidence.
+
+    Formal runs create new files below ``runs/q3/formal``.  Those files, prior
+    practice traces, and exported official logs must not force a code commit
+    between the three formal attempts.  Tracked changes anywhere, Git errors,
+    or any other untracked file remain a hard failure.
+    """
+
+    for command in (
+        ["git", "diff", "--quiet", "--exit-code"],
+        ["git", "diff", "--cached", "--quiet", "--exit-code"],
+    ):
+        result = subprocess.run(command, check=False, cwd=REPO_ROOT)
+        if result.returncode != 0:
+            return True
+
+    result = subprocess.run(
+        ["git", "ls-files", "--others", "--exclude-standard", "-z"],
+        capture_output=True,
+        check=False,
+        cwd=REPO_ROOT,
+    )
+    if result.returncode != 0:
+        return True
+    allowed_prefixes = (
+        "runs/q3/practice/",
+        "runs/q3/formal/",
+        "support/q3_official_logs/",
+    )
+    paths = result.stdout.decode("utf-8", errors="surrogateescape").split("\0")
+    return any(
+        normalized and not normalized.startswith(allowed_prefixes)
+        for normalized in (path.replace("\\", "/") for path in paths)
+    )
+
+
+def _git_tags_at_head(pattern: str = "q3-formal-*") -> list[str]:
+    """Return sorted formal-version tags that point at the current commit."""
+
+    result = subprocess.run(
+        ["git", "tag", "--points-at", "HEAD", "--list", pattern],
+        capture_output=True,
+        check=False,
+        text=True,
+        cwd=REPO_ROOT,
+    )
+    if result.returncode != 0:
+        return []
+    return sorted(tag for tag in result.stdout.splitlines() if tag)
+
+
 def _new_run_directory(run_root: Path, strategy: str = "complete") -> Path:
     timestamp = datetime.now().astimezone().strftime("%Y%m%dT%H%M%S_%f%z")
     return run_root / f"{timestamp}_{strategy}"
@@ -68,8 +120,18 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--run-root",
         type=Path,
-        default=REPO_ROOT / "runs/q3/practice",
-        help="parent directory for this run's logs",
+        default=None,
+        help="parent directory for logs (defaults to runs/q3/<run-type>)",
+    )
+    parser.add_argument(
+        "--run-type",
+        choices=("practice", "formal"),
+        default="practice",
+        help="practice rehearsal or one of the three official formal tests",
+    )
+    parser.add_argument(
+        "--case-code",
+        help="simulator case code; required for formal tests",
     )
     parser.add_argument("--strategy", choices=("complete", "scan", "planner", "ppo", "hybrid", "efficient", "efficient_v2"), default="efficient_v2",
                         help="batched efficient routes, deterministic baseline, scan, model planner, PPO, or hybrid")
@@ -84,13 +146,22 @@ def build_parser() -> argparse.ArgumentParser:
 
 def run(args: argparse.Namespace) -> int:
     strategy = getattr(args, "strategy", "complete")
+    run_type = getattr(args, "run_type", "practice")
+    raw_case_code = getattr(args, "case_code", None)
+    case_code = raw_case_code.strip() if isinstance(raw_case_code, str) else None
     virtual_limit = getattr(args, "virtual_limit_s", 360000.0)
     exit_reserve = getattr(args, "exit_reserve_s", 20.0)
     # Validate before entering a simulator session or creating run artifacts.
     if (strategy not in {"complete", "scan", "planner", "ppo", "hybrid", "efficient", "efficient_v2"}
+            or run_type not in {"practice", "formal"}
             or not math.isfinite(virtual_limit) or not 0 < virtual_limit <= 360000.0
             or not math.isfinite(exit_reserve) or exit_reserve < 0.0):
-        raise ValueError("invalid strategy, virtual limit or exit reserve")
+        raise ValueError("invalid strategy, run type, virtual limit or exit reserve")
+    if raw_case_code is not None and (not case_code or len(case_code) > 128
+                                      or any(ord(char) < 32 for char in case_code)):
+        raise ValueError("case code must be 1..128 visible characters")
+    if run_type == "formal" and case_code is None:
+        raise ValueError("formal runs require --case-code before entering the simulator")
     policy, adaptive_config = None, {}
     if strategy in {'efficient','efficient_v2'}:
         from src.q3.experiment_joint_routing import EfficientState, compact_coverage_points, run_efficient, build_efficient_summary
@@ -109,23 +180,44 @@ def run(args: argparse.Namespace) -> int:
         from src.q3.policy_runtime import policy_configuration
         policy = load_policy(checkpoint)
         adaptive_config = policy_configuration(policy)
-    run_directory = _new_run_directory(args.run_root, strategy)
     git_dirty = _git_dirty()
-    if git_dirty:
+    runtime_inputs_dirty = _formal_runtime_inputs_dirty()
+    git_commit = _git_commit()
+    formal_tags = _git_tags_at_head()
+    if run_type == "formal" and runtime_inputs_dirty:
+        raise ValueError(
+            "formal runs require clean runtime inputs; only existing Q3 run "
+            "artifacts and exported official logs may be untracked"
+        )
+    if run_type == "formal" and not formal_tags:
+        raise ValueError("formal runs require a q3-formal-* tag at the current commit")
+    run_root = getattr(args, "run_root", None) or REPO_ROOT / "runs/q3" / run_type
+    run_directory = _new_run_directory(run_root, strategy)
+    if git_dirty and run_type == "practice":
         print(
             "WARNING: practice run is using a dirty Git working tree; "
             "the recorded commit alone is not reproducible.",
             file=sys.stderr,
         )
+    algorithm_version = (
+        "route-pool-v2" if strategy == "efficient_v2"
+        else "efficient-v1" if strategy == "efficient"
+        else "v0" if strategy == "scan"
+        else "v2" if strategy in {"planner", "ppo", "hybrid"}
+        else "v1"
+    )
     logger = JsonlRunLogger(
         run_directory,
         {
             "problem": "q3",
-            "run_type": "practice",
+            "run_type": run_type,
+            "case_code": case_code,
             "baseline_name": BASELINE_NAME if strategy == "scan" else f"{STRATEGY_NAME}:{strategy}",
-            "algorithm_version": "route-pool-v2" if strategy == 'efficient_v2' else "efficient-v1" if strategy == 'efficient' else "v0" if strategy == "scan" else "v2" if strategy in {"planner", "ppo", "hybrid"} else "v1",
-            "git_commit": _git_commit(),
+            "algorithm_version": algorithm_version,
+            "git_commit": git_commit,
             "git_dirty": git_dirty,
+            "runtime_inputs_dirty": runtime_inputs_dirty,
+            "formal_tags": formal_tags,
             "parameters": {
                 "target_radius_m": 1800.0,
                 "conservative_receive_radius_m": 1000.0,
@@ -210,12 +302,24 @@ def run(args: argparse.Namespace) -> int:
                 "pending_action": JsonlRunLogger._redact(client.pending_action),
                 "last_confirmed_virtual_time_s": client.state.virtual_time_s,
                 "strategy": strategy,
+                "algorithm_version": algorithm_version,
+                "run_type": run_type,
+                "case_code": case_code,
+                "git_commit": git_commit,
+                "git_dirty": git_dirty,
+                "runtime_inputs_dirty": runtime_inputs_dirty,
+                "formal_tags": formal_tags,
             }
         )
         logger.finish(summary)
         (run_directory / "notes.md").write_text(
             "# Q3 run\n\n"
+            f"- Run type: {run_type}\n"
+            f"- Case code: {case_code}\n"
             f"- Strategy: {strategy}\n"
+            f"- Algorithm version: {algorithm_version}\n"
+            f"- Git commit: {git_commit}\n"
+            f"- Formal tags: {', '.join(formal_tags) if formal_tags else None}\n"
             f"- Termination: {summary.get('termination_reason', 'discovery_only')}\n"
             f"- Failure: {failure_reason}\n"
             f"- Exit failure: {exit_failure}\n\n"

@@ -214,6 +214,89 @@ class CompletionRunnerTests(unittest.TestCase):
             self.assertTrue((run_path / "notes.md").exists())
             self.assertTrue(world.exited)
 
+    def test_formal_runner_requires_case_code_before_creating_artifacts(self):
+        from src.q3.main import build_parser, run
+
+        with tempfile.TemporaryDirectory() as directory:
+            args = build_parser().parse_args([
+                "--robot-id", "offline", "--run-type", "formal",
+                "--run-root", directory,
+            ])
+            with self.assertRaisesRegex(ValueError, "require --case-code"):
+                run(args)
+            self.assertEqual(list(Path(directory).iterdir()), [])
+
+    def test_formal_runner_records_identity_and_version_metadata(self):
+        from src.q3.main import build_parser, run
+        world = OfflineSimulator([Source(1, (3.0, 4.0), 1000.0)])
+
+        def factory(robot_id, **kwargs):
+            return SimulatorClient(robot_id, transport=world.transport, **kwargs)
+
+        with tempfile.TemporaryDirectory() as directory:
+            args = build_parser().parse_args([
+                "--robot-id", "offline", "--run-type", "formal",
+                "--case-code", "Q3-CASE-001", "--run-root", directory,
+            ])
+            with (patch("src.q3.main.SimulatorClient", side_effect=factory),
+                  patch("src.q3.main._git_dirty", return_value=False),
+                  patch("src.q3.main._formal_runtime_inputs_dirty", return_value=False),
+                  patch("src.q3.main._git_commit", return_value="abc123"),
+                  patch("src.q3.main._git_tags_at_head", return_value=["q3-formal-v1"]),
+                  redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO())):
+                code = run(args)
+            run_path = next(Path(directory).iterdir())
+            config = json.loads((run_path / "config.json").read_text("utf-8"))
+            summary = json.loads((run_path / "summary.json").read_text("utf-8"))
+
+        self.assertEqual(code, 0)
+        for record in (config, summary):
+            self.assertEqual(record["run_type"], "formal")
+            self.assertEqual(record["case_code"], "Q3-CASE-001")
+            self.assertEqual(record["algorithm_version"], "route-pool-v2")
+            self.assertEqual(record["git_commit"], "abc123")
+            self.assertFalse(record["git_dirty"])
+            self.assertFalse(record["runtime_inputs_dirty"])
+            self.assertEqual(record["formal_tags"], ["q3-formal-v1"])
+        self.assertTrue(world.exited)
+
+    def test_formal_runner_rejects_an_unfrozen_commit(self):
+        from src.q3.main import build_parser, run
+
+        with tempfile.TemporaryDirectory() as directory:
+            args = build_parser().parse_args([
+                "--robot-id", "offline", "--run-type", "formal",
+                "--case-code", "Q3-CASE-001", "--run-root", directory,
+            ])
+            with (patch("src.q3.main._git_dirty", return_value=False),
+                  patch("src.q3.main._formal_runtime_inputs_dirty", return_value=False),
+                  patch("src.q3.main._git_commit", return_value="abc123"),
+                  patch("src.q3.main._git_tags_at_head", return_value=[]),
+                  self.assertRaisesRegex(ValueError, "q3-formal-\\*") ):
+                run(args)
+            self.assertEqual(list(Path(directory).iterdir()), [])
+
+    def test_formal_input_check_allows_only_generated_q3_evidence(self):
+        from src.q3.main import _formal_runtime_inputs_dirty
+
+        clean = subprocess.CompletedProcess([], 0)
+        allowed = subprocess.CompletedProcess(
+            [], 0,
+            stdout=(
+                b"runs/q3/practice/old/summary.json\0"
+                b"runs/q3/formal/first/summary.json\0"
+                b"support/q3_official_logs/original.log\0"
+            ),
+        )
+        with patch("src.q3.main.subprocess.run", side_effect=[clean, clean, allowed]):
+            self.assertFalse(_formal_runtime_inputs_dirty())
+
+        forbidden = subprocess.CompletedProcess(
+            [], 0, stdout=b"src/q3/untracked_runtime_change.py\0"
+        )
+        with patch("src.q3.main.subprocess.run", side_effect=[clean, clean, forbidden]):
+            self.assertTrue(_formal_runtime_inputs_dirty())
+
     def test_incomplete_runner_returns_nonzero_and_still_exits(self):
         from src.q3.main import build_parser, run
         world = OfflineSimulator([], remaining_real_duration_s=1)
