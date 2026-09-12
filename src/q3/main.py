@@ -71,7 +71,7 @@ def build_parser() -> argparse.ArgumentParser:
         default=REPO_ROOT / "runs/q3/practice",
         help="parent directory for this run's logs",
     )
-    parser.add_argument("--strategy", choices=("complete", "scan", "planner", "ppo", "hybrid", "efficient"), default="efficient",
+    parser.add_argument("--strategy", choices=("complete", "scan", "planner", "ppo", "hybrid", "efficient", "efficient_v2"), default="efficient_v2",
                         help="batched efficient routes, deterministic baseline, scan, model planner, PPO, or hybrid")
     parser.add_argument("--checkpoint", type=Path, help="trained best.pt/last.pt required by ppo/hybrid")
     parser.add_argument("--policy-threads", type=int, default=1, help="CPU threads for learned-policy inference")
@@ -87,13 +87,15 @@ def run(args: argparse.Namespace) -> int:
     virtual_limit = getattr(args, "virtual_limit_s", 360000.0)
     exit_reserve = getattr(args, "exit_reserve_s", 20.0)
     # Validate before entering a simulator session or creating run artifacts.
-    if (strategy not in {"complete", "scan", "planner", "ppo", "hybrid", "efficient"}
+    if (strategy not in {"complete", "scan", "planner", "ppo", "hybrid", "efficient", "efficient_v2"}
             or not math.isfinite(virtual_limit) or not 0 < virtual_limit <= 360000.0
             or not math.isfinite(exit_reserve) or exit_reserve < 0.0):
         raise ValueError("invalid strategy, virtual limit or exit reserve")
     policy, adaptive_config = None, {}
-    if strategy == 'efficient':
+    if strategy in {'efficient','efficient_v2'}:
         from src.q3.experiment_joint_routing import EfficientState, compact_coverage_points, run_efficient, build_efficient_summary
+        if strategy == 'efficient_v2':
+            from src.q3.experiment_route_pool import run_route_pool as run_efficient, build_route_pool_summary as build_efficient_summary
     if strategy in {"ppo", "hybrid"}:
         checkpoint = getattr(args, "checkpoint", None)
         if checkpoint is None:
@@ -121,15 +123,15 @@ def run(args: argparse.Namespace) -> int:
             "problem": "q3",
             "run_type": "practice",
             "baseline_name": BASELINE_NAME if strategy == "scan" else f"{STRATEGY_NAME}:{strategy}",
-            "algorithm_version": "efficient-v1" if strategy == 'efficient' else "v0" if strategy == "scan" else "v2" if strategy in {"planner", "ppo", "hybrid"} else "v1",
+            "algorithm_version": "route-pool-v2" if strategy == 'efficient_v2' else "efficient-v1" if strategy == 'efficient' else "v0" if strategy == "scan" else "v2" if strategy in {"planner", "ppo", "hybrid"} else "v1",
             "git_commit": _git_commit(),
             "git_dirty": git_dirty,
             "parameters": {
                 "target_radius_m": 1800.0,
                 "conservative_receive_radius_m": 1000.0,
-                "hexagon_radius_m": 1150.0 if strategy == 'efficient' else 1500.0,
-                "coverage_points": compact_coverage_points() if strategy == 'efficient' else coverage_points(),
-                "coverage_plan_kind": 'dynamic' if strategy == 'efficient' else 'fixed_baseline_or_policy',
+                "hexagon_radius_m": 1150.0 if strategy in {'efficient','efficient_v2'} else 1500.0,
+                "coverage_points": compact_coverage_points() if strategy in {'efficient','efficient_v2'} else coverage_points(),
+                "coverage_plan_kind": 'route_pool' if strategy == 'efficient_v2' else 'dynamic' if strategy == 'efficient' else 'fixed_baseline_or_policy',
                 "strategy": strategy,
                 "virtual_limit_s": virtual_limit,
                 "exit_reserve_s": exit_reserve,
@@ -146,7 +148,7 @@ def run(args: argparse.Namespace) -> int:
         base_url=args.base_url,
         logger=logger,
     )
-    state = EfficientState() if strategy == 'efficient' else DiscoveryState() if strategy == "scan" else SearchClearState()
+    state = EfficientState() if strategy in {'efficient','efficient_v2'} else DiscoveryState() if strategy == "scan" else SearchClearState()
     started = time.monotonic()
     failure_reason: str | None = None
     exit_failure: str | None = None
@@ -154,7 +156,7 @@ def run(args: argparse.Namespace) -> int:
 
     try:
         client.enter()
-        if strategy == 'efficient':
+        if strategy in {'efficient','efficient_v2'}:
             run_efficient(client,state=state,virtual_limit_s=virtual_limit,exit_reserve_s=exit_reserve)
         elif strategy == "complete":
             run_search_and_clear(client, state=state, virtual_limit_s=virtual_limit,
@@ -195,7 +197,7 @@ def run(args: argparse.Namespace) -> int:
         runtime = time.monotonic() - started
         summary = (build_completion_summary(state, client.state.virtual_time_s, runtime)
                    if strategy != "scan" else build_summary(state, client.state.virtual_time_s))
-        if strategy == 'efficient':
+        if strategy in {'efficient','efficient_v2'}:
             summary = build_efficient_summary(state,client.state.virtual_time_s,runtime)
         if failure_reason is None and isinstance(state, SearchClearState):
             failure_reason = state.failure_detail

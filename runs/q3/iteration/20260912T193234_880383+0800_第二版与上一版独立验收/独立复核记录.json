@@ -1,0 +1,27 @@
+{
+  "audited_runs": 160,
+  "paired_scenes": 80,
+  "all_cleared": true,
+  "source_snapshot_hashes": "verified",
+  "current_source_difference": "main.py CLI default promoted from efficient to efficient_v2 after evaluation; controller bytes unchanged",
+  "action_costs_and_clocks": "verified independently per action",
+  "analytic_fallback_channels": 0,
+  "mean_costs": {
+    "previous": {
+      "movement_s": 2344.754737463219,
+      "measurement_s": 659.0,
+      "switching_s": 122.55,
+      "clearance_s": 65.0,
+      "program_runtime_s": 0.4282248587507638
+    },
+    "route_pool": {
+      "movement_s": 2365.644803777782,
+      "measurement_s": 582.875,
+      "switching_s": 108.4125,
+      "clearance_s": 65.0,
+      "program_runtime_s": 1.3426983699996526
+    }
+  },
+  "review": "read-only independent agent review passed; original controller hooks preserve observed action traces",
+  "tests": "working tree: 203 tests passed"
+}

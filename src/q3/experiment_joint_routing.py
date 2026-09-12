@@ -95,6 +95,15 @@ class EfficientController:
             return e.clear_position
         return e.assessment.clear_position
 
+    def route_position(self,c):
+        return self.estimate(c)
+
+    def plan_coverage(self,stations,targets,current):
+        return coverage_waypoints(stations,targets,current)
+
+    def auxiliary_measurement_worthwhile(self,distance,turn):
+        return distance<1400 and turn>=12
+
     def batch(self, position, anchor=None, target_channel=None, force_scan=False):
         s = self.state
         full_scan = (force_scan or anchor is not None or not s.full_scan_stations
@@ -113,7 +122,7 @@ class EfficientController:
             angle=math.degrees(math.atan2(center[1]-position[1],center[0]-position[0]))
             turn=abs((angle-last.svd_deg+180)%360-180)
             distance=math.dist(position,center)
-            if c==target_channel or distance<=150 or (distance<1400 and turn>=12):
+            if c==target_channel or distance<=150 or self.auxiliary_measurement_worthwhile(distance,turn):
                 active.add(c)
         # Do not leave the station in response to the first discovered source.
         order = sorted(unknown|active,reverse=self.client.state.current_channel>10)
@@ -193,9 +202,9 @@ class EfficientController:
                     break
                 tasks = {}
                 for c in sorted(s.active_channels):
-                    tasks[c] = self.estimate(c)
+                    tasks[c] = self.route_position(c)
                 if s.unknown_channels:
-                    stops = coverage_waypoints(s.full_scan_stations,tasks,self.client.state.position)
+                    stops = self.plan_coverage(s.full_scan_stations,tasks,self.client.state.position)
                     tasks.update({21+i:p for i,p in enumerate(stops)})
                 if not tasks:
                     raise _StopRun('incomplete_coverage','no remaining certified cover route')

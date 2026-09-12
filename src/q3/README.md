@@ -1,10 +1,12 @@
 # Q3 全向源运行与训练
 
-`main.py` 当前默认运行 `efficient`：同站集中测量、联合覆盖/补测/清除路线、Q1可靠清除与有限后备。10/12/14/16源各20场独立验证的等权每源均值为257.2秒，全清除80/80；详见 [效率改进与分层结果](EFFICIENCY.md)。所有真实动作复用 `src/common/simulator_client.py`，严格串行。
+`main.py` 当前默认运行 `efficient_v2`：同站集中测量、覆盖路线候选池、实际补测点规划、Q1可靠清除与有限后备。在全新的10/12/14/16源各20场配对验证中，等权每源均值从上一版252.23秒降至246.62秒，降低2.22%，两版均全清除80/80；详见 [第二版自主迭代](ITERATION.md)。所有真实动作复用 `src/common/simulator_client.py`，严格串行。
+
+`--strategy efficient` 保留上一版原策略，其历史独立集均值为257.2秒，详见 [上一版效率结果](EFFICIENCY.md)。历史集和新验收集的场景不同，应使用同场配对数据评价本次增益。
 
 现在也已接通 Q2 主动候选、粒子世界模型、跨频道清除路线和循环 PPO。新训练、续训、模型加载及独立对比命令见 [TRAINING.md](TRAINING.md)。`complete` 保留旧确定性基线，`scan` 保留仅发现对照；下文七点逐源流程描述的是complete基线。
 
-新调度模块为 `experiment_joint_routing.py`、`coverage_control.py`，分层比较入口为 `evaluate_efficiency.py`。
+第二版模块为 `experiment_route_pool.py`、`coverage_route_pool.py`，新旧配对比较入口为 `evaluate_route_iteration.py`。上一版模块为 `experiment_joint_routing.py`、`coverage_control.py`，历史分层比较入口为 `evaluate_efficiency.py`。
 
 新增五类具名对照：普查后清除、螺旋扫描、随机游走、上帝视角、旧 PPO 辅助规划。六组同场比较命令、文件名和指标口径见 [STRATEGY_CONTROLS.md](STRATEGY_CONTROLS.md)，最新结果见 [策略比较表](../../results/tables/Q3_实验组与对照组_策略比较表.md)。上帝视角只在离线对照中显式取得真值。
 
@@ -32,7 +34,7 @@ python src/q3/main.py --robot-id "当前登录队号"
 
 也支持 `python -m src.q3.main`。脚本可以用绝对路径从其他目录启动；默认结果目录仍位于本仓库。
 
-参数：`--strategy efficient|complete|scan|planner|ppo|hybrid`、`--checkpoint`、`--policy-threads`、`--base-url`、`--run-root`、`--virtual-limit-s`、`--exit-reserve-s`。ppo/hybrid 必须提供模型，进入模拟器前检查特征版本；planner 不需模型。虚拟时限默认 360000 秒，只可降低；现实时间使用 `/enter` 的实际回执，动作前为当前请求及退出请求预留完整重试时间。虚拟动作预算包含移动、实际切频和检测/清除成本。
+参数：`--strategy efficient_v2|efficient|complete|scan|planner|ppo|hybrid`、`--checkpoint`、`--policy-threads`、`--base-url`、`--run-root`、`--virtual-limit-s`、`--exit-reserve-s`。ppo/hybrid 必须提供模型，进入模拟器前检查特征版本；planner 不需模型。虚拟时限默认 360000 秒，只可降低；现实时间使用 `/enter` 的实际回执，动作前为当前请求及退出请求预留完整重试时间。虚拟动作预算包含移动、实际切频和检测/清除成本。
 
 本入口记录 `run_type=practice`，它不能检测模拟器界面选择的模块。正式测试须先按 `docs/formal_test_checklist.md` 完成团队验收与版本冻结；本次没有执行任何官方演练或正式测试。
 
