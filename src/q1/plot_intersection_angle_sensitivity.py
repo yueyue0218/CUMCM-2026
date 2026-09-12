@@ -101,13 +101,12 @@ def configure_style() -> None:
             "font.family": "DejaVu Serif",
             "mathtext.fontset": "dejavuserif",
             "font.size": 10,
-            "axes.labelsize": 10.5,
-            "axes.titlesize": 11,
+            "axes.labelsize": 9.5,
             "xtick.labelsize": 8.5,
-            "ytick.labelsize": 9,
+            "ytick.labelsize": 8.5,
             "axes.linewidth": 0.8,
-            "lines.linewidth": 2.0,
-            "lines.markersize": 5.5,
+            "lines.linewidth": 1.4,
+            "lines.markersize": 5.0,
             "savefig.facecolor": "white",
             "savefig.bbox": "tight",
         }
@@ -122,7 +121,7 @@ def make_figure(data: dict[str, list[float]]) -> plt.Figure:
     figure, axes = plt.subplots(
         1,
         2,
-        figsize=(10.8, 4.15),
+        figsize=(10.8, 4.7),
         constrained_layout=True,
         sharex=True,
     )
@@ -139,7 +138,7 @@ def make_figure(data: dict[str, list[float]]) -> plt.Figure:
             marker="o",
             markerfacecolor="white",
             markeredgecolor=color,
-            markeredgewidth=1.4,
+            markeredgewidth=1.15,
             zorder=3,
         )
         axis.set_xticks(alpha)
@@ -162,16 +161,6 @@ def make_figure(data: dict[str, list[float]]) -> plt.Figure:
             fontweight="bold",
         )
 
-    axes[0].text(
-        0.97,
-        0.91,
-        r"$r^*=D/2$ in this symmetric configuration",
-        transform=axes[0].transAxes,
-        ha="right",
-        va="top",
-        fontsize=8.2,
-        color="#50565E",
-    )
     return figure
 
 

@@ -150,6 +150,8 @@ def configure_style() -> None:
             "xtick.labelsize": 8.5,
             "ytick.labelsize": 8.5,
             "axes.linewidth": 0.8,
+            "lines.linewidth": 1.4,
+            "lines.markersize": 5.0,
             "savefig.facecolor": "white",
             "savefig.bbox": "tight",
         }
