@@ -1,0 +1,114 @@
+{
+  "analytic_radial_excess_m": {
+    "1800": {
+      "180": 0.2741904790339422,
+      "360": 0.06854109432659072,
+      "720": 0.017134865789447673,
+      "1440": 0.004283690961148778
+    },
+    "1500": {
+      "180": 0.22849206586161852,
+      "360": 0.05711757860549227,
+      "720": 0.014279054824539728,
+      "1440": 0.003569742467623982
+    }
+  },
+  "production_case": {
+    "observations": [
+      {
+        "station_m": [
+          0.0,
+          0.0
+        ],
+        "bearing_deg": 0.0,
+        "error_deg": 1.0
+      }
+    ],
+    "arena_radius_m": 1800.0,
+    "reception_radius_upper_m": 1500.0,
+    "description": "A nondegenerate bearing wedge actually clipped by the 1500 m reception-circle outer polygon; it is far from the 20 m clear scale.",
+    "reference_circle_vertices": 1440,
+    "measurements": [
+      {
+        "circle_vertices": 180,
+        "region_vertex_count": 4,
+        "diameter_m": 1500.2284920658615,
+        "area_m2": 39273.896088489564,
+        "clear_position_m": [
+          750.1142460329307,
+          0.0
+        ],
+        "r_max_m": 750.1142460329309,
+        "status": "COVERAGE_UNCERTAIN",
+        "clear_ready": false,
+        "delta_vs_1440": {
+          "region_vertex_count": -7,
+          "diameter_m": 0.22492232339368456,
+          "area_m2": 3.9256148625863716,
+          "r_max_m": -0.0017851431197186685
+        },
+        "status_changed_vs_1440": false
+      },
+      {
+        "circle_vertices": 360,
+        "region_vertex_count": 5,
+        "diameter_m": 1500.0571175786054,
+        "area_m2": 39270.905058414544,
+        "clear_position_m": [
+          750.1428091725379,
+          3.552713678800501e-15
+        ],
+        "r_max_m": 750.1428091725379,
+        "status": "COVERAGE_UNCERTAIN",
+        "clear_ready": false,
+        "delta_vs_1440": {
+          "region_vertex_count": -6,
+          "diameter_m": 0.05354783613756808,
+          "area_m2": 0.934584787566564,
+          "r_max_m": 0.026777996487339806
+        },
+        "status_changed_vs_1440": false
+      },
+      {
+        "circle_vertices": 720,
+        "region_vertex_count": 7,
+        "diameter_m": 1500.0142790548246,
+        "area_m2": 39270.157386314095,
+        "clear_position_m": [
+          750.1213866478932,
+          7.105427357601002e-15
+        ],
+        "r_max_m": 750.1213866478932,
+        "status": "COVERAGE_UNCERTAIN",
+        "clear_ready": false,
+        "delta_vs_1440": {
+          "region_vertex_count": -4,
+          "diameter_m": 0.010709312356766532,
+          "area_m2": 0.18691268711700104,
+          "r_max_m": 0.005355471842676707
+        },
+        "status_changed_vs_1440": false
+      },
+      {
+        "circle_vertices": 1440,
+        "region_vertex_count": 11,
+        "diameter_m": 1500.0035697424678,
+        "area_m2": 39269.97047362698,
+        "clear_position_m": [
+          750.1160311760506,
+          3.552713678800501e-15
+        ],
+        "r_max_m": 750.1160311760506,
+        "status": "COVERAGE_UNCERTAIN",
+        "clear_ready": false,
+        "delta_vs_1440": {
+          "region_vertex_count": 0,
+          "diameter_m": 0.0,
+          "area_m2": 0.0,
+          "r_max_m": 0.0
+        },
+        "status_changed_vs_1440": false
+      }
+    ]
+  }
+}
