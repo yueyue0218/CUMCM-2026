@@ -125,22 +125,31 @@ def minimum_enclosing_circle(points: Sequence[Point]) -> Circle:
         raise ValueError("minimum enclosing circle requires finite coordinates")
 
     ordered = sorted(set(points))
-    circle = Circle(center=ordered[0], radius=0.0)
-    for i, point in enumerate(ordered):
+    origin = ordered[0]
+    local_points = [
+        (point[0] - origin[0], point[1] - origin[1])
+        for point in ordered
+    ]
+
+    circle = Circle(center=local_points[0], radius=0.0)
+    for i, point in enumerate(local_points):
         if _circle_contains(circle, point):
             continue
         circle = Circle(center=point, radius=0.0)
-        for j, second in enumerate(ordered[:i]):
+        for j, second in enumerate(local_points[:i]):
             if _circle_contains(circle, second):
                 continue
             circle = _diameter_circle(point, second)
-            for third in ordered[:j]:
+            for third in local_points[:j]:
                 if not _circle_contains(circle, third):
                     circle = _minimum_circle_for_three(point, second, third)
 
-    if not all(_circle_contains(circle, point) for point in points):
+    if not all(_circle_contains(circle, point) for point in local_points):
         raise ArithmeticError("computed circle does not contain every input point")
-    return circle
+    return Circle(
+        center=(circle.center[0] + origin[0], circle.center[1] + origin[1]),
+        radius=circle.radius,
+    )
 
 
 def max_distance_to_region(region: Sequence[Point], center: Point) -> float:

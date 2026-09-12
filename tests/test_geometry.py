@@ -247,6 +247,59 @@ class MinimumEnclosingCircleTests(unittest.TestCase):
                 forward.radius + 1e-10,
             )
 
+    def assert_translation_invariant(
+        self,
+        points: list[tuple[float, float]],
+        shift: tuple[float, float],
+        *,
+        abs_tol: float,
+    ) -> None:
+        base = minimum_enclosing_circle(points)
+        shifted_points = [
+            (x + shift[0], y + shift[1])
+            for x, y in points
+        ]
+
+        shifted = minimum_enclosing_circle(shifted_points)
+
+        self.assertTrue(
+            math.isclose(shifted.radius, base.radius, rel_tol=1e-12, abs_tol=abs_tol)
+        )
+        self.assertTrue(
+            math.isclose(
+                shifted.center[0] - base.center[0],
+                shift[0],
+                rel_tol=1e-12,
+                abs_tol=abs_tol,
+            )
+        )
+        self.assertTrue(
+            math.isclose(
+                shifted.center[1] - base.center[1],
+                shift[1],
+                rel_tol=1e-12,
+                abs_tol=abs_tol,
+            )
+        )
+
+    def test_translation_invariance_at_one_million_scale(self) -> None:
+        points = [(-2.5, 1.25), (4.75, -0.5), (1.5, 6.0), (0.25, 2.0)]
+
+        self.assert_translation_invariant(
+            points,
+            (1_000_000.0, -1_000_000.0),
+            abs_tol=1e-9,
+        )
+
+    def test_translation_invariance_at_one_billion_scale(self) -> None:
+        points = [(-2.5, 1.25), (4.75, -0.5), (1.5, 6.0), (0.25, 2.0)]
+
+        self.assert_translation_invariant(
+            points,
+            (1_000_000_000.0, -1_000_000_000.0),
+            abs_tol=1e-6,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
