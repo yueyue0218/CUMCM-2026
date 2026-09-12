@@ -10,6 +10,8 @@
 
 以目标区域圆心为原点，正东、正北分别为坐标轴正向，坐标单位为米，方位角从正东逆时针计量。设检测点为 \(S_i=(x_i,y_i)\)，示向度为 \(\theta_i\)，待定位干扰源为 \(G=(x,y)\)。各频道对应的干扰源不同，以下观测均来自同一频道。[1，附录1、附录2]
 
+题设仅给出确定性的 \(1^\circ\) 角度误差上界，未给出可信的完整误差概率分布，因此本文采用 set-membership 思路，而不预先压缩为最小二乘或后验均值等单点估计。[7；9] 每次示向观测对应全部与误差界相容的位置集合，多次观测通过求交逐步缩小可行区域；只要题设硬误差模型成立，真实位置就仍包含在该区域中。单点估计还需额外指定损失函数或概率模型，也不能独立表达整个硬界不确定范围；这不排斥在额外概率假设下使用期望模型。有界 bearing 误差自然形成楔形区域[8]，故下文将其写成两个半平面约束，便于求交与后续凸几何计算。
+
 当 \(G\ne S_i\) 时，真实方位角及测向约束为
 
 \[
@@ -636,3 +638,6 @@ D=R,\quad r_* =\frac{R}{2\cos\delta},
 4. Welzl E. Smallest enclosing disks (balls and ellipsoids). In: New Results and New Trends in Computer Science. LNCS 555, 1991: 359–370. [原论文](https://www.ibr.cs.tu-bs.de/courses/ws2122/ag/otherstuff/smallest-disk-welzl.pdf)，[DOI](https://doi.org/10.1007/BFb0038202)。
 5. Treibergs A. Helly’s Theorem with Applications in Combinatorial Geometry. University of Utah, 2016-08-31，第26—29页，Jung 定理及证明。[讲义](https://www.math.utah.edu/~treiberg/HellySlides.pdf)。
 6. Toussaint G. Solving Geometric Problems with the Rotating Calipers. Proceedings of IEEE MELECON’83, Athens, Greece, 1983，第1节：平行支撑线、对踵点及旋转卡壳。[原论文](https://www-cgrl.cs.mcgill.ca/~godfried/publications/calipers.pdf)。
+7. Garulli A.; Vicino A. Set membership localization of mobile robots via angle measurements. IEEE Transactions on Robotics and Automation, 17(4), 2001: 450–463. [DOI](https://doi.org/10.1109/70.954757)。
+8. Tokekar P.; Isler V. Sensor placement and selection for bearing sensors with bounded uncertainty. 2013 IEEE International Conference on Robotics and Automation (ICRA), 2013: 2515–2520. [DOI](https://doi.org/10.1109/ICRA.2013.6630920)。
+9. Walter E.; Piet-Lahanier H. Estimation of parameter bounds from bounded-error data: a survey. Mathematics and Computers in Simulation, 32(5–6), 1990: 449–468. [DOI](https://doi.org/10.1016/0378-4754(90)90002-Z)。
