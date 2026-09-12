@@ -308,12 +308,11 @@ def convex_hull(points: Iterable[Point], epsilon: float = 1e-12) -> list[Point]:
     return lower[:-1] + upper[:-1]
 
 
-def polygon_diameter(points: Sequence[Point]) -> float:
-    """Return the maximum distance between points of a convex polygon.
+def polygon_diameter_exhaustive(points: Sequence[Point]) -> float:
+    """Return a point set's convex-hull diameter by exhaustive enumeration.
 
-    The current implementation enumerates hull vertices.  It is deliberately
-    simple and serves as an independent reference for a later rotating-calipers
-    optimization.
+    This ``O(h^2)`` implementation is retained as a reference oracle, where
+    ``h`` is the number of convex-hull vertices.
     """
 
     hull = convex_hull(points)
@@ -381,6 +380,17 @@ def polygon_diameter_calipers(points: Sequence[Point]) -> float:
             )
 
     return maximum_distance
+
+
+def polygon_diameter(points: Sequence[Point]) -> float:
+    """Return a point set's convex-hull diameter using rotating calipers.
+
+    The input need not already be a convex hull.  For ``n`` input points and
+    ``h`` convex-hull vertices, hull construction takes ``O(n log n)`` and the
+    rotating-calipers scan takes ``O(h)``.
+    """
+
+    return polygon_diameter_calipers(points)
 
 
 def candidate_second_points(

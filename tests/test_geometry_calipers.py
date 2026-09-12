@@ -2,7 +2,11 @@ import math
 import random
 import unittest
 
-from src.common.geometry import polygon_diameter, polygon_diameter_calipers
+from src.common.geometry import (
+    polygon_diameter,
+    polygon_diameter_calipers,
+    polygon_diameter_exhaustive,
+)
 
 
 class PolygonDiameterCalipersTests(unittest.TestCase):
@@ -13,7 +17,7 @@ class PolygonDiameterCalipersTests(unittest.TestCase):
         rel_tol: float = 1e-12,
         abs_tol: float = 1e-12,
     ) -> float:
-        expected = polygon_diameter(points)
+        expected = polygon_diameter_exhaustive(points)
         actual = polygon_diameter_calipers(points)
         self.assertTrue(
             math.isclose(actual, expected, rel_tol=rel_tol, abs_tol=abs_tol),
@@ -59,6 +63,39 @@ class PolygonDiameterCalipersTests(unittest.TestCase):
         for name, points in cases.items():
             with self.subTest(name=name):
                 self.assert_matches_oracle(points)
+
+    def test_near_tie_perturbed_rectangle_matches_exhaustive_oracle(self) -> None:
+        points = [
+            (0.0, 0.0),
+            (1_000_000.0, 1e-6),
+            (1_000_000.000001, 1.000001000002),
+            (1e-6, 1.0),
+        ]
+
+        self.assert_matches_oracle(points)
+
+    def test_production_api_delegates_to_calipers(self) -> None:
+        cases = {
+            "empty": [],
+            "two_points": [(0.0, 0.0), (3.0, 4.0)],
+            "triangle": [(0.0, 0.0), (4.0, 0.0), (1.0, 3.0)],
+            "rectangle": [(0.0, 0.0), (8.0, 0.0), (8.0, 3.0), (0.0, 3.0)],
+            "interior_and_duplicates": [
+                (0.0, 0.0),
+                (4.0, 0.0),
+                (4.0, 2.0),
+                (0.0, 2.0),
+                (2.0, 1.0),
+                (4.0, 2.0),
+                (2.0, 1.0),
+            ],
+        }
+        for name, points in cases.items():
+            with self.subTest(name=name):
+                self.assertEqual(
+                    polygon_diameter(points),
+                    polygon_diameter_calipers(points),
+                )
 
     def test_unordered_interior_duplicate_and_collinear_points(self) -> None:
         points = [
