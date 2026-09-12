@@ -1,0 +1,8 @@
+{
+  "problem": "q3",
+  "run_type": "practice",
+  "control_group": "census_then_clear",
+  "algorithm_version": "control-census-v1",
+  "base_url": "http://127.0.0.1:2026",
+  "started_at": "2026-09-12T23:29:55.650534+08:00"
+}
