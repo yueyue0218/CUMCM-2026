@@ -9,8 +9,21 @@ from __future__ import annotations
 
 import math
 from collections.abc import Iterable, Sequence
+from dataclasses import dataclass
 
 Point = tuple[float, float]
+
+
+@dataclass(frozen=True)
+class Circle:
+    """A circle represented by its center and non-negative radius."""
+
+    center: Point
+    radius: float
+
+
+_MEC_REL_TOL = 1e-12
+_MEC_ABS_TOL = 1e-12
 
 
 def normalize_angle_deg(angle: float) -> float:
@@ -38,6 +51,117 @@ def cross(a: Point, b: Point) -> float:
 
 def distance(a: Point, b: Point) -> float:
     return math.hypot(a[0] - b[0], a[1] - b[1])
+
+
+def _circle_contains(circle: Circle, point: Point) -> bool:
+    point_distance = distance(point, circle.center)
+    tolerance = max(
+        _MEC_ABS_TOL,
+        _MEC_REL_TOL * max(circle.radius, point_distance),
+    )
+    return point_distance <= circle.radius + tolerance
+
+
+def _diameter_circle(a: Point, b: Point) -> Circle:
+    center = ((a[0] + b[0]) / 2.0, (a[1] + b[1]) / 2.0)
+    return Circle(center=center, radius=distance(a, b) / 2.0)
+
+
+def _circumcircle(a: Point, b: Point, c: Point) -> Circle:
+    bx, by = b[0] - a[0], b[1] - a[1]
+    cx, cy = c[0] - a[0], c[1] - a[1]
+    denominator = 2.0 * cross((bx, by), (cx, cy))
+    if denominator == 0.0:
+        raise ArithmeticError("cannot construct a circumcircle for collinear points")
+
+    b_squared = bx * bx + by * by
+    c_squared = cx * cx + cy * cy
+    center = (
+        a[0] + (cy * b_squared - by * c_squared) / denominator,
+        a[1] + (bx * c_squared - cx * b_squared) / denominator,
+    )
+    radius = max(distance(center, point) for point in (a, b, c))
+    circle = Circle(center=center, radius=radius)
+    if not all(math.isfinite(value) for value in (*circle.center, circle.radius)):
+        raise ArithmeticError("non-finite circumcircle produced by floating-point arithmetic")
+    return circle
+
+
+def _minimum_circle_for_three(a: Point, b: Point, c: Point) -> Circle:
+    points = (a, b, c)
+    diameter_candidates = (
+        _diameter_circle(a, b),
+        _diameter_circle(a, c),
+        _diameter_circle(b, c),
+    )
+    covering_diameter_circles = [
+        circle
+        for circle in diameter_candidates
+        if all(_circle_contains(circle, point) for point in points)
+    ]
+    if covering_diameter_circles:
+        return min(
+            covering_diameter_circles,
+            key=lambda circle: (circle.radius, circle.center),
+        )
+    return _circumcircle(a, b, c)
+
+
+def minimum_enclosing_circle(points: Sequence[Point]) -> Circle:
+    """Return the minimum enclosing circle of a non-empty finite point set.
+
+    The implementation is a deterministic incremental algorithm.  Points are
+    sorted and deduplicated first, so neither random state nor input order can
+    affect the processing order.  An empty input raises ``ValueError``.
+
+    The returned circle is a finite-point geometry result only; it does not
+    certify that a clear action may be issued.  Callers must independently
+    validate the actual output center against the relevant localization region.
+    """
+
+    if not points:
+        raise ValueError("minimum enclosing circle requires at least one point")
+    if not all(math.isfinite(coordinate) for point in points for coordinate in point):
+        raise ValueError("minimum enclosing circle requires finite coordinates")
+
+    ordered = sorted(set(points))
+    circle = Circle(center=ordered[0], radius=0.0)
+    for i, point in enumerate(ordered):
+        if _circle_contains(circle, point):
+            continue
+        circle = Circle(center=point, radius=0.0)
+        for j, second in enumerate(ordered[:i]):
+            if _circle_contains(circle, second):
+                continue
+            circle = _diameter_circle(point, second)
+            for third in ordered[:j]:
+                if not _circle_contains(circle, third):
+                    circle = _minimum_circle_for_three(point, second, third)
+
+    if not all(_circle_contains(circle, point) for point in points):
+        raise ArithmeticError("computed circle does not contain every input point")
+    return circle
+
+
+def max_distance_to_region(region: Sequence[Point], center: Point) -> float:
+    """Return the maximum distance from ``center`` to a convex region.
+
+    ``region`` is represented by its convex-polygon vertices, so the maximum
+    is attained at a vertex.  An empty region returns ``math.inf``: absence of
+    a region must never be interpreted as a zero-radius coverage certificate.
+    """
+
+    return max((distance(vertex, center) for vertex in region), default=math.inf)
+
+
+def is_clear_point_certified(
+    region: Sequence[Point],
+    center: Point,
+    clear_radius_m: float = 20.0,
+) -> bool:
+    """Return whether ``center``'s closed clear disk covers ``region``."""
+
+    return max_distance_to_region(region, center) <= clear_radius_m
 
 
 def circle_polygon(radius: float, vertex_count: int = 720) -> list[Point]:
@@ -98,6 +222,41 @@ def clip_polygon_half_plane(
         previous_side = current_side
         previous_inside = current_inside
     return output
+
+
+def clip_polygon_to_circle_outer(
+    polygon: Sequence[Point],
+    center: Point,
+    radius: float,
+    vertex_count: int = 720,
+) -> list[Point]:
+    """Clip ``polygon`` to a conservative outer approximation of a circle.
+
+    ``radius`` is the incircle radius of a regular circumscribed polygon, so
+    the true closed circle is contained in the clipping polygon.  ``center``
+    translates that outer polygon from the origin.
+    """
+
+    outer_circle = [
+        (center[0] + point[0], center[1] + point[1])
+        for point in circle_polygon(radius, vertex_count)
+    ]
+    clipped = list(polygon)
+    for index, boundary_point in enumerate(outer_circle):
+        next_point = outer_circle[(index + 1) % len(outer_circle)]
+        boundary_direction = (
+            next_point[0] - boundary_point[0],
+            next_point[1] - boundary_point[1],
+        )
+        clipped = clip_polygon_half_plane(
+            clipped,
+            boundary_point,
+            boundary_direction,
+            keep_left=True,
+        )
+        if not clipped:
+            break
+    return clipped
 
 
 def clip_polygon_to_bearing_wedge(
