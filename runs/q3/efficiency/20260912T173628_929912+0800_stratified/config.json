@@ -1,0 +1,49 @@
+{
+  "source_counts": [
+    10,
+    12,
+    14,
+    16
+  ],
+  "cases_per_group": 20,
+  "seed_start": 70260912,
+  "seed_group_stride": 1000,
+  "modes": [
+    "complete",
+    "hybrid",
+    "efficient"
+  ],
+  "checkpoint": "runs\\q3\\training\\20260912T163625_420414+0800_ppo\\best.pt",
+  "source_sha256": {
+    "src/q3/adaptive_control.py": "745fc28f00ff8126653a483d6efe43f6126813d46692c4f64591b98a569f6a52",
+    "src/q3/baseline_scan.py": "9b1cce35455eff4e968bf01b2cfec6240526460ba7141feba4c21a3bd67acd03",
+    "src/q3/coverage_control.py": "c6fc9fea356c6a621acf0309a4f17a275de1472320ec593ce7212f92243fffd9",
+    "src/q3/efficient_control.py": "7f691bccf318d84b03f1423d94942a5f9509b21bb3e782232b279565b939ef12",
+    "src/q3/evaluate_efficiency.py": "5db383a597721c91438aee2b3cf4fbc66f3a02ba5bac0d2669e1925f7fe85dd2",
+    "src/q3/evaluate_policy.py": "8192179dbe4f3288883e34e525b402697cce08b8735f39b3a5fd76f6de725dd3",
+    "src/q3/localization_control.py": "7fd6d44dc584305872dc2fec12721ebd9837b4da9fd678886c67bdddabdfd75b",
+    "src/q3/main.py": "a1868d287bcbf2892562369bd39eada712fd20005e0f054437c111d27772c695",
+    "src/q3/offline_simulator.py": "a396fbb3cae55adbe400dc2d1e9c9942c0e261dcb656b6ea757a96097167c26c",
+    "src/q3/policy_runtime.py": "df278fc789205766898fcd06c57c3d43a42eb8dd6601166a6416549f8b9ee486",
+    "src/q3/ppo.py": "64699b0e7c351a0c32436f67fbb1731aef3e5d73475b1afe950cb91015dc6c39",
+    "src/q3/search_clear.py": "ae969db206b1cbe10a7f5d26ea9adfab901d5da0f00ca57422af1cd56c1490e3",
+    "src/q3/train_ppo.py": "473143a3a15e59f66ba305f54e2d0ece79c9b2f22f23adf8bf8d320d77d7c2b5",
+    "src/q3/training_env.py": "003b0c4163ca5c06e1e0115cab1cd5907d80399b79de16371ac903f09d679412",
+    "src/q3/validate_offline.py": "8275984cbdf8e37c7f2de1cdb0e69eba269d07022b54c92941ddef00bdf39fe0",
+    "src/q3/world_model.py": "ad40095638f810af808683cdcf3f9c71868368aaaed284e781c1b7114801a8c7",
+    "src/common/__init__.py": "2ab41ddc97f3d7d31c1fc22459922315f22fda168c22d125c973202da6746f17",
+    "src/common/geometry.py": "79301cb11d6876904b0d5c3413cf40e3935cf2816d75075dc1b4b59cfea08170",
+    "src/common/localization.py": "056b58eb63d52404adb15d15294d1d8f48968aad88ea1a4d8368a73a4c3108af",
+    "src/common/metrics.py": "0f2f9ddf8c5b94f2c46002bc6931be793778f587a72287cc751ff4114e8d6ebd",
+    "src/common/simulator_client.py": "81ecbbcba5480553ee564a69aed2ed3b2841557be7b86f363dd3b40d96990ed4",
+    "src/q2/bayesian_design.py": "09fa3dd53f297c178de0264a70c172b3c579b7104c32b265aa12968102082e6f"
+  },
+  "environment": "synthetic fixed spatial error, amplitude 1 degree; final 0.01-degree quantization",
+  "hybrid_environment_config": {
+    "max_free_actions": 24,
+    "max_free_time_s": 6000.0,
+    "prediction_limit": 2,
+    "particle_count": 48
+  },
+  "evidence_scope": "independent local synthetic evaluation; not official results"
+}

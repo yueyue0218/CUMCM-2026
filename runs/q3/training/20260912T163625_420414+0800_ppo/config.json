@@ -1,0 +1,53 @@
+{
+  "feature_version": "q3-candidates-v1",
+  "environment_config": {
+    "max_free_actions": 24,
+    "max_free_time_s": 6000.0,
+    "prediction_limit": 2,
+    "particle_count": 48
+  },
+  "seed": 20260913,
+  "source_count": null,
+  "device": "cpu",
+  "algorithm": "recurrent_ppo_gamma1_with_complete_fallback_tail",
+  "source_sha256": {
+    "src/q3/adaptive_control.py": "5a65e521c00be97b76b516b7bc9501f8d1059852729a432a0a402fc4d3d39bdf",
+    "src/q3/baseline_scan.py": "9b1cce35455eff4e968bf01b2cfec6240526460ba7141feba4c21a3bd67acd03",
+    "src/q3/evaluate_policy.py": "9b471a98d7665bed0a7d29e7e50bb422f006294d681390a8c1b76f1cddbfb39a",
+    "src/q3/localization_control.py": "7fd6d44dc584305872dc2fec12721ebd9837b4da9fd678886c67bdddabdfd75b",
+    "src/q3/main.py": "8bc869a3193727a38ceade47a57aae1b8fd400484aa393a78f5229dc715ebb3a",
+    "src/q3/offline_simulator.py": "a396fbb3cae55adbe400dc2d1e9c9942c0e261dcb656b6ea757a96097167c26c",
+    "src/q3/policy_runtime.py": "df278fc789205766898fcd06c57c3d43a42eb8dd6601166a6416549f8b9ee486",
+    "src/q3/ppo.py": "64699b0e7c351a0c32436f67fbb1731aef3e5d73475b1afe950cb91015dc6c39",
+    "src/q3/search_clear.py": "ae969db206b1cbe10a7f5d26ea9adfab901d5da0f00ca57422af1cd56c1490e3",
+    "src/q3/train_ppo.py": "002524dd4cc1c08a90acb57154ee1dd2d3f34380348b2c055d852282e43a40c5",
+    "src/q3/training_env.py": "003b0c4163ca5c06e1e0115cab1cd5907d80399b79de16371ac903f09d679412",
+    "src/q3/validate_offline.py": "0ed0d866ec8cda3dd35e8ea055bed7d6571eaa323bdf374a4e97c5dcef818609",
+    "src/q3/world_model.py": "ad40095638f810af808683cdcf3f9c71868368aaaed284e781c1b7114801a8c7",
+    "src/common/__init__.py": "2ab41ddc97f3d7d31c1fc22459922315f22fda168c22d125c973202da6746f17",
+    "src/common/geometry.py": "79301cb11d6876904b0d5c3413cf40e3935cf2816d75075dc1b4b59cfea08170",
+    "src/common/localization.py": "056b58eb63d52404adb15d15294d1d8f48968aad88ea1a4d8368a73a4c3108af",
+    "src/common/metrics.py": "0f2f9ddf8c5b94f2c46002bc6931be793778f587a72287cc751ff4114e8d6ebd",
+    "src/common/simulator_client.py": "81ecbbcba5480553ee564a69aed2ed3b2841557be7b86f363dd3b40d96990ed4"
+  },
+  "status": "experimental",
+  "validation_seed_start": 1020260913,
+  "arguments": {
+    "episodes": 64,
+    "batch_episodes": 4,
+    "epochs": 3,
+    "warmup_episodes": 16,
+    "seed": 20260913,
+    "hidden_size": 64,
+    "learning_rate": 0.001,
+    "free_actions": 24,
+    "free_time_s": 6000.0,
+    "prediction_limit": 2,
+    "particle_count": 48,
+    "validation_cases": 4,
+    "threads": 1,
+    "source_count": null,
+    "run_root": "C:\\Users\\ASUS\\Desktop\\CUMCM-2026\\runs\\q3\\training",
+    "resume": null
+  }
+}

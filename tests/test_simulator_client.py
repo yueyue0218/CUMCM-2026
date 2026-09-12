@@ -71,6 +71,17 @@ class SimulatorClientTests(unittest.TestCase):
         with self.assertRaises(SimulatorConnectionError):
             client.enter()
 
+    def test_unresolved_request_blocks_new_actions(self) -> None:
+        transport = QueueTransport(TimeoutError(), TimeoutError())
+        client = self.client(transport)
+        client.state.entered = True
+        with self.assertRaises(SimulatorConnectionError):
+            client.clear((1.0, 2.0), 1)
+        with self.assertRaisesRegex(SimulatorError, "unresolved"):
+            client.exit()
+        self.assertEqual(len(transport.calls), 2)
+        self.assertEqual(client.pending_action["path"], "/clear")
+
     def test_accepted_false_does_not_update_state(self) -> None:
         transport = QueueTransport((200, encoded(accepted=False, virtual_time_s=0)))
         client = self.client(transport)
@@ -341,6 +352,28 @@ class SimulatorClientTests(unittest.TestCase):
 
         with self.assertRaises(ProtocolError):
             client.measure((0.0, 0.0), 1)
+
+    def test_invalid_clock_does_not_corrupt_position_or_time(self) -> None:
+        for value in (float("nan"), float("inf"), -1.0, 9.0):
+            with self.subTest(value=value):
+                client = self.client(QueueTransport((200, encoded(
+                    accepted=True, virtual_time_s=value, measure_result="no_signal"))))
+                client.state.entered = True
+                client.state.virtual_time_s = 10.0
+                with self.assertRaises(ProtocolError):
+                    client.measure((123.0, 456.0), 2)
+                self.assertEqual(client.state.virtual_time_s, 10.0)
+                self.assertEqual(client.state.position, (0.0, 0.0))
+
+    def test_nonfinite_bearings_are_rejected_before_state_update(self) -> None:
+        for value in (float("nan"), float("inf")):
+            with self.subTest(value=value):
+                client = self.client(QueueTransport((200, encoded(
+                    accepted=True, virtual_time_s=5, measure_result="direction", svd_deg=value))))
+                client.state.entered = True
+                with self.assertRaises(ProtocolError):
+                    client.measure((1.0, 2.0), 1)
+                self.assertEqual(client.state.virtual_time_s, 0.0)
 
 
 if __name__ == "__main__":

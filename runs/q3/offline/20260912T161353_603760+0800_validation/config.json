@@ -1,0 +1,195 @@
+{
+  "problem": "q3",
+  "run_type": "offline_synthetic",
+  "algorithm_version": "q3-v1-search-localize-clear",
+  "git_commit": "30259f26d00821aa9ba164397e20a09b60c981ea",
+  "git_dirty": true,
+  "source_sha256": {
+    "src/q3/baseline_scan.py": "9b1cce35455eff4e968bf01b2cfec6240526460ba7141feba4c21a3bd67acd03",
+    "src/q3/localization_control.py": "7fd6d44dc584305872dc2fec12721ebd9837b4da9fd678886c67bdddabdfd75b",
+    "src/q3/main.py": "1f1aa2ca553d2c3b495a3981f04d3fca751a5c11b5865c2e70616b6e4d465337",
+    "src/q3/offline_simulator.py": "1e037d5d755459f080241eda83802301995596390e44f703b53cf61d63298e1d",
+    "src/q3/search_clear.py": "276b624f03affda724151fa18902dc7b9ec9d566cd8e2210196ed04675832880",
+    "src/q3/validate_offline.py": "0ed0d866ec8cda3dd35e8ea055bed7d6571eaa323bdf374a4e97c5dcef818609",
+    "src/common/__init__.py": "2ab41ddc97f3d7d31c1fc22459922315f22fda168c22d125c973202da6746f17",
+    "src/common/geometry.py": "79301cb11d6876904b0d5c3413cf40e3935cf2816d75075dc1b4b59cfea08170",
+    "src/common/localization.py": "056b58eb63d52404adb15d15294d1d8f48968aad88ea1a4d8368a73a4c3108af",
+    "src/common/metrics.py": "0f2f9ddf8c5b94f2c46002bc6931be793778f587a72287cc751ff4114e8d6ebd",
+    "src/common/simulator_client.py": "81ecbbcba5480553ee564a69aed2ed3b2841557be7b86f363dd3b40d96990ed4"
+  },
+  "random_seed": 20260912,
+  "random_scenes": 40,
+  "parameters": {
+    "bearing_error_bound_deg": 1,
+    "receive_radius_range_m": [
+      1000,
+      1500
+    ]
+  },
+  "evidence_scope": "synthetic regression only; not official simulator performance",
+  "scenario": "perimeter_positive_error",
+  "sources": [
+    {
+      "channel": 1,
+      "position": [
+        1711.9017293312763,
+        556.2305898749053
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 2,
+      "position": [
+        1456.2305898749055,
+        1058.0134541264517
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 3,
+      "position": [
+        1058.0134541264517,
+        1456.2305898749055
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 4,
+      "position": [
+        556.2305898749054,
+        1711.9017293312763
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 5,
+      "position": [
+        1.1021821192326178e-13,
+        1800.0
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 6,
+      "position": [
+        -556.2305898749053,
+        1711.9017293312766
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 7,
+      "position": [
+        -1058.0134541264515,
+        1456.2305898749055
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 8,
+      "position": [
+        -1456.2305898749053,
+        1058.0134541264517
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 9,
+      "position": [
+        -1711.9017293312763,
+        556.2305898749055
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 10,
+      "position": [
+        -1800.0,
+        2.2043642384652357e-13
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 11,
+      "position": [
+        -1711.9017293312768,
+        -556.2305898749045
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 12,
+      "position": [
+        -1456.2305898749055,
+        -1058.0134541264515
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 13,
+      "position": [
+        -1058.0134541264517,
+        -1456.2305898749053
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 14,
+      "position": [
+        -556.2305898749056,
+        -1711.9017293312763
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 15,
+      "position": [
+        -3.3065463576978535e-13,
+        -1800.0
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 16,
+      "position": [
+        556.230589874905,
+        -1711.9017293312766
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 17,
+      "position": [
+        1058.0134541264513,
+        -1456.2305898749057
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 18,
+      "position": [
+        1456.2305898749053,
+        -1058.013454126452
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 19,
+      "position": [
+        1711.9017293312763,
+        -556.2305898749058
+      ],
+      "receive_radius_m": 1000.0
+    },
+    {
+      "channel": 20,
+      "position": [
+        1800.0,
+        -4.4087284769304714e-13
+      ],
+      "receive_radius_m": 1000.0
+    }
+  ],
+  "bearing_error_deg": 1.0,
+  "error_field": "constant"
+}

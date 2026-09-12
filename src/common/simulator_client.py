@@ -216,6 +216,9 @@ class SimulatorClient:
         self.request_ids = request_ids or RequestIdSequence()
         self.logger = logger
         self.state = SimulatorState()
+        # Retain the exact unresolved action if transport or validation fails.
+        # No new action (including /exit) may overtake an uncertain request.
+        self.pending_action: JsonObject | None = None
         # The lock covers response validation and the corresponding state update,
         # not just the HTTP exchange, so concurrent callers cannot reorder state.
         self._action_lock = threading.RLock()
@@ -231,6 +234,9 @@ class SimulatorClient:
     def _perform(self, path: str, payload: JsonObject) -> JsonObject:
         # Holding this lock through the complete response enforces serial actions.
         with self._action_lock:
+            if self.pending_action is not None:
+                raise SimulatorError("unresolved request blocks new actions")
+            self.pending_action = {"path": path, "payload": dict(payload)}
             body = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode(
                 "utf-8"
             )
@@ -283,8 +289,11 @@ class SimulatorClient:
                     )
                 if status != 200:
                     raise SimulatorHTTPError(status, response)
-                if response.get("accepted") is not True:
+                if response.get("accepted") is False:
+                    self.pending_action = None
                     raise ActionRejected(response)
+                if response.get("accepted") is not True:
+                    raise ProtocolError("response lacks a boolean accepted field")
                 return response
         raise AssertionError("unreachable")
 
@@ -297,13 +306,14 @@ class SimulatorClient:
                 raise ProtocolError(
                     "accepted /enter lacks integer remaining_real_duration_s"
                 )
-            self._update_virtual_time(response)
+            self._update_virtual_time(response, allow_reset=True)
             self.state.remaining_real_duration_s = remaining
             self.state.real_deadline_monotonic = time.monotonic() + remaining
             self.state.entered = True
             self.state.exited = False
             self.state.position = (0.0, 0.0)
             self.state.current_channel = 1
+            self.pending_action = None
             return response
 
     def remaining_real_time_s(self) -> float | None:
@@ -335,9 +345,12 @@ class SimulatorClient:
                 ):
                     raise ProtocolError("direction response lacks numeric svd_deg")
                 svd_deg = float(raw_bearing)
+                if not math.isfinite(svd_deg):
+                    raise ProtocolError("direction response contains non-finite svd_deg")
             self._update_virtual_time(response)
             self.state.position = (float(position[0]), float(position[1]))
             self.state.current_channel = channel
+            self.pending_action = None
             return MeasureResult(result=result, svd_deg=svd_deg, response=response)
 
     def clear(self, position: tuple[float, float], channel: int) -> ClearResult:
@@ -358,6 +371,7 @@ class SimulatorClient:
             self._update_virtual_time(response)
             self.state.position = (float(position[0]), float(position[1]))
             # Deliberately do not update current_channel: /clear never switches it.
+            self.pending_action = None
             return ClearResult(result=result, response=response)
 
     def exit(self) -> JsonObject:
@@ -367,6 +381,7 @@ class SimulatorClient:
             response = self._perform("/exit", self._payload(request_id))
             self._update_virtual_time(response)
             self.state.exited = True
+            self.pending_action = None
             return response
 
     def _validate_action(self, position: tuple[float, float], channel: int) -> None:
@@ -386,8 +401,12 @@ class SimulatorClient:
         if not self.state.entered or self.state.exited:
             raise SimulatorError("enter an active test before sending an action")
 
-    def _update_virtual_time(self, response: Mapping[str, object]) -> None:
+    def _update_virtual_time(self, response: Mapping[str, object], *, allow_reset: bool = False) -> None:
         value = response.get("virtual_time_s")
         if not isinstance(value, (int, float)) or isinstance(value, bool):
             raise ProtocolError("accepted response lacks numeric virtual_time_s")
+        if not math.isfinite(value) or value < 0:
+            raise ProtocolError("accepted response has invalid virtual_time_s")
+        if not allow_reset and value < self.state.virtual_time_s:
+            raise ProtocolError("accepted response moves cumulative virtual_time_s backwards")
         self.state.virtual_time_s = float(value)

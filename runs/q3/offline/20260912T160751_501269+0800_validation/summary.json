@@ -1,0 +1,503 @@
+{
+  "baseline_name": "q3-v1-search-localize-clear",
+  "coverage_points": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      1500.0,
+      0.0
+    ],
+    [
+      750.0000000000001,
+      1299.038105676658
+    ],
+    [
+      -749.9999999999997,
+      1299.038105676658
+    ],
+    [
+      -1500.0,
+      1.8369701987210297e-13
+    ],
+    [
+      -750.0000000000007,
+      -1299.0381056766578
+    ],
+    [
+      750.0000000000001,
+      -1299.038105676658
+    ]
+  ],
+  "completed_coverage_points": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      1500.0,
+      0.0
+    ],
+    [
+      750.0000000000001,
+      1299.038105676658
+    ],
+    [
+      -749.9999999999997,
+      1299.038105676658
+    ],
+    [
+      -1500.0,
+      1.8369701987210297e-13
+    ],
+    [
+      -750.0000000000007,
+      -1299.0381056766578
+    ],
+    [
+      750.0000000000001,
+      -1299.038105676658
+    ]
+  ],
+  "detected_channels": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "excluded_channels": [],
+  "detected_count": 20,
+  "measure_count": 112,
+  "direction_count": 42,
+  "near_count": 0,
+  "no_signal_count": 70,
+  "final_virtual_time_s": 8521.946395332225,
+  "completed_full_cover": true,
+  "all_cleared": true,
+  "cleared_count": 20,
+  "total_count": 20,
+  "clearance_ratio": 1.0,
+  "average_localization_clearance_time_s": 426.09731976661124,
+  "program_runtime_s": 0.32681679999950575,
+  "failure_reason": null,
+  "cleared_channels": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "active_channels": [],
+  "unknown_channels": [],
+  "channel_statuses": {
+    "1": "cleared",
+    "2": "cleared",
+    "3": "cleared",
+    "4": "cleared",
+    "5": "cleared",
+    "6": "cleared",
+    "7": "cleared",
+    "8": "cleared",
+    "9": "cleared",
+    "10": "cleared",
+    "11": "cleared",
+    "12": "cleared",
+    "13": "cleared",
+    "14": "cleared",
+    "15": "cleared",
+    "16": "cleared",
+    "17": "cleared",
+    "18": "cleared",
+    "19": "cleared",
+    "20": "cleared"
+  },
+  "coverage_receipts": {
+    "1": [
+      0,
+      1
+    ],
+    "2": [
+      0,
+      1,
+      2
+    ],
+    "3": [
+      0,
+      1,
+      2
+    ],
+    "4": [
+      0,
+      1,
+      2
+    ],
+    "5": [
+      0,
+      1,
+      2
+    ],
+    "6": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "7": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "8": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "9": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "10": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "11": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "12": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "13": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "14": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "15": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "16": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "17": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "18": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "19": [
+      0,
+      1
+    ],
+    "20": [
+      0,
+      1
+    ]
+  },
+  "clear_attempts": [
+    {
+      "channel": 20,
+      "position": [
+        1800.0085674328914,
+        0.00021183222336053863
+      ],
+      "result": "success",
+      "virtual_time_s": 674.0592120693935,
+      "certificate": "q1",
+      "radius_upper_m": 0.00857005130416501
+    },
+    {
+      "channel": 19,
+      "position": [
+        1711.906564896818,
+        -556.2432829731741
+      ],
+      "result": "success",
+      "virtual_time_s": 931.1462636088818,
+      "certificate": "q1",
+      "radius_upper_m": 0.013582983387975872
+    },
+    {
+      "channel": 1,
+      "position": [
+        1711.90592821253,
+        556.2452137790299
+      ],
+      "result": "success",
+      "virtual_time_s": 1349.2793201536354,
+      "certificate": "q1",
+      "radius_upper_m": 0.015214768340765683
+    },
+    {
+      "channel": 2,
+      "position": [
+        1456.2462507575979,
+        1058.0135596290545
+      ],
+      "result": "success",
+      "virtual_time_s": 1761.089330164601,
+      "certificate": "q1",
+      "radius_upper_m": 0.015661238057811954
+    },
+    {
+      "channel": 3,
+      "position": [
+        1058.021996934824,
+        1456.2349496366369
+      ],
+      "result": "success",
+      "virtual_time_s": 2157.2397889067884,
+      "certificate": "q1",
+      "radius_upper_m": 0.009590990420338688
+    },
+    {
+      "channel": 4,
+      "position": [
+        556.2249152806764,
+        1711.9125413618767
+      ],
+      "result": "success",
+      "virtual_time_s": 2451.266903794829,
+      "certificate": "q1",
+      "radius_upper_m": 0.012210693078809357
+    },
+    {
+      "channel": 5,
+      "position": [
+        -4.1525368302053666e-13,
+        1800.0000000000005
+      ],
+      "result": "success",
+      "virtual_time_s": 2833.063454274851,
+      "certificate": "q1",
+      "radius_upper_m": 1.8508811765005413e-12
+    },
+    {
+      "channel": 8,
+      "position": [
+        -1455.9018561755215,
+        1051.209293399586
+      ],
+      "result": "success",
+      "virtual_time_s": 3617.8330703207935,
+      "certificate": "q1",
+      "radius_upper_m": 6.812097257242925
+    },
+    {
+      "channel": 7,
+      "position": [
+        -1058.0222820265035,
+        1456.2347405987684
+      ],
+      "result": "success",
+      "virtual_time_s": 4014.363578655828,
+      "certificate": "q1",
+      "radius_upper_m": 0.009755015527010117
+    },
+    {
+      "channel": 6,
+      "position": [
+        -556.2256215698028,
+        1711.9123152769464
+      ],
+      "result": "success",
+      "virtual_time_s": 4308.390831009949,
+      "certificate": "q1",
+      "radius_upper_m": 0.011693857418710178
+    },
+    {
+      "channel": 9,
+      "position": [
+        -1711.906564896818,
+        556.2432829731737
+      ],
+      "result": "success",
+      "virtual_time_s": 4896.441837764237,
+      "certificate": "q1",
+      "radius_upper_m": 0.013582983388294589
+    },
+    {
+      "channel": 10,
+      "position": [
+        -1800.0085674328948,
+        -0.00021183222348333756
+      ],
+      "result": "success",
+      "virtual_time_s": 5271.549104349298,
+      "certificate": "q1",
+      "radius_upper_m": 0.008570051300753043
+    },
+    {
+      "channel": 11,
+      "position": [
+        -1711.9059282125304,
+        -556.2452137790292
+      ],
+      "result": "success",
+      "virtual_time_s": 5528.635819864977,
+      "certificate": "q1",
+      "radius_upper_m": 0.015214768340765683
+    },
+    {
+      "channel": 15,
+      "position": [
+        2.5658869108985544e-12,
+        -1800.0000000000023
+      ],
+      "result": "success",
+      "virtual_time_s": 6297.263618511046,
+      "certificate": "q1",
+      "radius_upper_m": 3.712986773249348e-12
+    },
+    {
+      "channel": 14,
+      "position": [
+        -556.2249152806778,
+        -1711.912541361875
+      ],
+      "result": "success",
+      "virtual_time_s": 6702.511969709862,
+      "certificate": "q1",
+      "radius_upper_m": 0.012210693080895488
+    },
+    {
+      "channel": 13,
+      "position": [
+        -1058.0219969348236,
+        -1456.2349496366364
+      ],
+      "result": "success",
+      "virtual_time_s": 7040.631220557957,
+      "certificate": "q1",
+      "radius_upper_m": 0.009590990421252143
+    },
+    {
+      "channel": 12,
+      "position": [
+        -1456.2462507575979,
+        -1058.0135596290543
+      ],
+      "result": "success",
+      "virtual_time_s": 7278.540210603727,
+      "certificate": "q1",
+      "radius_upper_m": 0.01566123805783444
+    },
+    {
+      "channel": 16,
+      "position": [
+        556.2256215698018,
+        -1711.9123152769484
+      ],
+      "result": "success",
+      "virtual_time_s": 7947.2788677253,
+      "certificate": "q1",
+      "radius_upper_m": 0.011693857416677111
+    },
+    {
+      "channel": 17,
+      "position": [
+        1058.0222820265021,
+        -1456.234740598768
+      ],
+      "result": "success",
+      "virtual_time_s": 8285.39798381453,
+      "certificate": "q1",
+      "radius_upper_m": 0.009755015528329178
+    },
+    {
+      "channel": 18,
+      "position": [
+        1455.9018561755215,
+        -1051.2092933995839
+      ],
+      "result": "success",
+      "virtual_time_s": 8521.946395332225,
+      "certificate": "q1",
+      "radius_upper_m": 6.812097257244969
+    }
+  ],
+  "clear_count": 20,
+  "termination_reason": "all_cleared",
+  "total_count_basis": "coverage_and_clear_receipts"
+}
