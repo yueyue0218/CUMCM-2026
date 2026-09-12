@@ -193,7 +193,7 @@ def run(args: argparse.Namespace) -> int:
         raise ValueError("formal runs require a q3-formal-* tag at the current commit")
     run_root = getattr(args, "run_root", None) or REPO_ROOT / "runs/q3" / run_type
     run_directory = _new_run_directory(run_root, strategy)
-    if git_dirty and run_type == "practice":
+    if runtime_inputs_dirty and run_type == "practice":
         print(
             "WARNING: practice run is using a dirty Git working tree; "
             "the recorded commit alone is not reproducible.",
