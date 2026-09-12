@@ -47,3 +47,7 @@ dist/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Locally generated Q4 comparisons; final metrics are under results/tables.
+runs/q4/comparison/
+runs/q4/offline/

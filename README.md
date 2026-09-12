@@ -23,7 +23,7 @@
 python src\q1\main.py
 python src\q2\main.py
 python src\q3\main.py
-python src\q4\main.py
+python -m src.q4.main --robot-id "当前登录队号"
 ```
 
 Q3 运行方式为 `python src/q3/main.py --robot-id "当前登录队号"`，具体参数和离线验证见 [Q3 说明](src/q3/README.md)。其他问题入口按各自实现进度验收，不应把 Notebook 当作最终唯一实现。
@@ -94,3 +94,5 @@ Q3 已提供本地训练与模型评估入口：见 [Q3 训练说明](src/q3/TRA
 论文框架位于 `paper/drafts/latex/`，Q1–Q4 章节已拆分以减少并行冲突。最终提交要求见 [paper/final/README.md](paper/final/README.md)，并以竞赛官网、赛区和学校的最新通知为准。
 
 Q3最新默认策略为 `efficient`，10/12/14/16源各20场等权验证的每源平均时间257.2秒，全部清除80/80。新旧策略对比与命令见 [效率改进与分层结果](src/q3/EFFICIENCY.md)；这是本地合成测试，尚未作为官方成绩。
+
+Q4 最终算法为 `informed`，附 `refined`、`adaptive`、`seven_grid` 三个具名对照。正式代码和同场评估命令见 [Q4 说明](src/q4/README.md)，最终对比见 [Q4 结果](results/tables/q4_final_comparison.md)。本工作包不包含中间训练集、训练模型或探索日志。
