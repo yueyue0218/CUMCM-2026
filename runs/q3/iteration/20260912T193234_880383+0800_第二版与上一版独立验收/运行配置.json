@@ -1,0 +1,53 @@
+{
+  "source_counts": [
+    10,
+    12,
+    14,
+    16
+  ],
+  "cases_per_group": 20,
+  "seed_start": 90260912,
+  "seed_group_stride": 1000,
+  "development_seed_start": 80260912,
+  "development_cases_per_group": 10,
+  "source_sha256": {
+    "src/q3/adaptive_control.py": "745fc28f00ff8126653a483d6efe43f6126813d46692c4f64591b98a569f6a52",
+    "src/q3/baseline_scan.py": "9b1cce35455eff4e968bf01b2cfec6240526460ba7141feba4c21a3bd67acd03",
+    "src/q3/control_census_then_clear.py": "7ab881d95b47b398df04d93cd1d204f437feb1502b79d7af666fde340f9b73ae",
+    "src/q3/control_legacy_ppo_planner.py": "1e9f2773a5b3e6c56cf4949be65d72a258b73ac5a0a8aa5a5b6fb99810cf098c",
+    "src/q3/control_oracle.py": "768322130c610e435d552f64539da84a312a0239ab21f8e421d00cdad081bf30",
+    "src/q3/control_random_walk.py": "2ab46715439a5f7d78c9638599a34a6b169948fa57df00ba2149a3a36345a8d9",
+    "src/q3/control_scan_common.py": "a4a5024d3ad7cb7836485bac2dfac9665845c3b1dd16f70d1374c6f83e436f95",
+    "src/q3/control_spiral_scan.py": "f8eb47594bca88cd6c551c307503dedb7a7af3fbbf8a5236da308a69a9089ec9",
+    "src/q3/coverage_control.py": "c6fc9fea356c6a621acf0309a4f17a275de1472320ec593ce7212f92243fffd9",
+    "src/q3/coverage_route_pool.py": "6ff11b35d3f5e326cc2993f2ab61b9115c651e96902dfc7152fff6f86495df01",
+    "src/q3/evaluate_efficiency.py": "66453a1a312c3346a49ec74254c6072c2988ddb31822d86a07348313e0c0faa2",
+    "src/q3/evaluate_policy.py": "8192179dbe4f3288883e34e525b402697cce08b8735f39b3a5fd76f6de725dd3",
+    "src/q3/evaluate_route_iteration.py": "39491021b9112b1e2a2902afc4955fa2d7004b9b72ede6aedb2e6c1168ee50c4",
+    "src/q3/evaluate_strategy_controls.py": "a8706070cc4f4ec1ec44235b173b3dd36e59d34598993f4a739af508464f931f",
+    "src/q3/experiment_joint_routing.py": "bc17df9ccb4bfddbf2e4bdbab61e053543c793f87aa663454b29cee1c211d614",
+    "src/q3/experiment_route_pool.py": "5469d4e9615942ed72e22955bf02549cd397485bc86909bebddcd78ad1afe0a7",
+    "src/q3/localization_control.py": "7fd6d44dc584305872dc2fec12721ebd9837b4da9fd678886c67bdddabdfd75b",
+    "src/q3/main.py": "436bbf6ab3e6f1869ad5a90fbe04cf51b7bc6ad8023a143f9b4b35016e510a38",
+    "src/q3/offline_simulator.py": "a396fbb3cae55adbe400dc2d1e9c9942c0e261dcb656b6ea757a96097167c26c",
+    "src/q3/policy_runtime.py": "df278fc789205766898fcd06c57c3d43a42eb8dd6601166a6416549f8b9ee486",
+    "src/q3/ppo.py": "64699b0e7c351a0c32436f67fbb1731aef3e5d73475b1afe950cb91015dc6c39",
+    "src/q3/search_clear.py": "ae969db206b1cbe10a7f5d26ea9adfab901d5da0f00ca57422af1cd56c1490e3",
+    "src/q3/train_ppo.py": "473143a3a15e59f66ba305f54e2d0ece79c9b2f22f23adf8bf8d320d77d7c2b5",
+    "src/q3/training_env.py": "003b0c4163ca5c06e1e0115cab1cd5907d80399b79de16371ac903f09d679412",
+    "src/q3/validate_offline.py": "8275984cbdf8e37c7f2de1cdb0e69eba269d07022b54c92941ddef00bdf39fe0",
+    "src/q3/world_model.py": "ad40095638f810af808683cdcf3f9c71868368aaaed284e781c1b7114801a8c7",
+    "src/common/__init__.py": "2ab41ddc97f3d7d31c1fc22459922315f22fda168c22d125c973202da6746f17",
+    "src/common/geometry.py": "79301cb11d6876904b0d5c3413cf40e3935cf2816d75075dc1b4b59cfea08170",
+    "src/common/localization.py": "056b58eb63d52404adb15d15294d1d8f48968aad88ea1a4d8368a73a4c3108af",
+    "src/common/metrics.py": "0f2f9ddf8c5b94f2c46002bc6931be793778f587a72287cc751ff4114e8d6ebd",
+    "src/common/simulator_client.py": "81ecbbcba5480553ee564a69aed2ed3b2841557be7b86f363dd3b40d96990ed4",
+    "src/q2/bayesian_design.py": "09fa3dd53f297c178de0264a70c172b3c579b7104c32b265aa12968102082e6f"
+  },
+  "strategies": {
+    "previous": "对照组_上一版联合路线",
+    "route_pool": "实验组_第二版路线候选池"
+  },
+  "environment": "synthetic fixed spatial error amplitude 1 degree, final 0.01 degree quantization",
+  "evidence_scope": "independent local synthetic evaluation; not official results"
+}

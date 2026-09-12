@@ -1,0 +1,656 @@
+{
+  "rows": [
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 327.6800834126567,
+      "total": 3276.800834126567,
+      "runtime": 0.3099743999991915,
+      "stations": 8
+    },
+    {
+      "name": "gain5",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 394.2674850669941,
+      "total": 3942.674850669941,
+      "runtime": 0.355557900002168,
+      "stations": 18
+    },
+    {
+      "name": "gain15",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 390.75927032633933,
+      "total": 3907.5927032633936,
+      "runtime": 0.325797400000738,
+      "stations": 13
+    },
+    {
+      "name": "gain30",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 352.6733099214794,
+      "total": 3526.733099214794,
+      "runtime": 0.3782850000025064,
+      "stations": 12
+    },
+    {
+      "name": "gain60",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 327.6800834126567,
+      "total": 3276.800834126567,
+      "runtime": 0.33839200000147684,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 281.34494532277785,
+      "total": 2813.4494532277786,
+      "runtime": 0.32875369999965187,
+      "stations": 8
+    },
+    {
+      "name": "gain5",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 311.0694588705695,
+      "total": 3110.694588705695,
+      "runtime": 0.28354140000010375,
+      "stations": 14
+    },
+    {
+      "name": "gain15",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 298.66223061318516,
+      "total": 2986.6223061318515,
+      "runtime": 0.257517199999711,
+      "stations": 12
+    },
+    {
+      "name": "gain30",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 291.4069694184498,
+      "total": 2914.069694184498,
+      "runtime": 0.28598390000115614,
+      "stations": 10
+    },
+    {
+      "name": "gain60",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 287.2657206311183,
+      "total": 2872.657206311183,
+      "runtime": 0.2810807999994722,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 265.879475730316,
+      "total": 2658.79475730316,
+      "runtime": 0.29015910000089207,
+      "stations": 8
+    },
+    {
+      "name": "gain5",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 330.94085117899067,
+      "total": 3309.4085117899067,
+      "runtime": 0.2951175999987754,
+      "stations": 17
+    },
+    {
+      "name": "gain15",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 302.6408511789906,
+      "total": 3026.4085117899062,
+      "runtime": 0.28658770000038203,
+      "stations": 13
+    },
+    {
+      "name": "gain30",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 292.46192300466186,
+      "total": 2924.6192300466187,
+      "runtime": 0.3017850999967777,
+      "stations": 11
+    },
+    {
+      "name": "gain60",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 265.879475730316,
+      "total": 2658.79475730316,
+      "runtime": 0.2781905000010738,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 255.74953638203488,
+      "total": 3068.9944365844185,
+      "runtime": 0.30716539999775705,
+      "stations": 8
+    },
+    {
+      "name": "gain5",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 269.8312808785473,
+      "total": 3237.975370542568,
+      "runtime": 0.34775120000267634,
+      "stations": 16
+    },
+    {
+      "name": "gain15",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 262.4433658770908,
+      "total": 3149.32039052509,
+      "runtime": 0.330397499998071,
+      "stations": 14
+    },
+    {
+      "name": "gain30",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 244.32707237860652,
+      "total": 2931.924868543278,
+      "runtime": 0.3328380000020843,
+      "stations": 10
+    },
+    {
+      "name": "gain60",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 247.41827680312534,
+      "total": 2969.019321637504,
+      "runtime": 0.3029062999994494,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 294.7610590096291,
+      "total": 3537.132708115549,
+      "runtime": 0.3007127999990189,
+      "stations": 8
+    },
+    {
+      "name": "gain5",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 318.7254412584291,
+      "total": 3824.705295101149,
+      "runtime": 0.3211234999980661,
+      "stations": 18
+    },
+    {
+      "name": "gain15",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 291.7965166748331,
+      "total": 3501.5582000979966,
+      "runtime": 0.28085469999859924,
+      "stations": 13
+    },
+    {
+      "name": "gain30",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 300.6949912570348,
+      "total": 3608.3398950844175,
+      "runtime": 0.3109069999991334,
+      "stations": 10
+    },
+    {
+      "name": "gain60",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 294.7146748669236,
+      "total": 3536.576098403083,
+      "runtime": 0.28492370000094525,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 266.104843713655,
+      "total": 3193.25812456386,
+      "runtime": 0.42029770000226563,
+      "stations": 8
+    },
+    {
+      "name": "gain5",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 286.60445886354273,
+      "total": 3439.253506362513,
+      "runtime": 0.4333005999978923,
+      "stations": 13
+    },
+    {
+      "name": "gain15",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 277.2711255302094,
+      "total": 3327.253506362513,
+      "runtime": 0.42485390000001644,
+      "stations": 11
+    },
+    {
+      "name": "gain30",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 266.97628991258864,
+      "total": 3203.7154789510637,
+      "runtime": 0.45046450000154437,
+      "stations": 9
+    },
+    {
+      "name": "gain60",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 266.104843713655,
+      "total": 3193.25812456386,
+      "runtime": 0.386541899999429,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 222.90304546883408,
+      "total": 3120.642636563677,
+      "runtime": 0.3789619999988645,
+      "stations": 8
+    },
+    {
+      "name": "gain5",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 255.5533543254057,
+      "total": 3577.74696055568,
+      "runtime": 0.5163271999990684,
+      "stations": 21
+    },
+    {
+      "name": "gain15",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 245.47469659859115,
+      "total": 3436.645752380276,
+      "runtime": 0.4961985000009008,
+      "stations": 14
+    },
+    {
+      "name": "gain30",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 230.8732202365638,
+      "total": 3232.2250833118933,
+      "runtime": 0.48681269999724464,
+      "stations": 11
+    },
+    {
+      "name": "gain60",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 222.90304546883408,
+      "total": 3120.642636563677,
+      "runtime": 0.4126137999992352,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 269.6766111837807,
+      "total": 3775.4725565729304,
+      "runtime": 0.505123499999172,
+      "stations": 9
+    },
+    {
+      "name": "gain5",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 279.6929966556569,
+      "total": 3915.701953179196,
+      "runtime": 0.4375344000000041,
+      "stations": 18
+    },
+    {
+      "name": "gain15",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 269.8029881236792,
+      "total": 3777.241833731509,
+      "runtime": 0.379082000003109,
+      "stations": 13
+    },
+    {
+      "name": "gain30",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 260.517273837965,
+      "total": 3647.2418337315094,
+      "runtime": 0.36094149999917136,
+      "stations": 11
+    },
+    {
+      "name": "gain60",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 269.6766111837807,
+      "total": 3775.4725565729304,
+      "runtime": 0.4247916000022087,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 235.55972108584805,
+      "total": 3297.836095201873,
+      "runtime": 0.3891142999964359,
+      "stations": 9
+    },
+    {
+      "name": "gain5",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 243.2492653706211,
+      "total": 3405.4897151886953,
+      "runtime": 0.3774149999990186,
+      "stations": 16
+    },
+    {
+      "name": "gain15",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 236.4635510849068,
+      "total": 3310.4897151886953,
+      "runtime": 0.33050980000189156,
+      "stations": 14
+    },
+    {
+      "name": "gain30",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 233.22032464976974,
+      "total": 3265.0845450967763,
+      "runtime": 0.37515110000094865,
+      "stations": 11
+    },
+    {
+      "name": "gain60",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 235.55972108584805,
+      "total": 3297.836095201873,
+      "runtime": 0.37736799999765935,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 174.50001296325848,
+      "total": 2792.0002074121358,
+      "runtime": 0.515409700001328,
+      "stations": 7
+    },
+    {
+      "name": "gain5",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 198.90763150321868,
+      "total": 3182.522104051499,
+      "runtime": 0.5013061000026937,
+      "stations": 15
+    },
+    {
+      "name": "gain15",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 186.993654727309,
+      "total": 2991.898475636944,
+      "runtime": 0.48784900000100606,
+      "stations": 11
+    },
+    {
+      "name": "gain30",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 174.17530678033958,
+      "total": 2786.8049084854333,
+      "runtime": 0.46432439999989583,
+      "stations": 8
+    },
+    {
+      "name": "gain60",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 174.50001296325848,
+      "total": 2792.0002074121358,
+      "runtime": 0.5235040000006848,
+      "stations": 7
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 217.05590774719576,
+      "total": 3472.894523955132,
+      "runtime": 0.4821573000008357,
+      "stations": 8
+    },
+    {
+      "name": "gain5",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 255.79639796424354,
+      "total": 4092.7423674278966,
+      "runtime": 0.5744971000021906,
+      "stations": 19
+    },
+    {
+      "name": "gain15",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 242.28682599211956,
+      "total": 3876.589215873913,
+      "runtime": 0.5290247999982967,
+      "stations": 15
+    },
+    {
+      "name": "gain30",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 224.76605914471406,
+      "total": 3596.256946315425,
+      "runtime": 0.5102202000016405,
+      "stations": 10
+    },
+    {
+      "name": "gain60",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 217.05590774719576,
+      "total": 3472.894523955132,
+      "runtime": 0.45124760000180686,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 185.04263578562936,
+      "total": 2960.6821725700697,
+      "runtime": 0.5306345999997575,
+      "stations": 6
+    },
+    {
+      "name": "gain5",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 197.85058296123378,
+      "total": 3165.6093273797405,
+      "runtime": 0.504020299998956,
+      "stations": 13
+    },
+    {
+      "name": "gain15",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 191.00256692142636,
+      "total": 3056.041070742822,
+      "runtime": 0.5426029000009294,
+      "stations": 10
+    },
+    {
+      "name": "gain30",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 189.64399492327686,
+      "total": 3034.30391877243,
+      "runtime": 0.5517527000010887,
+      "stations": 9
+    },
+    {
+      "name": "gain60",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 185.54497536545244,
+      "total": 2968.719605847239,
+      "runtime": 0.5907785000017611,
+      "stations": 7
+    }
+  ],
+  "summary": {
+    "v1": {
+      "mean": 249.68815648380132,
+      "success": 12,
+      "groups": [
+        291.63483482191685,
+        272.20514636843967,
+        242.71312591282094,
+        192.19951883202788
+      ]
+    },
+    "gain5": {
+      "mean": 278.54076707478777,
+      "success": 12,
+      "groups": [
+        345.4259317055181,
+        291.7203936668397,
+        259.49853878389456,
+        217.51820414289867
+      ]
+    },
+    "gain15": {
+      "mean": 266.29980363739,
+      "success": 12,
+      "groups": [
+        330.6874507061717,
+        277.17033602737774,
+        250.58041193572572,
+        206.761015880285
+      ]
+    },
+    "gain30": {
+      "mean": 255.1447279554542,
+      "success": 12,
+      "groups": [
+        312.1807341148637,
+        270.66611784941,
+        241.53693957476617,
+        196.19512028277683
+      ]
+    },
+    "gain60": {
+      "mean": 249.5252790810137,
+      "success": 12,
+      "groups": [
+        293.6084265913637,
+        269.41259846123467,
+        242.71312591282094,
+        192.36696535863555
+      ]
+    }
+  }
+}

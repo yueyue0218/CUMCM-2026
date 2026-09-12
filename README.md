@@ -6,7 +6,7 @@
 
 - 已确认题面和两个官方附件，关键协议规则已整理。
 - 已建立公共几何、定位、指标和模拟器客户端的最小框架。
-- 当前重点：完成 Q1/Q2 数学算法和 Q3 全向源最小可运行基线，再扩展 Q4 定向源处理。
+- Q3 已补全确定性搜索、定位、清除闭环，复用 Q1 认证接口；离线验证结果已生成，待队友复核及官方模拟器联调。
 - 实时任务见 [TODO.md](TODO.md)，建模结论见 [notes/modeling.md](notes/modeling.md)。
 
 ## 四个问题与代码
@@ -26,7 +26,7 @@ python src\q3\main.py
 python src\q4\main.py
 ```
 
-当前 Q1–Q4 策略入口仍待团队实现，不应把 Notebook 当作最终唯一实现。
+Q3 运行方式为 `python src/q3/main.py --robot-id "当前登录队号"`，具体参数和离线验证见 [Q3 说明](src/q3/README.md)。其他问题入口按各自实现进度验收，不应把 Notebook 当作最终唯一实现。
 
 ## 环境与测试
 
@@ -49,6 +49,7 @@ python -m unittest discover -s tests -v
 
 - `/enter`、`/measure`、`/clear`、`/exit` 严格串行；
 - 新动作使用新 `request_id`，网络结果不确定时以完全相同请求重试；
+- 重试耗尽或响应无法核实时保留待核实动作，停止发送新动作（包括 `/exit`），摘要记录最后确认时刻；
 - 同时检查 HTTP 状态和 `accepted`；
 - 只有 `direction` 读取 `svd_deg`；`near` 不含示向度，应优先考虑 `clear`；
 - `no_signal` 只作为观测，不能直接判定频道不存在；
@@ -86,6 +87,10 @@ scratch/                    个人临时文件，不承担团队规范职责
 
 ## 三人协作
 
+Q3 已提供本地训练与模型评估入口：见 [Q3 训练说明](src/q3/TRAINING.md)，包含新训练、续训、四策略比较和模拟器加载命令。实验模型及日志位于 `runs/q3/training/`，独立比较表位于 `results/tables/q3_policy_comparison.*`。
+
 大模块保持 owner 连续性，每个工作包使用“执行人 + 复核人 + 第三人检查上下游”。核心模型代码、模拟器客户端、正式测试代码和论文核心结果走短分支与 PR；拼写、小型 notes 和图标题等小修可简化流程。完整规则见 [docs/collaboration.md](docs/collaboration.md)。
 
 论文框架位于 `paper/drafts/latex/`，Q1–Q4 章节已拆分以减少并行冲突。最终提交要求见 [paper/final/README.md](paper/final/README.md)，并以竞赛官网、赛区和学校的最新通知为准。
+
+Q3最新默认策略为 `efficient`，10/12/14/16源各20场等权验证的每源平均时间257.2秒，全部清除80/80。新旧策略对比与命令见 [效率改进与分层结果](src/q3/EFFICIENCY.md)；这是本地合成测试，尚未作为官方成绩。

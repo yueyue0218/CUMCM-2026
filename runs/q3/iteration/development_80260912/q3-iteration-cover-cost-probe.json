@@ -1,0 +1,786 @@
+{
+  "rows": [
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 327.6800834126567,
+      "total": 3276.800834126567,
+      "runtime": 0.31262360000255285,
+      "stations": 8
+    },
+    {
+      "name": "cost300_edge1",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 326.6618572385169,
+      "total": 3266.618572385169,
+      "runtime": 0.3078827000063029,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge1",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 328.17448842855345,
+      "total": 3281.744884285534,
+      "runtime": 0.360082400002284,
+      "stations": 8
+    },
+    {
+      "name": "cost1000_edge1",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 335.2792900369166,
+      "total": 3352.792900369166,
+      "runtime": 0.4141163999956916,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge3",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 326.6618572385169,
+      "total": 3266.618572385169,
+      "runtime": 0.3749007000005804,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge6",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 326.6618572385169,
+      "total": 3266.618572385169,
+      "runtime": 0.4200526999993599,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 281.34494532277785,
+      "total": 2813.4494532277786,
+      "runtime": 0.4969007999970927,
+      "stations": 8
+    },
+    {
+      "name": "cost300_edge1",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 281.34494532277785,
+      "total": 2813.4494532277786,
+      "runtime": 0.42247360000328626,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge1",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 294.24506380864756,
+      "total": 2942.4506380864755,
+      "runtime": 0.4518227000007755,
+      "stations": 8
+    },
+    {
+      "name": "cost1000_edge1",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 292.6541336682505,
+      "total": 2926.541336682505,
+      "runtime": 0.42556380000314675,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge3",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 297.02322315326813,
+      "total": 2970.2322315326815,
+      "runtime": 0.4472128999987035,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge6",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 300.2957226201538,
+      "total": 3002.957226201538,
+      "runtime": 0.5097463999991305,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 265.879475730316,
+      "total": 2658.79475730316,
+      "runtime": 0.37121509999997215,
+      "stations": 8
+    },
+    {
+      "name": "cost300_edge1",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 278.3362233255938,
+      "total": 2783.3622332559376,
+      "runtime": 0.4249920000002021,
+      "stations": 9
+    },
+    {
+      "name": "cost600_edge1",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 284.6954721235574,
+      "total": 2846.954721235574,
+      "runtime": 0.38641159999679076,
+      "stations": 8
+    },
+    {
+      "name": "cost1000_edge1",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 284.6954721235574,
+      "total": 2846.954721235574,
+      "runtime": 0.36690180000005057,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge3",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 281.7363317460752,
+      "total": 2817.363317460752,
+      "runtime": 0.38520859999698587,
+      "stations": 9
+    },
+    {
+      "name": "cost600_edge6",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 281.7363317460752,
+      "total": 2817.363317460752,
+      "runtime": 0.41420389999984764,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 255.74953638203488,
+      "total": 3068.9944365844185,
+      "runtime": 0.3906781999976374,
+      "stations": 8
+    },
+    {
+      "name": "cost300_edge1",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 254.20936193706027,
+      "total": 3050.512343244723,
+      "runtime": 0.41001259999757167,
+      "stations": 9
+    },
+    {
+      "name": "cost600_edge1",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 247.92122134861373,
+      "total": 2975.054656183365,
+      "runtime": 0.36734209999849554,
+      "stations": 8
+    },
+    {
+      "name": "cost1000_edge1",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 247.92122134861373,
+      "total": 2975.054656183365,
+      "runtime": 0.3561604999995325,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge3",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 247.92122134861373,
+      "total": 2975.054656183365,
+      "runtime": 0.3539731000055326,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge6",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 247.92122134861373,
+      "total": 2975.054656183365,
+      "runtime": 0.3565482000049087,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 294.7610590096291,
+      "total": 3537.132708115549,
+      "runtime": 0.32882149999932153,
+      "stations": 8
+    },
+    {
+      "name": "cost300_edge1",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 294.7610590096291,
+      "total": 3537.132708115549,
+      "runtime": 0.33369139999558683,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge1",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 301.18270895617314,
+      "total": 3614.192507474078,
+      "runtime": 0.3916075000015553,
+      "stations": 8
+    },
+    {
+      "name": "cost1000_edge1",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 288.7561509178335,
+      "total": 3465.073811014002,
+      "runtime": 0.2908298000038485,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge3",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 292.55270387077366,
+      "total": 3510.6324464492836,
+      "runtime": 0.2848260000027949,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge6",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 292.55270387077366,
+      "total": 3510.6324464492836,
+      "runtime": 0.27944879999995464,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 266.104843713655,
+      "total": 3193.25812456386,
+      "runtime": 0.45444700000371085,
+      "stations": 8
+    },
+    {
+      "name": "cost300_edge1",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 272.6621279370081,
+      "total": 3271.9455352440973,
+      "runtime": 0.43971459999738727,
+      "stations": 9
+    },
+    {
+      "name": "cost600_edge1",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 267.4979855129527,
+      "total": 3209.9758261554325,
+      "runtime": 0.4093817000029958,
+      "stations": 8
+    },
+    {
+      "name": "cost1000_edge1",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 267.4979855129527,
+      "total": 3209.9758261554325,
+      "runtime": 0.40176980000251206,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge3",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 267.4979855129527,
+      "total": 3209.9758261554325,
+      "runtime": 0.6039936000015587,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge6",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 267.4979855129527,
+      "total": 3209.9758261554325,
+      "runtime": 0.6031115999940084,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 222.90304546883408,
+      "total": 3120.642636563677,
+      "runtime": 0.6405040000026929,
+      "stations": 8
+    },
+    {
+      "name": "cost300_edge1",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 222.90304546883408,
+      "total": 3120.642636563677,
+      "runtime": 0.5597852999999304,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge1",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 218.270776979864,
+      "total": 3055.790877718096,
+      "runtime": 0.6319883999967715,
+      "stations": 8
+    },
+    {
+      "name": "cost1000_edge1",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 215.8713220431341,
+      "total": 3022.1985086038776,
+      "runtime": 0.49647420000110287,
+      "stations": 7
+    },
+    {
+      "name": "cost600_edge3",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 221.56643593124818,
+      "total": 3101.9301030374745,
+      "runtime": 0.5734039999952074,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge6",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 218.270776979864,
+      "total": 3055.790877718096,
+      "runtime": 0.48982539999997243,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 269.6766111837807,
+      "total": 3775.4725565729304,
+      "runtime": 0.4717508999965503,
+      "stations": 9
+    },
+    {
+      "name": "cost300_edge1",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 268.32582872992526,
+      "total": 3756.5616022189533,
+      "runtime": 0.4117984999975306,
+      "stations": 9
+    },
+    {
+      "name": "cost600_edge1",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 268.32582872992526,
+      "total": 3756.5616022189533,
+      "runtime": 0.3794292000020505,
+      "stations": 9
+    },
+    {
+      "name": "cost1000_edge1",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 258.59632014060065,
+      "total": 3620.3484819684095,
+      "runtime": 0.3816043000042555,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge3",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 268.32582872992526,
+      "total": 3756.5616022189533,
+      "runtime": 0.38271199999871897,
+      "stations": 9
+    },
+    {
+      "name": "cost600_edge6",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 260.45376069179815,
+      "total": 3646.352649685174,
+      "runtime": 0.4791086000041105,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 235.55972108584805,
+      "total": 3297.836095201873,
+      "runtime": 0.3779346000010264,
+      "stations": 9
+    },
+    {
+      "name": "cost300_edge1",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 235.55972108584805,
+      "total": 3297.836095201873,
+      "runtime": 0.32779090000258293,
+      "stations": 9
+    },
+    {
+      "name": "cost600_edge1",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 211.84002310607292,
+      "total": 2965.7603234850208,
+      "runtime": 0.3774928999991971,
+      "stations": 8
+    },
+    {
+      "name": "cost1000_edge1",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 217.81842784220365,
+      "total": 3049.457989790851,
+      "runtime": 0.3141248999963864,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge3",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 212.17548638988336,
+      "total": 2970.456809458367,
+      "runtime": 0.33546649999334477,
+      "stations": 7
+    },
+    {
+      "name": "cost600_edge6",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 215.9420961806853,
+      "total": 3023.1893465295943,
+      "runtime": 0.3996608999950695,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 174.50001296325848,
+      "total": 2792.0002074121358,
+      "runtime": 0.48503789999813307,
+      "stations": 7
+    },
+    {
+      "name": "cost300_edge1",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 172.74504178064336,
+      "total": 2763.920668490294,
+      "runtime": 0.4306205000029877,
+      "stations": 7
+    },
+    {
+      "name": "cost600_edge1",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 175.08157029240633,
+      "total": 2801.305124678501,
+      "runtime": 0.391033800005971,
+      "stations": 7
+    },
+    {
+      "name": "cost1000_edge1",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 170.11667550447842,
+      "total": 2721.8668080716548,
+      "runtime": 0.48854069999651983,
+      "stations": 6
+    },
+    {
+      "name": "cost600_edge3",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 170.11667550447842,
+      "total": 2721.8668080716548,
+      "runtime": 0.4639720999985002,
+      "stations": 6
+    },
+    {
+      "name": "cost600_edge6",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 170.11667550447842,
+      "total": 2721.8668080716548,
+      "runtime": 0.4862693000031868,
+      "stations": 6
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 217.05590774719576,
+      "total": 3472.894523955132,
+      "runtime": 0.5277666999973007,
+      "stations": 8
+    },
+    {
+      "name": "cost300_edge1",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 215.53982546862161,
+      "total": 3448.637207497946,
+      "runtime": 0.526070100000652,
+      "stations": 7
+    },
+    {
+      "name": "cost600_edge1",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 215.53982546862161,
+      "total": 3448.637207497946,
+      "runtime": 0.5718336999998428,
+      "stations": 7
+    },
+    {
+      "name": "cost1000_edge1",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 214.38876237952357,
+      "total": 3430.220198072377,
+      "runtime": 0.5364835000000312,
+      "stations": 7
+    },
+    {
+      "name": "cost600_edge3",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 214.38876237952357,
+      "total": 3430.220198072377,
+      "runtime": 0.4930346999972244,
+      "stations": 7
+    },
+    {
+      "name": "cost600_edge6",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 214.38876237952357,
+      "total": 3430.220198072377,
+      "runtime": 0.5508168000014848,
+      "stations": 7
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 185.04263578562936,
+      "total": 2960.6821725700697,
+      "runtime": 0.5647418000007747,
+      "stations": 6
+    },
+    {
+      "name": "cost300_edge1",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 185.04263578562936,
+      "total": 2960.6821725700697,
+      "runtime": 0.5453249999991385,
+      "stations": 6
+    },
+    {
+      "name": "cost600_edge1",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 184.77190040910233,
+      "total": 2956.3504065456373,
+      "runtime": 0.6261417999994592,
+      "stations": 6
+    },
+    {
+      "name": "cost1000_edge1",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 207.35249511642635,
+      "total": 3317.6399218628217,
+      "runtime": 0.5362327999973786,
+      "stations": 8
+    },
+    {
+      "name": "cost600_edge3",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 184.77190040910233,
+      "total": 2956.3504065456373,
+      "runtime": 0.6692827000006218,
+      "stations": 6
+    },
+    {
+      "name": "cost600_edge6",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 184.77190040910233,
+      "total": 2956.3504065456373,
+      "runtime": 0.6964618999991217,
+      "stations": 6
+    }
+  ],
+  "summary": {
+    "v1": {
+      "mean": 249.68815648380132,
+      "success": 12,
+      "groups": [
+        291.63483482191685,
+        272.20514636843967,
+        242.71312591282094,
+        192.19951883202788
+      ]
+    },
+    "cost300_edge1": {
+      "mean": 250.67430609084064,
+      "success": 12,
+      "groups": [
+        295.4476752956295,
+        273.8775162945658,
+        242.26286509486914,
+        191.10916767829812
+      ]
+    },
+    "cost600_edge1": {
+      "mean": 249.79557209704086,
+      "success": 12,
+      "groups": [
+        302.37167478691947,
+        272.2006386059132,
+        232.8122096052874,
+        191.79776539004342
+      ]
+    },
+    "cost1000_edge1": {
+      "mean": 250.07902138620761,
+      "success": 12,
+      "groups": [
+        304.2096319429082,
+        268.0584525931333,
+        230.76202334197947,
+        197.28597766680946
+      ]
+    },
+    "cost600_edge3": {
+      "mean": 248.72820101786346,
+      "success": 12,
+      "groups": [
+        301.80713737928676,
+        269.32397024411335,
+        234.0225836836856,
+        189.7591127643681
+      ]
+    },
+    "cost600_edge6": {
+      "mean": 248.3841495402115,
+      "success": 12,
+      "groups": [
+        302.8979705349153,
+        269.32397024411335,
+        231.55554461744916,
+        189.7591127643681
+      ]
+    }
+  }
+}

@@ -1,0 +1,2923 @@
+{
+  "rows": [
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 327.6800834126567,
+      "total": 3276.800834126567,
+      "runtime": 0.33674099999916507,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 332.885475741719,
+      "total": 3328.8547574171903,
+      "runtime": 0.3031081000008271,
+      "stations": 9
+    },
+    {
+      "name": "actual_pool",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 326.40081499803335,
+      "total": 3264.0081499803337,
+      "runtime": 0.9205432000017026,
+      "stations": 8
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 326.40081499803335,
+      "total": 3264.0081499803337,
+      "runtime": 0.8555952999959118,
+      "stations": 8
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 330.67758187400665,
+      "total": 3306.7758187400664,
+      "runtime": 0.8722802000047523,
+      "stations": 8
+    },
+    {
+      "name": "baseline150",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 317.543268588872,
+      "total": 3175.4326858887202,
+      "runtime": 0.29460159999871394,
+      "stations": 8
+    },
+    {
+      "name": "baseline0",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 317.543268588872,
+      "total": 3175.4326858887202,
+      "runtime": 0.24366480000026058,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 281.34494532277785,
+      "total": 2813.4494532277786,
+      "runtime": 0.3141835999995237,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 277.8928149248998,
+      "total": 2778.928149248998,
+      "runtime": 0.2682193000000552,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 282.2587588478722,
+      "total": 2822.5875884787215,
+      "runtime": 1.0979827999981353,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 282.2587588478722,
+      "total": 2822.5875884787215,
+      "runtime": 1.157451699997182,
+      "stations": 7
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 278.052777465392,
+      "total": 2780.52777465392,
+      "runtime": 1.101620000001276,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 306.9659794957545,
+      "total": 3069.659794957545,
+      "runtime": 0.3544101999941631,
+      "stations": 8
+    },
+    {
+      "name": "baseline0",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 306.9659794957545,
+      "total": 3069.659794957545,
+      "runtime": 0.283004400000209,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 265.879475730316,
+      "total": 2658.79475730316,
+      "runtime": 0.2877535000006901,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 263.97243348559334,
+      "total": 2639.724334855933,
+      "runtime": 0.24428220000118017,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 274.8253077830859,
+      "total": 2748.253077830859,
+      "runtime": 1.0352510000011534,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 274.8253077830859,
+      "total": 2748.253077830859,
+      "runtime": 1.096248399997421,
+      "stations": 7
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 273.3478360942866,
+      "total": 2733.478360942866,
+      "runtime": 1.0950343000004068,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 303.3527036291085,
+      "total": 3033.5270362910846,
+      "runtime": 0.32367230000090785,
+      "stations": 9
+    },
+    {
+      "name": "baseline0",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 303.3527036291085,
+      "total": 3033.5270362910846,
+      "runtime": 0.2765861000007135,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260915,
+      "ok": true,
+      "seconds_per_source": 318.37972757298087,
+      "total": 3183.797275729809,
+      "runtime": 0.3146192000058363,
+      "stations": 9
+    },
+    {
+      "name": "r1000",
+      "n": 10,
+      "seed": 80260915,
+      "ok": true,
+      "seconds_per_source": 312.5124037452973,
+      "total": 3125.1240374529734,
+      "runtime": 0.27349230000254465,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 10,
+      "seed": 80260915,
+      "ok": true,
+      "seconds_per_source": 317.84214099244434,
+      "total": 3178.421409924443,
+      "runtime": 1.0820307999965735,
+      "stations": 9
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 10,
+      "seed": 80260915,
+      "ok": true,
+      "seconds_per_source": 317.84214099244434,
+      "total": 3178.421409924443,
+      "runtime": 1.074647499997809,
+      "stations": 9
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 10,
+      "seed": 80260915,
+      "ok": true,
+      "seconds_per_source": 297.6467824653565,
+      "total": 2976.467824653565,
+      "runtime": 1.0366274000043632,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 10,
+      "seed": 80260915,
+      "ok": true,
+      "seconds_per_source": 328.30448964906157,
+      "total": 3283.0448964906154,
+      "runtime": 0.2937473000056343,
+      "stations": 9
+    },
+    {
+      "name": "baseline0",
+      "n": 10,
+      "seed": 80260915,
+      "ok": true,
+      "seconds_per_source": 328.30448964906157,
+      "total": 3283.0448964906154,
+      "runtime": 0.2661716000002343,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260916,
+      "ok": true,
+      "seconds_per_source": 294.53522496925626,
+      "total": 2945.3522496925625,
+      "runtime": 0.3508690000016941,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 10,
+      "seed": 80260916,
+      "ok": true,
+      "seconds_per_source": 309.77208471123225,
+      "total": 3097.7208471123226,
+      "runtime": 0.34679009999672417,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 10,
+      "seed": 80260916,
+      "ok": true,
+      "seconds_per_source": 303.303660447339,
+      "total": 3033.03660447339,
+      "runtime": 1.5609785999986343,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 10,
+      "seed": 80260916,
+      "ok": true,
+      "seconds_per_source": 290.2160826095183,
+      "total": 2902.160826095183,
+      "runtime": 1.1214204999996582,
+      "stations": 7
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 10,
+      "seed": 80260916,
+      "ok": true,
+      "seconds_per_source": 297.8873536798051,
+      "total": 2978.8735367980507,
+      "runtime": 1.3379554999992251,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 10,
+      "seed": 80260916,
+      "ok": true,
+      "seconds_per_source": 293.4942676930628,
+      "total": 2934.942676930628,
+      "runtime": 0.34851180000259774,
+      "stations": 8
+    },
+    {
+      "name": "baseline0",
+      "n": 10,
+      "seed": 80260916,
+      "ok": true,
+      "seconds_per_source": 293.4942676930628,
+      "total": 2934.942676930628,
+      "runtime": 0.2834475999989081,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260917,
+      "ok": true,
+      "seconds_per_source": 303.07507123180045,
+      "total": 3030.7507123180044,
+      "runtime": 0.26856060000136495,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 10,
+      "seed": 80260917,
+      "ok": true,
+      "seconds_per_source": 294.5518477769324,
+      "total": 2945.518477769324,
+      "runtime": 0.2561273999963305,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 10,
+      "seed": 80260917,
+      "ok": true,
+      "seconds_per_source": 280.86926503304585,
+      "total": 2808.6926503304585,
+      "runtime": 1.2645062000010512,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 10,
+      "seed": 80260917,
+      "ok": true,
+      "seconds_per_source": 285.2085780797533,
+      "total": 2852.085780797533,
+      "runtime": 1.0439411000043037,
+      "stations": 8
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 10,
+      "seed": 80260917,
+      "ok": true,
+      "seconds_per_source": 274.75137103797914,
+      "total": 2747.5137103797915,
+      "runtime": 1.1219656000030227,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 10,
+      "seed": 80260917,
+      "ok": true,
+      "seconds_per_source": 293.8672014774237,
+      "total": 2938.6720147742367,
+      "runtime": 0.3503248999986681,
+      "stations": 9
+    },
+    {
+      "name": "baseline0",
+      "n": 10,
+      "seed": 80260917,
+      "ok": true,
+      "seconds_per_source": 293.8672014774237,
+      "total": 2938.6720147742367,
+      "runtime": 0.2913722000012058,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260918,
+      "ok": true,
+      "seconds_per_source": 300.37198486179653,
+      "total": 3003.7198486179655,
+      "runtime": 0.3311777999988408,
+      "stations": 9
+    },
+    {
+      "name": "r1000",
+      "n": 10,
+      "seed": 80260918,
+      "ok": true,
+      "seconds_per_source": 289.77993674267725,
+      "total": 2897.7993674267723,
+      "runtime": 0.27440650000062305,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 10,
+      "seed": 80260918,
+      "ok": true,
+      "seconds_per_source": 295.40706857354496,
+      "total": 2954.07068573545,
+      "runtime": 0.9817371999961324,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 10,
+      "seed": 80260918,
+      "ok": true,
+      "seconds_per_source": 295.40706857354496,
+      "total": 2954.07068573545,
+      "runtime": 0.992282699997304,
+      "stations": 7
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 10,
+      "seed": 80260918,
+      "ok": true,
+      "seconds_per_source": 295.40706857354496,
+      "total": 2954.07068573545,
+      "runtime": 1.009526999994705,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 10,
+      "seed": 80260918,
+      "ok": true,
+      "seconds_per_source": 300.37198486179653,
+      "total": 3003.7198486179655,
+      "runtime": 0.30924830000003567,
+      "stations": 9
+    },
+    {
+      "name": "baseline0",
+      "n": 10,
+      "seed": 80260918,
+      "ok": true,
+      "seconds_per_source": 300.37198486179653,
+      "total": 3003.7198486179655,
+      "runtime": 0.26044170000386657,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260919,
+      "ok": true,
+      "seconds_per_source": 275.54839455810406,
+      "total": 2755.4839455810406,
+      "runtime": 0.22218430000066292,
+      "stations": 7
+    },
+    {
+      "name": "r1000",
+      "n": 10,
+      "seed": 80260919,
+      "ok": true,
+      "seconds_per_source": 275.54839455810406,
+      "total": 2755.4839455810406,
+      "runtime": 0.18705000000045402,
+      "stations": 7
+    },
+    {
+      "name": "actual_pool",
+      "n": 10,
+      "seed": 80260919,
+      "ok": true,
+      "seconds_per_source": 271.94418848239354,
+      "total": 2719.441884823935,
+      "runtime": 0.8622923000002629,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 10,
+      "seed": 80260919,
+      "ok": true,
+      "seconds_per_source": 285.0749485921069,
+      "total": 2850.749485921069,
+      "runtime": 0.9285231999965617,
+      "stations": 8
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 10,
+      "seed": 80260919,
+      "ok": true,
+      "seconds_per_source": 270.07028115604874,
+      "total": 2700.702811560487,
+      "runtime": 0.8773518000016338,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 10,
+      "seed": 80260919,
+      "ok": true,
+      "seconds_per_source": 297.84410868807805,
+      "total": 2978.4410868807804,
+      "runtime": 0.24577190000127302,
+      "stations": 9
+    },
+    {
+      "name": "baseline0",
+      "n": 10,
+      "seed": 80260919,
+      "ok": true,
+      "seconds_per_source": 297.84410868807805,
+      "total": 2978.4410868807804,
+      "runtime": 0.19769770000129938,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260920,
+      "ok": true,
+      "seconds_per_source": 332.2106367687171,
+      "total": 3322.106367687171,
+      "runtime": 0.30378019999625394,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 10,
+      "seed": 80260920,
+      "ok": true,
+      "seconds_per_source": 330.9719566189819,
+      "total": 3309.719566189819,
+      "runtime": 0.306069700003718,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 10,
+      "seed": 80260920,
+      "ok": true,
+      "seconds_per_source": 310.84727423947896,
+      "total": 3108.4727423947897,
+      "runtime": 1.0518510000038077,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 10,
+      "seed": 80260920,
+      "ok": true,
+      "seconds_per_source": 310.84727423947896,
+      "total": 3108.4727423947897,
+      "runtime": 1.1090827000007266,
+      "stations": 7
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 10,
+      "seed": 80260920,
+      "ok": true,
+      "seconds_per_source": 309.82121224768963,
+      "total": 3098.212122476896,
+      "runtime": 1.0437291999987792,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 10,
+      "seed": 80260920,
+      "ok": true,
+      "seconds_per_source": 315.6452645819144,
+      "total": 3156.4526458191435,
+      "runtime": 0.4084080000029644,
+      "stations": 9
+    },
+    {
+      "name": "baseline0",
+      "n": 10,
+      "seed": 80260920,
+      "ok": true,
+      "seconds_per_source": 315.6452645819144,
+      "total": 3156.4526458191435,
+      "runtime": 0.31640540000080364,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260921,
+      "ok": true,
+      "seconds_per_source": 309.9328933442098,
+      "total": 3099.328933442098,
+      "runtime": 0.336650399993232,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 10,
+      "seed": 80260921,
+      "ok": true,
+      "seconds_per_source": 307.6117019255177,
+      "total": 3076.117019255177,
+      "runtime": 0.29182009999931324,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 10,
+      "seed": 80260921,
+      "ok": true,
+      "seconds_per_source": 293.1031428016282,
+      "total": 2931.0314280162825,
+      "runtime": 1.304146700000274,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 10,
+      "seed": 80260921,
+      "ok": true,
+      "seconds_per_source": 293.1031428016282,
+      "total": 2931.0314280162825,
+      "runtime": 1.3415053999997326,
+      "stations": 7
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 10,
+      "seed": 80260921,
+      "ok": true,
+      "seconds_per_source": 290.11845990540775,
+      "total": 2901.1845990540774,
+      "runtime": 1.3312491000033333,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 10,
+      "seed": 80260921,
+      "ok": true,
+      "seconds_per_source": 329.70472473745434,
+      "total": 3297.0472473745435,
+      "runtime": 0.4000802000009571,
+      "stations": 9
+    },
+    {
+      "name": "baseline0",
+      "n": 10,
+      "seed": 80260921,
+      "ok": true,
+      "seconds_per_source": 329.70472473745434,
+      "total": 3297.0472473745435,
+      "runtime": 0.32480040000518784,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 255.74953638203488,
+      "total": 3068.9944365844185,
+      "runtime": 0.3969548999957624,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 258.17234281353274,
+      "total": 3098.068113762393,
+      "runtime": 0.4460789000004297,
+      "stations": 9
+    },
+    {
+      "name": "actual_pool",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 247.27017993266836,
+      "total": 2967.24215919202,
+      "runtime": 1.4629426000028616,
+      "stations": 8
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 247.3881148393757,
+      "total": 2968.6573780725084,
+      "runtime": 1.6264647999996669,
+      "stations": 8
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 240.44447853285908,
+      "total": 2885.333742394309,
+      "runtime": 1.5071521999998367,
+      "stations": 8
+    },
+    {
+      "name": "baseline150",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 278.47825080687306,
+      "total": 3341.7390096824765,
+      "runtime": 0.5596051000029547,
+      "stations": 10
+    },
+    {
+      "name": "baseline0",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 278.47825080687306,
+      "total": 3341.7390096824765,
+      "runtime": 0.52529240000149,
+      "stations": 10
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 294.7610590096291,
+      "total": 3537.132708115549,
+      "runtime": 0.3890735000022687,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 290.4205968543425,
+      "total": 3485.04716225211,
+      "runtime": 0.3550656000006711,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 290.65109508027075,
+      "total": 3487.813140963249,
+      "runtime": 1.254122999998799,
+      "stations": 8
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 287.5091480727466,
+      "total": 3450.109776872959,
+      "runtime": 1.2667853999955696,
+      "stations": 8
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 286.93610039889467,
+      "total": 3443.233204786736,
+      "runtime": 1.2331382999982452,
+      "stations": 8
+    },
+    {
+      "name": "baseline150",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 265.98796846174554,
+      "total": 3191.8556215409462,
+      "runtime": 0.43104379999567755,
+      "stations": 8
+    },
+    {
+      "name": "baseline0",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 265.98796846174554,
+      "total": 3191.8556215409462,
+      "runtime": 0.3579422999973758,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 266.104843713655,
+      "total": 3193.25812456386,
+      "runtime": 0.5300008999984129,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 276.7048830732614,
+      "total": 3320.4585968791366,
+      "runtime": 0.5380688000004739,
+      "stations": 9
+    },
+    {
+      "name": "actual_pool",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 256.51351989464956,
+      "total": 3078.1622387357947,
+      "runtime": 1.7344403999959468,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 256.51351989464956,
+      "total": 3078.1622387357947,
+      "runtime": 1.5468309999996563,
+      "stations": 7
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 254.51059640690178,
+      "total": 3054.1271568828215,
+      "runtime": 1.7995929999960936,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 268.472436583907,
+      "total": 3221.669239006884,
+      "runtime": 0.5587094000002253,
+      "stations": 8
+    },
+    {
+      "name": "baseline0",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 268.472436583907,
+      "total": 3221.669239006884,
+      "runtime": 0.4539006999984849,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261915,
+      "ok": true,
+      "seconds_per_source": 282.23622052049154,
+      "total": 3386.8346462458985,
+      "runtime": 0.4330836000008276,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 12,
+      "seed": 80261915,
+      "ok": true,
+      "seconds_per_source": 253.7552282879416,
+      "total": 3045.0627394552994,
+      "runtime": 0.4716088999994099,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 12,
+      "seed": 80261915,
+      "ok": true,
+      "seconds_per_source": 254.64298444245853,
+      "total": 3055.715813309502,
+      "runtime": 1.5352319999947213,
+      "stations": 8
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 12,
+      "seed": 80261915,
+      "ok": true,
+      "seconds_per_source": 255.5634589633801,
+      "total": 3066.7615075605613,
+      "runtime": 1.5629498999987845,
+      "stations": 8
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 12,
+      "seed": 80261915,
+      "ok": true,
+      "seconds_per_source": 253.61680578977698,
+      "total": 3043.4016694773236,
+      "runtime": 1.666785000001255,
+      "stations": 8
+    },
+    {
+      "name": "baseline150",
+      "n": 12,
+      "seed": 80261915,
+      "ok": true,
+      "seconds_per_source": 286.75502734747033,
+      "total": 3441.060328169644,
+      "runtime": 0.5129790999999386,
+      "stations": 9
+    },
+    {
+      "name": "baseline0",
+      "n": 12,
+      "seed": 80261915,
+      "ok": true,
+      "seconds_per_source": 286.75502734747033,
+      "total": 3441.060328169644,
+      "runtime": 0.408471599999757,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261916,
+      "ok": true,
+      "seconds_per_source": 257.63312017335517,
+      "total": 3091.5974420802618,
+      "runtime": 0.4219556999960332,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 12,
+      "seed": 80261916,
+      "ok": true,
+      "seconds_per_source": 254.40349830446007,
+      "total": 3052.841979653521,
+      "runtime": 0.32859600000665523,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 12,
+      "seed": 80261916,
+      "ok": true,
+      "seconds_per_source": 258.8654777340343,
+      "total": 3106.3857328084114,
+      "runtime": 1.3171638999992865,
+      "stations": 8
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 12,
+      "seed": 80261916,
+      "ok": true,
+      "seconds_per_source": 258.8654777340343,
+      "total": 3106.3857328084114,
+      "runtime": 1.1289755999969202,
+      "stations": 8
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 12,
+      "seed": 80261916,
+      "ok": true,
+      "seconds_per_source": 253.41940870105,
+      "total": 3041.0329044126,
+      "runtime": 1.0623532000026898,
+      "stations": 8
+    },
+    {
+      "name": "baseline150",
+      "n": 12,
+      "seed": 80261916,
+      "ok": true,
+      "seconds_per_source": 295.59344556339727,
+      "total": 3547.121346760767,
+      "runtime": 0.35833809999894584,
+      "stations": 10
+    },
+    {
+      "name": "baseline0",
+      "n": 12,
+      "seed": 80261916,
+      "ok": true,
+      "seconds_per_source": 295.59344556339727,
+      "total": 3547.121346760767,
+      "runtime": 0.3109640999973635,
+      "stations": 10
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261917,
+      "ok": true,
+      "seconds_per_source": 294.28260650738315,
+      "total": 3531.391278088598,
+      "runtime": 0.38253029999759747,
+      "stations": 9
+    },
+    {
+      "name": "r1000",
+      "n": 12,
+      "seed": 80261917,
+      "ok": true,
+      "seconds_per_source": 286.2910334100867,
+      "total": 3435.4924009210404,
+      "runtime": 0.3463428999966709,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 12,
+      "seed": 80261917,
+      "ok": true,
+      "seconds_per_source": 255.19738052325508,
+      "total": 3062.368566279061,
+      "runtime": 1.1874328999983845,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 12,
+      "seed": 80261917,
+      "ok": true,
+      "seconds_per_source": 259.97498474374447,
+      "total": 3119.6998169249337,
+      "runtime": 0.9171012999941013,
+      "stations": 8
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 12,
+      "seed": 80261917,
+      "ok": true,
+      "seconds_per_source": 250.47314948218434,
+      "total": 3005.677793786212,
+      "runtime": 1.1841064000036567,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 12,
+      "seed": 80261917,
+      "ok": true,
+      "seconds_per_source": 277.26204497026487,
+      "total": 3327.1445396431786,
+      "runtime": 0.30217520000587683,
+      "stations": 9
+    },
+    {
+      "name": "baseline0",
+      "n": 12,
+      "seed": 80261917,
+      "ok": true,
+      "seconds_per_source": 277.26204497026487,
+      "total": 3327.1445396431786,
+      "runtime": 0.2521210000049905,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261918,
+      "ok": true,
+      "seconds_per_source": 271.02999246730195,
+      "total": 3252.3599096076236,
+      "runtime": 0.31618490000255406,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 12,
+      "seed": 80261918,
+      "ok": true,
+      "seconds_per_source": 265.03977265252246,
+      "total": 3180.4772718302693,
+      "runtime": 0.2828577000036603,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 12,
+      "seed": 80261918,
+      "ok": true,
+      "seconds_per_source": 254.17109362087115,
+      "total": 3050.0531234504538,
+      "runtime": 0.9594257999997353,
+      "stations": 8
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 12,
+      "seed": 80261918,
+      "ok": true,
+      "seconds_per_source": 260.21127318866985,
+      "total": 3122.5352782640384,
+      "runtime": 1.183912300002703,
+      "stations": 7
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 12,
+      "seed": 80261918,
+      "ok": true,
+      "seconds_per_source": 249.18427141754668,
+      "total": 2990.21125701056,
+      "runtime": 0.9769615000041085,
+      "stations": 8
+    },
+    {
+      "name": "baseline150",
+      "n": 12,
+      "seed": 80261918,
+      "ok": true,
+      "seconds_per_source": 265.8592152515575,
+      "total": 3190.3105830186896,
+      "runtime": 0.3061937000020407,
+      "stations": 8
+    },
+    {
+      "name": "baseline0",
+      "n": 12,
+      "seed": 80261918,
+      "ok": true,
+      "seconds_per_source": 265.8592152515575,
+      "total": 3190.3105830186896,
+      "runtime": 0.2687160999994376,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261919,
+      "ok": true,
+      "seconds_per_source": 230.31638231320994,
+      "total": 2763.7965877585193,
+      "runtime": 0.3706416999993962,
+      "stations": 7
+    },
+    {
+      "name": "r1000",
+      "n": 12,
+      "seed": 80261919,
+      "ok": true,
+      "seconds_per_source": 227.09075650217952,
+      "total": 2725.0890780261543,
+      "runtime": 0.3144599000006565,
+      "stations": 7
+    },
+    {
+      "name": "actual_pool",
+      "n": 12,
+      "seed": 80261919,
+      "ok": true,
+      "seconds_per_source": 233.06466237445068,
+      "total": 2796.775948493408,
+      "runtime": 1.4057552000012947,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 12,
+      "seed": 80261919,
+      "ok": true,
+      "seconds_per_source": 233.06466237445068,
+      "total": 2796.775948493408,
+      "runtime": 1.4176809999989928,
+      "stations": 7
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 12,
+      "seed": 80261919,
+      "ok": true,
+      "seconds_per_source": 229.38564500259426,
+      "total": 2752.627740031131,
+      "runtime": 1.3921794000052614,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 12,
+      "seed": 80261919,
+      "ok": true,
+      "seconds_per_source": 240.45697214178207,
+      "total": 2885.483665701385,
+      "runtime": 0.3596851999973296,
+      "stations": 8
+    },
+    {
+      "name": "baseline0",
+      "n": 12,
+      "seed": 80261919,
+      "ok": true,
+      "seconds_per_source": 240.45697214178207,
+      "total": 2885.483665701385,
+      "runtime": 0.32819629999721656,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261920,
+      "ok": true,
+      "seconds_per_source": 244.82911249530505,
+      "total": 2937.9493499436608,
+      "runtime": 0.3398927000016556,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 12,
+      "seed": 80261920,
+      "ok": true,
+      "seconds_per_source": 242.74577916197174,
+      "total": 2912.9493499436608,
+      "runtime": 0.27749490000132937,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 12,
+      "seed": 80261920,
+      "ok": true,
+      "seconds_per_source": 241.72365752687816,
+      "total": 2900.683890322538,
+      "runtime": 0.9962761999995564,
+      "stations": 8
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 12,
+      "seed": 80261920,
+      "ok": true,
+      "seconds_per_source": 249.2517773067771,
+      "total": 2991.021327681325,
+      "runtime": 1.0060426999989431,
+      "stations": 8
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 12,
+      "seed": 80261920,
+      "ok": true,
+      "seconds_per_source": 239.81552410794066,
+      "total": 2877.786289295288,
+      "runtime": 0.9365352999957395,
+      "stations": 8
+    },
+    {
+      "name": "baseline150",
+      "n": 12,
+      "seed": 80261920,
+      "ok": true,
+      "seconds_per_source": 253.52237840168743,
+      "total": 3042.268540820249,
+      "runtime": 0.26462760000140406,
+      "stations": 9
+    },
+    {
+      "name": "baseline0",
+      "n": 12,
+      "seed": 80261920,
+      "ok": true,
+      "seconds_per_source": 253.52237840168743,
+      "total": 3042.268540820249,
+      "runtime": 0.22887390000687446,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261921,
+      "ok": true,
+      "seconds_per_source": 270.9457221752105,
+      "total": 3251.348666102526,
+      "runtime": 0.34801449999940814,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 12,
+      "seed": 80261921,
+      "ok": true,
+      "seconds_per_source": 249.9057007732479,
+      "total": 2998.868409278975,
+      "runtime": 0.327243499996257,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 12,
+      "seed": 80261921,
+      "ok": true,
+      "seconds_per_source": 244.17885203110555,
+      "total": 2930.1462243732667,
+      "runtime": 1.1223955000023125,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 12,
+      "seed": 80261921,
+      "ok": true,
+      "seconds_per_source": 244.17885203110555,
+      "total": 2930.1462243732667,
+      "runtime": 1.116378500002611,
+      "stations": 7
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 12,
+      "seed": 80261921,
+      "ok": true,
+      "seconds_per_source": 241.35055112054354,
+      "total": 2896.2066134465226,
+      "runtime": 1.0814611999958288,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 12,
+      "seed": 80261921,
+      "ok": true,
+      "seconds_per_source": 245.83294304684125,
+      "total": 2949.995316562095,
+      "runtime": 0.30799909999768715,
+      "stations": 8
+    },
+    {
+      "name": "baseline0",
+      "n": 12,
+      "seed": 80261921,
+      "ok": true,
+      "seconds_per_source": 245.83294304684125,
+      "total": 2949.995316562095,
+      "runtime": 0.2558939999944414,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 222.90304546883408,
+      "total": 3120.642636563677,
+      "runtime": 0.38875199999893084,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 216.91941322280817,
+      "total": 3036.8717851193146,
+      "runtime": 0.3624277999988408,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 226.8861140534588,
+      "total": 3176.4055967484232,
+      "runtime": 1.3985647000008612,
+      "stations": 8
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 220.2002538880817,
+      "total": 3082.8035544331437,
+      "runtime": 1.5814101000069059,
+      "stations": 8
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 218.58596236005886,
+      "total": 3060.203473040824,
+      "runtime": 1.6535164000015357,
+      "stations": 8
+    },
+    {
+      "name": "baseline150",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 251.22507858238527,
+      "total": 3517.1511001533936,
+      "runtime": 0.5095813999942038,
+      "stations": 10
+    },
+    {
+      "name": "baseline0",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 251.22507858238527,
+      "total": 3517.1511001533936,
+      "runtime": 0.4377100999990944,
+      "stations": 10
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 269.6766111837807,
+      "total": 3775.4725565729304,
+      "runtime": 0.4541036000009626,
+      "stations": 9
+    },
+    {
+      "name": "r1000",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 258.13212398180946,
+      "total": 3613.8497357453325,
+      "runtime": 0.423900900001172,
+      "stations": 9
+    },
+    {
+      "name": "actual_pool",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 257.80362029116833,
+      "total": 3609.2506840763567,
+      "runtime": 1.8615715999985696,
+      "stations": 8
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 251.58231791328814,
+      "total": 3522.152450786034,
+      "runtime": 1.5500033999996958,
+      "stations": 8
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 259.59026710070924,
+      "total": 3634.2637394099293,
+      "runtime": 2.0614806000012322,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 258.1845012602904,
+      "total": 3614.5830176440654,
+      "runtime": 0.7268509999994421,
+      "stations": 9
+    },
+    {
+      "name": "baseline0",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 258.1845012602904,
+      "total": 3614.5830176440654,
+      "runtime": 0.6226024999996298,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 235.55972108584805,
+      "total": 3297.836095201873,
+      "runtime": 0.4648607999988599,
+      "stations": 9
+    },
+    {
+      "name": "r1000",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 229.10382675174876,
+      "total": 3207.4535745244825,
+      "runtime": 0.4188584000003175,
+      "stations": 9
+    },
+    {
+      "name": "actual_pool",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 219.66411567789348,
+      "total": 3075.2976194905086,
+      "runtime": 1.6592851000023074,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 219.66411567789348,
+      "total": 3075.2976194905086,
+      "runtime": 1.4332368000032147,
+      "stations": 7
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 207.79109441157718,
+      "total": 2909.0753217620804,
+      "runtime": 1.4262799999996787,
+      "stations": 8
+    },
+    {
+      "name": "baseline150",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 248.94203904222655,
+      "total": 3485.188546591172,
+      "runtime": 0.5200117999993381,
+      "stations": 8
+    },
+    {
+      "name": "baseline0",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 248.94203904222655,
+      "total": 3485.188546591172,
+      "runtime": 0.4492201000030036,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262915,
+      "ok": true,
+      "seconds_per_source": 249.03375281643292,
+      "total": 3486.472539430061,
+      "runtime": 0.4755804000014905,
+      "stations": 9
+    },
+    {
+      "name": "r1000",
+      "n": 14,
+      "seed": 80262915,
+      "ok": true,
+      "seconds_per_source": 243.2144046869109,
+      "total": 3405.0016656167527,
+      "runtime": 0.4108549000011408,
+      "stations": 9
+    },
+    {
+      "name": "actual_pool",
+      "n": 14,
+      "seed": 80262915,
+      "ok": true,
+      "seconds_per_source": 234.42033811035657,
+      "total": 3281.884733544992,
+      "runtime": 2.05729849999625,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 14,
+      "seed": 80262915,
+      "ok": true,
+      "seconds_per_source": 234.68656604485392,
+      "total": 3285.611924627955,
+      "runtime": 1.6471148999989964,
+      "stations": 7
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 14,
+      "seed": 80262915,
+      "ok": true,
+      "seconds_per_source": 227.84280456932015,
+      "total": 3189.799263970482,
+      "runtime": 1.9873866000052658,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 14,
+      "seed": 80262915,
+      "ok": true,
+      "seconds_per_source": 249.03375281643292,
+      "total": 3486.472539430061,
+      "runtime": 0.5857434000063222,
+      "stations": 9
+    },
+    {
+      "name": "baseline0",
+      "n": 14,
+      "seed": 80262915,
+      "ok": true,
+      "seconds_per_source": 249.03375281643292,
+      "total": 3486.472539430061,
+      "runtime": 0.5099867000026279,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262916,
+      "ok": true,
+      "seconds_per_source": 243.22786060888092,
+      "total": 3405.1900485243327,
+      "runtime": 0.4661240999994334,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 14,
+      "seed": 80262916,
+      "ok": true,
+      "seconds_per_source": 226.60992415706116,
+      "total": 3172.538938198856,
+      "runtime": 0.4797026999949594,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 14,
+      "seed": 80262916,
+      "ok": true,
+      "seconds_per_source": 226.00524660137384,
+      "total": 3164.073452419234,
+      "runtime": 1.7753181000007316,
+      "stations": 9
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 14,
+      "seed": 80262916,
+      "ok": true,
+      "seconds_per_source": 226.00524660137384,
+      "total": 3164.073452419234,
+      "runtime": 1.5355363999988185,
+      "stations": 9
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 14,
+      "seed": 80262916,
+      "ok": true,
+      "seconds_per_source": 221.41886774848658,
+      "total": 3099.8641484788122,
+      "runtime": 1.3782083000041894,
+      "stations": 9
+    },
+    {
+      "name": "baseline150",
+      "n": 14,
+      "seed": 80262916,
+      "ok": true,
+      "seconds_per_source": 242.61363543628312,
+      "total": 3396.5908961079635,
+      "runtime": 0.3560423000017181,
+      "stations": 8
+    },
+    {
+      "name": "baseline0",
+      "n": 14,
+      "seed": 80262916,
+      "ok": true,
+      "seconds_per_source": 242.61363543628312,
+      "total": 3396.5908961079635,
+      "runtime": 0.2894989999986137,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262917,
+      "ok": true,
+      "seconds_per_source": 258.5283202001948,
+      "total": 3619.396482802727,
+      "runtime": 0.3821222000042326,
+      "stations": 9
+    },
+    {
+      "name": "r1000",
+      "n": 14,
+      "seed": 80262917,
+      "ok": true,
+      "seconds_per_source": 254.53112584178143,
+      "total": 3563.43576178494,
+      "runtime": 0.3449296000035247,
+      "stations": 9
+    },
+    {
+      "name": "actual_pool",
+      "n": 14,
+      "seed": 80262917,
+      "ok": true,
+      "seconds_per_source": 242.29715351963364,
+      "total": 3392.160149274871,
+      "runtime": 1.1856962000019848,
+      "stations": 8
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 14,
+      "seed": 80262917,
+      "ok": true,
+      "seconds_per_source": 248.61155087817323,
+      "total": 3480.5617122944254,
+      "runtime": 1.2004233999978169,
+      "stations": 9
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 14,
+      "seed": 80262917,
+      "ok": true,
+      "seconds_per_source": 238.33687794585623,
+      "total": 3336.716291241987,
+      "runtime": 1.1633451000016066,
+      "stations": 8
+    },
+    {
+      "name": "baseline150",
+      "n": 14,
+      "seed": 80262917,
+      "ok": true,
+      "seconds_per_source": 261.6499323141418,
+      "total": 3663.099052397985,
+      "runtime": 0.379116600000998,
+      "stations": 10
+    },
+    {
+      "name": "baseline0",
+      "n": 14,
+      "seed": 80262917,
+      "ok": true,
+      "seconds_per_source": 261.6499323141418,
+      "total": 3663.099052397985,
+      "runtime": 0.3201818000015919,
+      "stations": 10
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262918,
+      "ok": true,
+      "seconds_per_source": 238.19738322617758,
+      "total": 3334.763365166486,
+      "runtime": 0.37059749999752967,
+      "stations": 9
+    },
+    {
+      "name": "r1000",
+      "n": 14,
+      "seed": 80262918,
+      "ok": true,
+      "seconds_per_source": 236.18683976642527,
+      "total": 3306.615756729954,
+      "runtime": 0.3927613999985624,
+      "stations": 9
+    },
+    {
+      "name": "actual_pool",
+      "n": 14,
+      "seed": 80262918,
+      "ok": true,
+      "seconds_per_source": 236.13230242052083,
+      "total": 3305.8522338872917,
+      "runtime": 1.3593069999988074,
+      "stations": 8
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 14,
+      "seed": 80262918,
+      "ok": true,
+      "seconds_per_source": 237.58790302439226,
+      "total": 3326.2306423414916,
+      "runtime": 1.2877946000007796,
+      "stations": 8
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 14,
+      "seed": 80262918,
+      "ok": true,
+      "seconds_per_source": 225.3775431467075,
+      "total": 3155.285604053905,
+      "runtime": 1.4182680000012624,
+      "stations": 8
+    },
+    {
+      "name": "baseline150",
+      "n": 14,
+      "seed": 80262918,
+      "ok": true,
+      "seconds_per_source": 241.35102733103048,
+      "total": 3378.9143826344266,
+      "runtime": 0.38050469999870984,
+      "stations": 9
+    },
+    {
+      "name": "baseline0",
+      "n": 14,
+      "seed": 80262918,
+      "ok": true,
+      "seconds_per_source": 241.35102733103048,
+      "total": 3378.9143826344266,
+      "runtime": 0.3076264999981504,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262919,
+      "ok": true,
+      "seconds_per_source": 235.9277010623119,
+      "total": 3302.987814872367,
+      "runtime": 0.38866289999714354,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 14,
+      "seed": 80262919,
+      "ok": true,
+      "seconds_per_source": 230.57912832306152,
+      "total": 3228.1077965228615,
+      "runtime": 0.30915330000425456,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 14,
+      "seed": 80262919,
+      "ok": true,
+      "seconds_per_source": 235.9277010623119,
+      "total": 3302.987814872367,
+      "runtime": 1.6969357000052696,
+      "stations": 8
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 14,
+      "seed": 80262919,
+      "ok": true,
+      "seconds_per_source": 224.03573829491944,
+      "total": 3136.5003361288723,
+      "runtime": 1.544487699997262,
+      "stations": 8
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 14,
+      "seed": 80262919,
+      "ok": true,
+      "seconds_per_source": 230.57912832306152,
+      "total": 3228.1077965228615,
+      "runtime": 1.639691500000481,
+      "stations": 8
+    },
+    {
+      "name": "baseline150",
+      "n": 14,
+      "seed": 80262919,
+      "ok": true,
+      "seconds_per_source": 232.5138031043676,
+      "total": 3255.1932434611467,
+      "runtime": 0.4027478999996674,
+      "stations": 9
+    },
+    {
+      "name": "baseline0",
+      "n": 14,
+      "seed": 80262919,
+      "ok": true,
+      "seconds_per_source": 232.5138031043676,
+      "total": 3255.1932434611467,
+      "runtime": 0.3472732000009273,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262920,
+      "ok": true,
+      "seconds_per_source": 202.0576240887166,
+      "total": 2828.8067372420323,
+      "runtime": 0.42176930000277935,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 14,
+      "seed": 80262920,
+      "ok": true,
+      "seconds_per_source": 193.9463522238018,
+      "total": 2715.248931133225,
+      "runtime": 0.3409959999989951,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 14,
+      "seed": 80262920,
+      "ok": true,
+      "seconds_per_source": 210.8584922367739,
+      "total": 2952.018891314835,
+      "runtime": 1.6853722000014386,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 14,
+      "seed": 80262920,
+      "ok": true,
+      "seconds_per_source": 199.12644210150577,
+      "total": 2787.770189421081,
+      "runtime": 1.495066700001189,
+      "stations": 8
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 14,
+      "seed": 80262920,
+      "ok": true,
+      "seconds_per_source": 206.4193756091744,
+      "total": 2889.8712585284416,
+      "runtime": 1.5371082999990904,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 14,
+      "seed": 80262920,
+      "ok": true,
+      "seconds_per_source": 233.48292963351506,
+      "total": 3268.7610148692106,
+      "runtime": 0.5004430000044522,
+      "stations": 8
+    },
+    {
+      "name": "baseline0",
+      "n": 14,
+      "seed": 80262920,
+      "ok": true,
+      "seconds_per_source": 233.48292963351506,
+      "total": 3268.7610148692106,
+      "runtime": 0.4973777999985032,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262921,
+      "ok": true,
+      "seconds_per_source": 219.15754136488187,
+      "total": 3068.2055791083462,
+      "runtime": 0.38180269999429584,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 14,
+      "seed": 80262921,
+      "ok": true,
+      "seconds_per_source": 214.87677311171484,
+      "total": 3008.274823564008,
+      "runtime": 0.33941870000126073,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 14,
+      "seed": 80262921,
+      "ok": true,
+      "seconds_per_source": 240.0427932029228,
+      "total": 3360.599104840919,
+      "runtime": 1.2042797000030987,
+      "stations": 8
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 14,
+      "seed": 80262921,
+      "ok": true,
+      "seconds_per_source": 240.0427932029228,
+      "total": 3360.599104840919,
+      "runtime": 1.212035199998354,
+      "stations": 8
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 14,
+      "seed": 80262921,
+      "ok": true,
+      "seconds_per_source": 240.59979664958905,
+      "total": 3368.3971530942467,
+      "runtime": 1.2173584999982268,
+      "stations": 8
+    },
+    {
+      "name": "baseline150",
+      "n": 14,
+      "seed": 80262921,
+      "ok": true,
+      "seconds_per_source": 253.42058324898082,
+      "total": 3547.8881654857314,
+      "runtime": 0.42489230000501266,
+      "stations": 10
+    },
+    {
+      "name": "baseline0",
+      "n": 14,
+      "seed": 80262921,
+      "ok": true,
+      "seconds_per_source": 253.42058324898082,
+      "total": 3547.8881654857314,
+      "runtime": 0.36121660000208067,
+      "stations": 10
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 174.50001296325848,
+      "total": 2792.0002074121358,
+      "runtime": 0.5100605999978143,
+      "stations": 7
+    },
+    {
+      "name": "r1000",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 172.95431374194936,
+      "total": 2767.26901987119,
+      "runtime": 0.4678635000018403,
+      "stations": 7
+    },
+    {
+      "name": "actual_pool",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 175.05256493363325,
+      "total": 2800.841038938132,
+      "runtime": 1.565682199994626,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 175.05256493363325,
+      "total": 2800.841038938132,
+      "runtime": 1.5781578000023728,
+      "stations": 7
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 167.10389094827053,
+      "total": 2673.6622551723285,
+      "runtime": 1.4264255999951274,
+      "stations": 6
+    },
+    {
+      "name": "baseline150",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 186.9960860496441,
+      "total": 2991.9373767943057,
+      "runtime": 0.4406352000005427,
+      "stations": 7
+    },
+    {
+      "name": "baseline0",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 186.9960860496441,
+      "total": 2991.9373767943057,
+      "runtime": 0.3798497000025236,
+      "stations": 7
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 217.05590774719576,
+      "total": 3472.894523955132,
+      "runtime": 0.45853470000292873,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 216.8387906051944,
+      "total": 3469.4206496831102,
+      "runtime": 0.4573847999999998,
+      "stations": 7
+    },
+    {
+      "name": "actual_pool",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 218.65386230709862,
+      "total": 3498.461796913578,
+      "runtime": 1.73030160000053,
+      "stations": 6
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 216.49837027230615,
+      "total": 3463.9739243568984,
+      "runtime": 1.8040734999958659,
+      "stations": 8
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 215.74531104977456,
+      "total": 3451.924976796393,
+      "runtime": 1.4871758000008413,
+      "stations": 6
+    },
+    {
+      "name": "baseline150",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 216.5787890917767,
+      "total": 3465.2606254684274,
+      "runtime": 0.4811584999988554,
+      "stations": 8
+    },
+    {
+      "name": "baseline0",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 216.5787890917767,
+      "total": 3465.2606254684274,
+      "runtime": 0.399459600004775,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 185.04263578562936,
+      "total": 2960.6821725700697,
+      "runtime": 0.5304367999997339,
+      "stations": 6
+    },
+    {
+      "name": "r1000",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 176.04561780777377,
+      "total": 2816.7298849243803,
+      "runtime": 0.48986089999380056,
+      "stations": 6
+    },
+    {
+      "name": "actual_pool",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 210.26095144487502,
+      "total": 3364.1752231180003,
+      "runtime": 1.69729080000252,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 177.4175990803318,
+      "total": 2838.6815852853088,
+      "runtime": 1.5903858999954537,
+      "stations": 6
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 175.05814319918326,
+      "total": 2800.930291186932,
+      "runtime": 1.775286900003266,
+      "stations": 5
+    },
+    {
+      "name": "baseline150",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 175.6576516984156,
+      "total": 2810.5224271746497,
+      "runtime": 0.532656199997291,
+      "stations": 5
+    },
+    {
+      "name": "baseline0",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 175.6576516984156,
+      "total": 2810.5224271746497,
+      "runtime": 0.49538179999944987,
+      "stations": 5
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263915,
+      "ok": true,
+      "seconds_per_source": 224.77018448536617,
+      "total": 3596.3229517658588,
+      "runtime": 0.4639976999969804,
+      "stations": 9
+    },
+    {
+      "name": "r1000",
+      "n": 16,
+      "seed": 80263915,
+      "ok": true,
+      "seconds_per_source": 220.75249187568863,
+      "total": 3532.039870011018,
+      "runtime": 0.35422190000099363,
+      "stations": 9
+    },
+    {
+      "name": "actual_pool",
+      "n": 16,
+      "seed": 80263915,
+      "ok": true,
+      "seconds_per_source": 205.16471120578447,
+      "total": 3282.6353792925515,
+      "runtime": 1.1650365000023157,
+      "stations": 6
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 16,
+      "seed": 80263915,
+      "ok": true,
+      "seconds_per_source": 205.35699003573293,
+      "total": 3285.711840571727,
+      "runtime": 1.1682798999972874,
+      "stations": 6
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 16,
+      "seed": 80263915,
+      "ok": true,
+      "seconds_per_source": 201.3681676223149,
+      "total": 3221.8906819570384,
+      "runtime": 1.125900000006368,
+      "stations": 6
+    },
+    {
+      "name": "baseline150",
+      "n": 16,
+      "seed": 80263915,
+      "ok": true,
+      "seconds_per_source": 232.4428830575481,
+      "total": 3719.0861289207696,
+      "runtime": 0.5206470999983139,
+      "stations": 6
+    },
+    {
+      "name": "baseline0",
+      "n": 16,
+      "seed": 80263915,
+      "ok": true,
+      "seconds_per_source": 232.4428830575481,
+      "total": 3719.0861289207696,
+      "runtime": 0.45107390000339365,
+      "stations": 6
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263916,
+      "ok": true,
+      "seconds_per_source": 221.66342799535835,
+      "total": 3546.6148479257336,
+      "runtime": 0.5008728000029805,
+      "stations": 7
+    },
+    {
+      "name": "r1000",
+      "n": 16,
+      "seed": 80263916,
+      "ok": true,
+      "seconds_per_source": 217.55307298982635,
+      "total": 3480.8491678372216,
+      "runtime": 0.41041569999651983,
+      "stations": 7
+    },
+    {
+      "name": "actual_pool",
+      "n": 16,
+      "seed": 80263916,
+      "ok": true,
+      "seconds_per_source": 204.71337568997947,
+      "total": 3275.4140110396715,
+      "runtime": 1.5563069999989239,
+      "stations": 5
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 16,
+      "seed": 80263916,
+      "ok": true,
+      "seconds_per_source": 204.71337568997947,
+      "total": 3275.4140110396715,
+      "runtime": 1.6423362999994424,
+      "stations": 5
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 16,
+      "seed": 80263916,
+      "ok": true,
+      "seconds_per_source": 200.61976227899214,
+      "total": 3209.9161964638743,
+      "runtime": 1.5860083000006853,
+      "stations": 5
+    },
+    {
+      "name": "baseline150",
+      "n": 16,
+      "seed": 80263916,
+      "ok": true,
+      "seconds_per_source": 213.29882742404828,
+      "total": 3412.7812387847725,
+      "runtime": 0.6434447999999975,
+      "stations": 6
+    },
+    {
+      "name": "baseline0",
+      "n": 16,
+      "seed": 80263916,
+      "ok": true,
+      "seconds_per_source": 213.29882742404828,
+      "total": 3412.7812387847725,
+      "runtime": 0.5037006999991718,
+      "stations": 6
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263917,
+      "ok": true,
+      "seconds_per_source": 222.37321038174812,
+      "total": 3557.97136610797,
+      "runtime": 0.40450219999911496,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 16,
+      "seed": 80263917,
+      "ok": true,
+      "seconds_per_source": 233.48221810431644,
+      "total": 3735.715489669063,
+      "runtime": 0.3373896000048262,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 16,
+      "seed": 80263917,
+      "ok": true,
+      "seconds_per_source": 222.95037716593544,
+      "total": 3567.206034654967,
+      "runtime": 1.1910773999989033,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 16,
+      "seed": 80263917,
+      "ok": true,
+      "seconds_per_source": 205.51438726345884,
+      "total": 3288.2301962153415,
+      "runtime": 1.314309699999285,
+      "stations": 7
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 16,
+      "seed": 80263917,
+      "ok": true,
+      "seconds_per_source": 224.08133896515832,
+      "total": 3585.301423442533,
+      "runtime": 1.502015099998971,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 16,
+      "seed": 80263917,
+      "ok": true,
+      "seconds_per_source": 201.10356622306932,
+      "total": 3217.657059569109,
+      "runtime": 0.4966147000013734,
+      "stations": 7
+    },
+    {
+      "name": "baseline0",
+      "n": 16,
+      "seed": 80263917,
+      "ok": true,
+      "seconds_per_source": 201.10356622306932,
+      "total": 3217.657059569109,
+      "runtime": 0.42050749999907566,
+      "stations": 7
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263918,
+      "ok": true,
+      "seconds_per_source": 203.93198443004172,
+      "total": 3262.9117508806676,
+      "runtime": 0.4910892999978387,
+      "stations": 6
+    },
+    {
+      "name": "r1000",
+      "n": 16,
+      "seed": 80263918,
+      "ok": true,
+      "seconds_per_source": 197.16166879195592,
+      "total": 3154.5867006712947,
+      "runtime": 0.37243339999986347,
+      "stations": 7
+    },
+    {
+      "name": "actual_pool",
+      "n": 16,
+      "seed": 80263918,
+      "ok": true,
+      "seconds_per_source": 210.40660816196248,
+      "total": 3366.5057305913997,
+      "runtime": 1.7977567999987514,
+      "stations": 6
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 16,
+      "seed": 80263918,
+      "ok": true,
+      "seconds_per_source": 209.65660816196248,
+      "total": 3354.5057305913997,
+      "runtime": 1.8528656999988016,
+      "stations": 6
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 16,
+      "seed": 80263918,
+      "ok": true,
+      "seconds_per_source": 206.5480150498864,
+      "total": 3304.7682407981824,
+      "runtime": 1.6553324000051362,
+      "stations": 6
+    },
+    {
+      "name": "baseline150",
+      "n": 16,
+      "seed": 80263918,
+      "ok": true,
+      "seconds_per_source": 206.2254032939593,
+      "total": 3299.6064527033486,
+      "runtime": 0.5397490000032121,
+      "stations": 8
+    },
+    {
+      "name": "baseline0",
+      "n": 16,
+      "seed": 80263918,
+      "ok": true,
+      "seconds_per_source": 206.2254032939593,
+      "total": 3299.6064527033486,
+      "runtime": 0.46737640000355896,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263919,
+      "ok": true,
+      "seconds_per_source": 213.08604788008432,
+      "total": 3409.376766081349,
+      "runtime": 0.5898649000009755,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 16,
+      "seed": 80263919,
+      "ok": true,
+      "seconds_per_source": 210.65257364937338,
+      "total": 3370.441178389974,
+      "runtime": 0.5371021999962977,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 16,
+      "seed": 80263919,
+      "ok": true,
+      "seconds_per_source": 219.2130803817808,
+      "total": 3507.409286108493,
+      "runtime": 1.5935596999988775,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 16,
+      "seed": 80263919,
+      "ok": true,
+      "seconds_per_source": 205.2311862270037,
+      "total": 3283.698979632059,
+      "runtime": 1.3415559999994002,
+      "stations": 6
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 16,
+      "seed": 80263919,
+      "ok": true,
+      "seconds_per_source": 214.23458068759805,
+      "total": 3427.753291001569,
+      "runtime": 1.653226700000232,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 16,
+      "seed": 80263919,
+      "ok": true,
+      "seconds_per_source": 206.767702452282,
+      "total": 3308.283239236512,
+      "runtime": 0.5008644999979879,
+      "stations": 4
+    },
+    {
+      "name": "baseline0",
+      "n": 16,
+      "seed": 80263919,
+      "ok": true,
+      "seconds_per_source": 206.767702452282,
+      "total": 3308.283239236512,
+      "runtime": 0.43002610000257846,
+      "stations": 4
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263920,
+      "ok": true,
+      "seconds_per_source": 204.85092420105173,
+      "total": 3277.6147872168276,
+      "runtime": 0.4761475000050268,
+      "stations": 8
+    },
+    {
+      "name": "r1000",
+      "n": 16,
+      "seed": 80263920,
+      "ok": true,
+      "seconds_per_source": 214.85200874307273,
+      "total": 3437.6321398891637,
+      "runtime": 0.41358780000155093,
+      "stations": 8
+    },
+    {
+      "name": "actual_pool",
+      "n": 16,
+      "seed": 80263920,
+      "ok": true,
+      "seconds_per_source": 208.65441062273484,
+      "total": 3338.4705699637575,
+      "runtime": 1.2945815999992192,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 16,
+      "seed": 80263920,
+      "ok": true,
+      "seconds_per_source": 187.40143658336544,
+      "total": 2998.422985333847,
+      "runtime": 1.314763900001708,
+      "stations": 7
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 16,
+      "seed": 80263920,
+      "ok": true,
+      "seconds_per_source": 204.35378060792243,
+      "total": 3269.660489726759,
+      "runtime": 1.7336180999991484,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 16,
+      "seed": 80263920,
+      "ok": true,
+      "seconds_per_source": 234.36540691326553,
+      "total": 3749.8465106122485,
+      "runtime": 0.7976175000003423,
+      "stations": 8
+    },
+    {
+      "name": "baseline0",
+      "n": 16,
+      "seed": 80263920,
+      "ok": true,
+      "seconds_per_source": 234.36540691326553,
+      "total": 3749.8465106122485,
+      "runtime": 0.6417604000016581,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263921,
+      "ok": true,
+      "seconds_per_source": 232.08786391027337,
+      "total": 3713.405822564374,
+      "runtime": 0.49980820000200765,
+      "stations": 7
+    },
+    {
+      "name": "r1000",
+      "n": 16,
+      "seed": 80263921,
+      "ok": true,
+      "seconds_per_source": 236.78103572770618,
+      "total": 3788.496571643299,
+      "runtime": 0.42316240000218386,
+      "stations": 7
+    },
+    {
+      "name": "actual_pool",
+      "n": 16,
+      "seed": 80263921,
+      "ok": true,
+      "seconds_per_source": 219.66293496982343,
+      "total": 3514.606959517175,
+      "runtime": 1.4072114000009606,
+      "stations": 7
+    },
+    {
+      "name": "refined_actual_pool",
+      "n": 16,
+      "seed": 80263921,
+      "ok": true,
+      "seconds_per_source": 211.897984649653,
+      "total": 3390.367754394448,
+      "runtime": 2.0796791999964626,
+      "stations": 7
+    },
+    {
+      "name": "r1000_actual_pool",
+      "n": 16,
+      "seed": 80263921,
+      "ok": true,
+      "seconds_per_source": 217.78694699143068,
+      "total": 3484.591151862891,
+      "runtime": 1.5388882999977795,
+      "stations": 7
+    },
+    {
+      "name": "baseline150",
+      "n": 16,
+      "seed": 80263921,
+      "ok": true,
+      "seconds_per_source": 233.09119548637082,
+      "total": 3729.459127781933,
+      "runtime": 0.473696299995936,
+      "stations": 8
+    },
+    {
+      "name": "baseline0",
+      "n": 16,
+      "seed": 80263921,
+      "ok": true,
+      "seconds_per_source": 233.09119548637082,
+      "total": 3729.459127781933,
+      "runtime": 0.39918699999543605,
+      "stations": 8
+    }
+  ],
+  "summary": {
+    "v1": {
+      "mean": 253.76196986040648,
+      "success": 40,
+      "groups": [
+        300.8958437772616,
+        266.7888595757576,
+        237.42695611060594,
+        209.93621997800074
+      ]
+    },
+    "r1000": {
+      "mean": 250.03005865421204,
+      "success": 40,
+      "groups": [
+        299.5499050230955,
+        260.45295918335466,
+        230.40999120671233,
+        209.70737920368572
+      ]
+    },
+    "actual_pool": {
+      "mean": 247.94628198548827,
+      "success": 40,
+      "groups": [
+        295.68016221988665,
+        253.62789031606422,
+        233.00378771764142,
+        209.47328768836078
+      ]
+    },
+    "refined_actual_pool": {
+      "mean": 245.3497204297808,
+      "success": 40,
+      "groups": [
+        296.11841175174663,
+        255.25212691489338,
+        230.15429276274045,
+        199.8740502897427
+      ]
+    },
+    "r1000_actual_pool": {
+      "mean": 243.00897276812202,
+      "success": 40,
+      "groups": [
+        291.7780724499517,
+        249.9136530960292,
+        227.65417178645407,
+        202.68999374005313
+      ]
+    },
+    "baseline150": {
+      "mean": 258.6064867609522,
+      "success": 40,
+      "groups": [
+        308.7093993402526,
+        267.82206825755264,
+        247.2417282769654,
+        210.65275116903797
+      ]
+    },
+    "baseline0": {
+      "mean": 258.6064867609522,
+      "success": 40,
+      "groups": [
+        308.7093993402526,
+        267.82206825755264,
+        247.2417282769654,
+        210.65275116903797
+      ]
+    }
+  },
+  "variants": [
+    {
+      "name": "v1",
+      "kwargs": {}
+    },
+    {
+      "name": "r1000",
+      "kwargs": {
+        "distance": 1000
+      }
+    },
+    {
+      "name": "actual_pool",
+      "kwargs": {
+        "actual": true,
+        "pool": true
+      }
+    },
+    {
+      "name": "refined_actual_pool",
+      "kwargs": {
+        "actual": true,
+        "pool": true,
+        "refine": true
+      }
+    },
+    {
+      "name": "r1000_actual_pool",
+      "kwargs": {
+        "actual": true,
+        "pool": true,
+        "distance": 1000
+      }
+    },
+    {
+      "name": "baseline150",
+      "kwargs": {
+        "initial_baseline_m": 150
+      }
+    },
+    {
+      "name": "baseline0",
+      "kwargs": {
+        "initial_baseline_m": 0
+      }
+    }
+  ]
+}

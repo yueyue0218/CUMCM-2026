@@ -100,6 +100,11 @@
 - [ ] `REVIEW` Q3 主动候选、世界模型与循环PPO训练（2026-09-12）
   - 执行：本任务；复核：待队友认领；上下游检查：待第三人认领；分支：`codex/q3-complete-runtime`
   - 输入：Q1认证接口、已有Q2采样/接收概率工具及Q3训练方案；既有Q2文件只读复用
+  - 产物：`src/q3/world_model.py`、`adaptive_control.py`、`ppo.py`、`training_env.py`、`policy_runtime.py`、`train_ppo.py`、`evaluate_policy.py`；[训练与使用说明](src/q3/TRAINING.md)
+  - 实验：16回合示范预热、70回合PPO，含恢复优化器与随机状态的续训；模型、轨迹及代码快照位于 `runs/q3/training/20260912T163625_420414+0800_ppo/`
+  - 独立比较：12场四策略全清除；hybrid平均8095.13秒、complete平均8342.23秒，均值降低2.96%，逐场改善均值2.83%；纯PPO平均11727.19秒，仍较慢。生成表见 `results/tables/q3_policy_comparison.*`
+  - 验收证据：159项回归通过、续训随机流专项回归、独立代码审查及离线协议入口联调。待队友复核和官方演练；小样本不等于普遍改善或收敛
+  - 已知边界：已发现频道的名义粒子模型尚未概率校准；当前单步启发式规划与GRU候选网络不代表论文全部多步规划/注意力扩展；实际默认仍为complete
   - 产物：`src/q3/world_model.py`、`adaptive_control.py`、`ppo.py`、`training_env.py`、`policy_runtime.py`、`train_ppo.py`、`evaluate_policy.py`；[训练与使用说明](https://github.com/yueyue0218/CUMCM-2026/blob/388d8149a69719010f2934316da17ff86581cba4/src/q3/TRAINING.md)
   - 实验：16回合示范预热、70回合PPO，含恢复优化器与随机状态的续训；模型、轨迹及代码快照位于 `runs/q3/training/20260912T163625_420414+0800_ppo/`
   - 独立比较：12场四策略全清除；hybrid平均8095.13秒、complete平均8342.23秒，均值降低2.96%，逐场改善均值2.83%；纯PPO平均11727.19秒，仍较慢。生成表见 `results/tables/q3_policy_comparison.*`

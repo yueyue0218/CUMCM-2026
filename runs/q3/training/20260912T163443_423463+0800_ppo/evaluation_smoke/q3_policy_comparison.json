@@ -1,0 +1,254 @@
+{
+  "checkpoint": "C:\\Users\\ASUS\\Desktop\\CUMCM-2026\\runs\\q3\\training\\20260912T163443_423463+0800_ppo\\best.pt",
+  "checkpoint_metadata": {
+    "feature_version": "q3-candidates-v1",
+    "environment_config": {
+      "max_free_actions": 12,
+      "max_free_time_s": 6000.0,
+      "prediction_limit": 2,
+      "particle_count": 48
+    },
+    "seed": 20260912,
+    "source_count": null,
+    "device": "cpu",
+    "algorithm": "recurrent_ppo_gamma1_with_complete_fallback_tail",
+    "source_sha256": {
+      "src/q3/adaptive_control.py": "5a65e521c00be97b76b516b7bc9501f8d1059852729a432a0a402fc4d3d39bdf",
+      "src/q3/baseline_scan.py": "9b1cce35455eff4e968bf01b2cfec6240526460ba7141feba4c21a3bd67acd03",
+      "src/q3/evaluate_policy.py": "9b471a98d7665bed0a7d29e7e50bb422f006294d681390a8c1b76f1cddbfb39a",
+      "src/q3/localization_control.py": "7fd6d44dc584305872dc2fec12721ebd9837b4da9fd678886c67bdddabdfd75b",
+      "src/q3/main.py": "519d33075dd9700745f66f02a4f720929ef52efc61d568a572289b2ce91defd3",
+      "src/q3/offline_simulator.py": "a396fbb3cae55adbe400dc2d1e9c9942c0e261dcb656b6ea757a96097167c26c",
+      "src/q3/policy_runtime.py": "df278fc789205766898fcd06c57c3d43a42eb8dd6601166a6416549f8b9ee486",
+      "src/q3/ppo.py": "64699b0e7c351a0c32436f67fbb1731aef3e5d73475b1afe950cb91015dc6c39",
+      "src/q3/search_clear.py": "ae969db206b1cbe10a7f5d26ea9adfab901d5da0f00ca57422af1cd56c1490e3",
+      "src/q3/train_ppo.py": "002524dd4cc1c08a90acb57154ee1dd2d3f34380348b2c055d852282e43a40c5",
+      "src/q3/training_env.py": "003b0c4163ca5c06e1e0115cab1cd5907d80399b79de16371ac903f09d679412",
+      "src/q3/validate_offline.py": "0ed0d866ec8cda3dd35e8ea055bed7d6571eaa323bdf374a4e97c5dcef818609",
+      "src/q3/world_model.py": "ad40095638f810af808683cdcf3f9c71868368aaaed284e781c1b7114801a8c7",
+      "src/common/__init__.py": "2ab41ddc97f3d7d31c1fc22459922315f22fda168c22d125c973202da6746f17",
+      "src/common/geometry.py": "79301cb11d6876904b0d5c3413cf40e3935cf2816d75075dc1b4b59cfea08170",
+      "src/common/localization.py": "056b58eb63d52404adb15d15294d1d8f48968aad88ea1a4d8368a73a4c3108af",
+      "src/common/metrics.py": "0f2f9ddf8c5b94f2c46002bc6931be793778f587a72287cc751ff4114e8d6ebd",
+      "src/common/simulator_client.py": "81ecbbcba5480553ee564a69aed2ed3b2841557be7b86f363dd3b40d96990ed4"
+    },
+    "status": "experimental",
+    "validation_seed_start": 1020260912,
+    "episodes_completed": 4,
+    "validation": {
+      "success_count": 2,
+      "case_count": 2,
+      "mean_virtual_time_s": 13081.774759271946
+    }
+  },
+  "test_seed_start": 40260912,
+  "evidence_scope": "independent synthetic cases; not official results",
+  "aggregate": {
+    "complete": {
+      "success_count": 4,
+      "case_count": 4,
+      "mean_virtual_time_s": 7587.552852855827,
+      "worst_virtual_time_s": 9268.400878629667,
+      "mean_paired_improvement_pct": 0.0
+    },
+    "planner": {
+      "success_count": 4,
+      "case_count": 4,
+      "mean_virtual_time_s": 7739.452333865045,
+      "worst_virtual_time_s": 9302.947952008639,
+      "mean_paired_improvement_pct": -2.1271102154994086
+    },
+    "ppo": {
+      "success_count": 4,
+      "case_count": 4,
+      "mean_virtual_time_s": 12833.422571408368,
+      "worst_virtual_time_s": 14371.861847712318,
+      "mean_paired_improvement_pct": -70.53468471667762
+    },
+    "hybrid": {
+      "success_count": 4,
+      "case_count": 4,
+      "mean_virtual_time_s": 7739.452333865045,
+      "worst_virtual_time_s": 9302.947952008639,
+      "mean_paired_improvement_pct": -2.1271102154994086
+    }
+  },
+  "cases": [
+    {
+      "seed": 40260912,
+      "mode": "complete",
+      "all_cleared": true,
+      "cleared_count": 15,
+      "total_count": 15,
+      "virtual_time_s": 9268.400878629667,
+      "program_runtime_s": 0.573541199999454,
+      "improvement_vs_complete_pct": 0.0,
+      "termination_reason": "all_cleared"
+    },
+    {
+      "seed": 40260912,
+      "mode": "planner",
+      "all_cleared": true,
+      "cleared_count": 15,
+      "total_count": 15,
+      "virtual_time_s": 9302.947952008639,
+      "program_runtime_s": 3.4038801999995485,
+      "improvement_vs_complete_pct": -0.3727403878119631,
+      "termination_reason": "all_cleared"
+    },
+    {
+      "seed": 40260912,
+      "mode": "ppo",
+      "all_cleared": true,
+      "cleared_count": 15,
+      "total_count": 15,
+      "virtual_time_s": 14371.861847712318,
+      "program_runtime_s": 3.5326662000006763,
+      "improvement_vs_complete_pct": -55.0630150326126,
+      "termination_reason": "all_cleared"
+    },
+    {
+      "seed": 40260912,
+      "mode": "hybrid",
+      "all_cleared": true,
+      "cleared_count": 15,
+      "total_count": 15,
+      "virtual_time_s": 9302.947952008639,
+      "program_runtime_s": 1.0089431999986118,
+      "improvement_vs_complete_pct": -0.3727403878119631,
+      "termination_reason": "all_cleared"
+    },
+    {
+      "seed": 40260913,
+      "mode": "complete",
+      "all_cleared": true,
+      "cleared_count": 13,
+      "total_count": 13,
+      "virtual_time_s": 7275.563690230371,
+      "program_runtime_s": 0.5319999999992433,
+      "improvement_vs_complete_pct": 0.0,
+      "termination_reason": "all_cleared"
+    },
+    {
+      "seed": 40260913,
+      "mode": "planner",
+      "all_cleared": true,
+      "cleared_count": 13,
+      "total_count": 13,
+      "virtual_time_s": 7447.187426065302,
+      "program_runtime_s": 2.494921699999395,
+      "improvement_vs_complete_pct": -2.358906376771702,
+      "termination_reason": "all_cleared"
+    },
+    {
+      "seed": 40260913,
+      "mode": "ppo",
+      "all_cleared": true,
+      "cleared_count": 13,
+      "total_count": 13,
+      "virtual_time_s": 11157.865425631491,
+      "program_runtime_s": 2.484415300001274,
+      "improvement_vs_complete_pct": -53.36083773982043,
+      "termination_reason": "all_cleared"
+    },
+    {
+      "seed": 40260913,
+      "mode": "hybrid",
+      "all_cleared": true,
+      "cleared_count": 13,
+      "total_count": 13,
+      "virtual_time_s": 7447.187426065302,
+      "program_runtime_s": 0.7069869000006292,
+      "improvement_vs_complete_pct": -2.358906376771702,
+      "termination_reason": "all_cleared"
+    },
+    {
+      "seed": 40260914,
+      "mode": "complete",
+      "all_cleared": true,
+      "cleared_count": 10,
+      "total_count": 10,
+      "virtual_time_s": 6948.960064245156,
+      "program_runtime_s": 0.2938011000005645,
+      "improvement_vs_complete_pct": 0.0,
+      "termination_reason": "all_cleared"
+    },
+    {
+      "seed": 40260914,
+      "mode": "planner",
+      "all_cleared": true,
+      "cleared_count": 10,
+      "total_count": 10,
+      "virtual_time_s": 7350.387179068124,
+      "program_runtime_s": 1.981645200001367,
+      "improvement_vs_complete_pct": -5.77679409741397,
+      "termination_reason": "all_cleared"
+    },
+    {
+      "seed": 40260914,
+      "mode": "ppo",
+      "all_cleared": true,
+      "cleared_count": 10,
+      "total_count": 10,
+      "virtual_time_s": 13436.666382522999,
+      "program_runtime_s": 2.1236742999972194,
+      "improvement_vs_complete_pct": -93.36226224207812,
+      "termination_reason": "all_cleared"
+    },
+    {
+      "seed": 40260914,
+      "mode": "hybrid",
+      "all_cleared": true,
+      "cleared_count": 10,
+      "total_count": 10,
+      "virtual_time_s": 7350.387179068124,
+      "program_runtime_s": 0.6990421000009519,
+      "improvement_vs_complete_pct": -5.77679409741397,
+      "termination_reason": "all_cleared"
+    },
+    {
+      "seed": 40260915,
+      "mode": "complete",
+      "all_cleared": true,
+      "cleared_count": 12,
+      "total_count": 12,
+      "virtual_time_s": 6857.286778318113,
+      "program_runtime_s": 0.38118170000234386,
+      "improvement_vs_complete_pct": 0.0,
+      "termination_reason": "all_cleared"
+    },
+    {
+      "seed": 40260915,
+      "mode": "planner",
+      "all_cleared": true,
+      "cleared_count": 12,
+      "total_count": 12,
+      "virtual_time_s": 6857.286778318113,
+      "program_runtime_s": 1.9601658999999927,
+      "improvement_vs_complete_pct": 0.0,
+      "termination_reason": "all_cleared"
+    },
+    {
+      "seed": 40260915,
+      "mode": "ppo",
+      "all_cleared": true,
+      "cleared_count": 12,
+      "total_count": 12,
+      "virtual_time_s": 12367.296629766664,
+      "program_runtime_s": 2.0504622000007657,
+      "improvement_vs_complete_pct": -80.35262385219934,
+      "termination_reason": "all_cleared"
+    },
+    {
+      "seed": 40260915,
+      "mode": "hybrid",
+      "all_cleared": true,
+      "cleared_count": 12,
+      "total_count": 12,
+      "virtual_time_s": 6857.286778318113,
+      "program_runtime_s": 0.6136886999993294,
+      "improvement_vs_complete_pct": 0.0,
+      "termination_reason": "all_cleared"
+    }
+  ]
+}
