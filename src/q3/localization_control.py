@@ -5,13 +5,14 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 
+from src.common.geometry import Point
 from src.common.localization import (
     BearingObservation,
     LocalizationAssessment,
     LocalizationStatus,
     assess_observations_for_clear,
 )
-from src.q3.baseline_scan import ChannelDiscovery
+from src.q3.baseline_scan import ChannelDiscovery, MeasureObservation
 
 
 class ChannelLocalizationDecision(str, Enum):
@@ -23,7 +24,8 @@ class ChannelLocalizationDecision(str, Enum):
 @dataclass(frozen=True)
 class ChannelLocalizationEvaluation:
     decision: ChannelLocalizationDecision
-    assessment: LocalizationAssessment
+    clear_position: Point | None
+    assessment: LocalizationAssessment | None
 
 
 def direction_observations(
@@ -46,6 +48,21 @@ def direction_observations(
     return converted
 
 
+def latest_near_observation(
+    discovery: ChannelDiscovery,
+) -> MeasureObservation | None:
+    """Return the last saved near observation, if one exists."""
+
+    return next(
+        (
+            observation
+            for observation in reversed(discovery.observations)
+            if observation.measure_result == "near"
+        ),
+        None,
+    )
+
+
 def assess_channel_localization(
     discovery: ChannelDiscovery,
 ) -> LocalizationAssessment:
@@ -62,7 +79,15 @@ def assess_channel_localization(
 def evaluate_channel(
     discovery: ChannelDiscovery,
 ) -> ChannelLocalizationEvaluation:
-    """Map the Q1 assessment status to the corresponding Q3 decision."""
+    """Use a near shortcut or map the Q1 status to the Q3 decision."""
+
+    near_observation = latest_near_observation(discovery)
+    if near_observation is not None:
+        return ChannelLocalizationEvaluation(
+            decision=ChannelLocalizationDecision.READY_TO_CLEAR,
+            clear_position=near_observation.position,
+            assessment=None,
+        )
 
     assessment = assess_channel_localization(discovery)
     decisions = {
@@ -72,7 +97,13 @@ def evaluate_channel(
         ),
         LocalizationStatus.MODEL_CONFLICT: ChannelLocalizationDecision.MODEL_CONFLICT,
     }
+    clear_position = (
+        assessment.clear_position
+        if assessment.status is LocalizationStatus.CLEAR_READY
+        else None
+    )
     return ChannelLocalizationEvaluation(
         decision=decisions[assessment.status],
+        clear_position=clear_position,
         assessment=assessment,
     )

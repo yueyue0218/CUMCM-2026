@@ -12,6 +12,7 @@ from src.q3.localization_control import (
     assess_channel_localization,
     direction_observations,
     evaluate_channel,
+    latest_near_observation,
 )
 
 
@@ -115,33 +116,104 @@ class ChannelAssessmentTests(unittest.TestCase):
             assess_channel_localization(discovery)
 
 
+class NearObservationTests(unittest.TestCase):
+    def test_latest_near_returns_last_near_observation(self) -> None:
+        first_near = saved_observation("near", position=(1.0, 2.0))
+        last_near = saved_observation("near", position=(5.0, 6.0))
+        discovery = ChannelDiscovery(
+            status="detected",
+            observations=[
+                first_near,
+                saved_observation("direction", svd_deg=45.0),
+                last_near,
+                saved_observation("no_signal"),
+            ],
+        )
+
+        self.assertIs(latest_near_observation(discovery), last_near)
+
+
 class ChannelEvaluationTests(unittest.TestCase):
+    def test_near_only_is_ready_at_near_position_without_assessment(self) -> None:
+        discovery = ChannelDiscovery(
+            status="detected",
+            observations=[saved_observation("near", position=(12.0, -8.0))],
+        )
+
+        evaluation = evaluate_channel(discovery)
+
+        self.assertIs(
+            evaluation.decision,
+            ChannelLocalizationDecision.READY_TO_CLEAR,
+        )
+        self.assertEqual(evaluation.clear_position, (12.0, -8.0))
+        self.assertIsNone(evaluation.assessment)
+
+    def test_later_near_takes_priority_without_q1_assessment(self) -> None:
+        discovery = ChannelDiscovery(
+            status="detected",
+            observations=[
+                saved_observation("direction", svd_deg=30.0),
+                saved_observation("near", position=(7.0, 9.0)),
+            ],
+        )
+
+        with patch(
+            "src.q3.localization_control.assess_channel_localization"
+        ) as assess:
+            evaluation = evaluate_channel(discovery)
+
+        assess.assert_not_called()
+        self.assertIs(
+            evaluation.decision,
+            ChannelLocalizationDecision.READY_TO_CLEAR,
+        )
+        self.assertEqual(evaluation.clear_position, (7.0, 9.0))
+        self.assertIsNone(evaluation.assessment)
+
+    def test_multiple_near_results_use_last_position(self) -> None:
+        discovery = ChannelDiscovery(
+            status="detected",
+            observations=[
+                saved_observation("near", position=(1.0, 2.0)),
+                saved_observation("near", position=(3.0, 4.0)),
+            ],
+        )
+
+        evaluation = evaluate_channel(discovery)
+
+        self.assertEqual(evaluation.clear_position, (3.0, 4.0))
+        self.assertIsNone(evaluation.assessment)
+
     def test_q1_statuses_map_directly_without_geometry_reassessment(self) -> None:
         cases = (
             (
                 LocalizationStatus.CLEAR_READY,
                 ChannelLocalizationDecision.READY_TO_CLEAR,
                 9876.0,
+                (4.0, 5.0),
             ),
             (
                 LocalizationStatus.COVERAGE_UNCERTAIN,
                 ChannelLocalizationDecision.NEEDS_MORE_MEASUREMENT,
                 0.0,
+                None,
             ),
             (
                 LocalizationStatus.MODEL_CONFLICT,
                 ChannelLocalizationDecision.MODEL_CONFLICT,
                 -123.0,
+                None,
             ),
         )
 
-        for status, expected_decision, diameter_m in cases:
+        for status, expected_decision, diameter_m, expected_position in cases:
             with self.subTest(status=status):
                 assessment = LocalizationAssessment(
                     status=status,
                     outer_region=(),
                     diameter_m=diameter_m,
-                    clear_position=None,
+                    clear_position=(4.0, 5.0),
                     r_max_m=None,
                     clear_ready=status is LocalizationStatus.CLEAR_READY,
                     reason="patched Q1 assessment",
@@ -153,7 +225,19 @@ class ChannelEvaluationTests(unittest.TestCase):
                     evaluation = evaluate_channel(ChannelDiscovery())
 
                 self.assertIs(evaluation.decision, expected_decision)
+                self.assertEqual(evaluation.clear_position, expected_position)
                 self.assertIs(evaluation.assessment, assessment)
+
+    def test_no_signal_only_evaluation_is_rejected(self) -> None:
+        discovery = ChannelDiscovery(
+            observations=[saved_observation("no_signal")],
+        )
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "channel localization requires at least one direction observation",
+        ):
+            evaluate_channel(discovery)
 
     def test_real_direction_flows_through_q1_to_q3_evaluation(self) -> None:
         discovery = ChannelDiscovery(
@@ -177,6 +261,13 @@ class ChannelEvaluationTests(unittest.TestCase):
                 ChannelLocalizationDecision.NEEDS_MORE_MEASUREMENT,
             },
         )
+        if evaluation.decision is ChannelLocalizationDecision.READY_TO_CLEAR:
+            self.assertEqual(
+                evaluation.clear_position,
+                evaluation.assessment.clear_position,
+            )
+        else:
+            self.assertIsNone(evaluation.clear_position)
 
 
 if __name__ == "__main__":
