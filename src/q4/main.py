@@ -18,7 +18,8 @@ def build_parser():
     parser.add_argument('--robot-id', required=True)
     parser.add_argument('--base-url', default='http://127.0.0.1:2026')
     parser.add_argument('--run-root', type=Path, default=ROOT/'runs/q4/practice')
-    parser.add_argument('--strategy', choices=['informed','refined','adaptive','seven_grid'], default='informed')
+    parser.add_argument('--strategy', choices=['informed','refined','adaptive','seven_grid',
+        'census_then_clear','spiral_scan','random_walk'], default='informed')
     parser.add_argument('--virtual-limit-s', type=float, default=360000.)
     parser.add_argument('--max-actions', type=int, default=4096)
     parser.add_argument('--max-requests', type=int, default=12300)
@@ -32,12 +33,17 @@ def run(args):
     directory = args.run_root/datetime.now().strftime('%Y%m%dT%H%M%S_%f')
     client = SimulatorClient(args.robot_id, base_url=args.base_url)
     if args.strategy == 'informed':
-        from src.q4.informed import InformedController
-        controller_class = InformedController
+        from src.q4.experiment_informed import ExperimentInformedController
+        controller_class = ExperimentInformedController
         base_strategy = 'adaptive'
     elif args.strategy == 'refined':
-        from src.q4.refined import RefinedController
-        controller_class = RefinedController
+        from src.q4.control_refined import ControlRefinedController
+        controller_class = ControlRefinedController
+        base_strategy = 'adaptive'
+    elif args.strategy in {'census_then_clear','spiral_scan','random_walk'}:
+        from src.q4.benchmark import controller_class as load_controller
+        from src.q4.compare import STRATEGIES
+        controller_class = load_controller(STRATEGIES[args.strategy][0])
         base_strategy = 'adaptive'
     else:
         controller_class = MixedController

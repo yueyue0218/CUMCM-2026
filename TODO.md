@@ -151,9 +151,10 @@
 
 ## Q4 最终算法与对照交接
 
-- [ ] `REVIEW` 提交 Q4 最终算法、三个对照及必要验证工具
+- [ ] `REVIEW` 提交 Q4 最终算法、Q3 对应的具名对照及同场结果表
   - 执行：本任务；复核：待队友认领；上下游检查：待第三人认领
-  - 分支：`codex/q4-complete-runtime`；依赖 Q3 运行 PR #9，目标暂为 `codex/q3-complete-runtime`
-  - 产物：`src/q4/`、`tests/test_q4*.py`、`results/tables/q4_final_comparison.*`
+  - 分支：`codex/q4-strategy-controls`；从最新 main 建立，Q3 运行 PR #9 和 Q4 运行 [PR #10](https://github.com/yueyue0218/CUMCM-2026/pull/10) 均已合并，本次对照与表格以新 PR 交付
+  - 产物：`src/q4/experiment_informed.py`、`src/q4/control_*.py`、`tests/test_q4*.py`、`results/tables/Q4_实验组与对照组_策略比较表.*`；保留原 140 场 `q4_final_comparison.*`
   - 边界：不包含中间训练数据、模型权重及过程日志；总体 300–399 秒目标未达到，尚无官方成绩
   - [运行与算法对照](src/q4/README.md)；[提交说明](notes/q4-publication.md)
+  - 新 80 场六组同场：最终算法 452.66 秒/源，上一版 466.32，普查 629.70，螺旋 1045.87，四组均 80/80 完成；随机游走 96.95% 实际清除、12/80 完成；已知位置特权参考 144.91 秒/源

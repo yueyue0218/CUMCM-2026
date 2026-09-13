@@ -5,7 +5,7 @@ import json
 import math
 from pathlib import Path
 from src.common.simulator_client import SimulatorClient
-from src.q4.benchmark import controller_class, make_world
+from src.q4.benchmark import controller_class, make_world, make_controller
 from src.q4.offline_simulator import MixedSource
 from src.q4.q3_adapter import cost_breakdown
 
@@ -35,12 +35,16 @@ def replay(directory, output):
                    for s in data['sources']]
         world = make_world(sources, data['case']['seed'], config.get('noise', 'spatial'))
         client = SimulatorClient('offline-replay', transport=world.transport)
-        control = cls(client, **options)
+        case_index = data['case']['seed']-config['seed']
+        control = make_controller(cls, client, sources, options, case_index)
         client.enter()
         state = control.run()
         client.exit()
         complete = state.all_cleared and world.cleared == set(world.sources)
-        valid = (complete and trace(world.actions) == trace(data['actions'])
+        valid = (bool(complete) == bool(data['case']['all_cleared'])
+                 and len(world.cleared) == data['case']['cleared_count']
+                 and state.termination_reason == data['case']['termination_reason']
+                 and trace(world.actions) == trace(data['actions'])
                  and world.virtual_time_s == data['case']['total_time_s']
                  and math.isclose(sum(cost_breakdown(world.actions).values()), world.virtual_time_s, abs_tol=1e-7))
         rows.append(dict(file=path.name, valid=bool(valid), all_cleared=bool(complete)))

@@ -1,0 +1,7 @@
+﻿strategy,label,controller,scene_count,cleared_count,source_count,clearance_percent,complete_scenes,actual_complete_scenes,all_audits_passed,raw_mean_per_source_s,valid_mean_per_source_s,mean_total_time_s,sum_total_time_s,mean_program_runtime_s,privileged_truth,ranking_eligible
+informed,实验组：最终信息感知算法,src.q4.experiment_informed:ExperimentInformedController,80,1040,1040,100.0,80,80,True,452.6563939890053,452.6563939890053,5667.150665272329,453372.05322178634,0.5122604175000006,False,True
+refined,对照组：上一版 Q4 算法,src.q4.control_refined:ControlRefinedController,80,1040,1040,100.0,80,80,True,466.32166039993064,466.32166039993064,5853.713963579649,468297.11708637193,0.6417616675000062,False,True
+census_then_clear,对照组：普查后清除,src.q4.control_census_then_clear:CensusThenClearController,80,1040,1040,100.0,80,80,True,629.7002637065782,629.7002637065782,7965.916949631917,637273.3559705534,2.5562692925000166,False,True
+spiral_scan,对照组：螺旋扫描及方向覆盖补齐,src.q4.control_spiral_scan:SpiralScanController,80,1040,1040,100.0,80,80,True,1045.8703272049352,1045.8703272049352,12755.278100201733,1020422.2480161386,1.0276106912499785,False,True
+random_walk,对照组：随机游走,src.q4.control_random_walk:RandomWalkController,80,1007,1040,96.95163690476191,12,55,True,1771.2923238647413,,21949.852729385093,1755988.2183508074,1.0522102125000004,False,False
+oracle,特权参考：已知真实位置,src.q4.control_oracle:OracleController,80,1040,1040,100.0,80,80,True,144.9067803735822,144.9067803735822,1855.1186164945254,148409.48931956204,0.0022185450000023364,True,False

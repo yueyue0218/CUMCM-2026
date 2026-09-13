@@ -12,4 +12,4 @@
 
 当前Q3默认策略为 `efficient`（集中检测、联合路线、动态覆盖证明）。分层验证及运行方式见 [q3/EFFICIENCY.md](q3/EFFICIENCY.md)，原模型策略继续保留。
 
-Q4：`q4/informed.py` 为最终算法；`q4/refined.py` 为上一版对照；`q4/controller.py` 的 adaptive 和 seven_grid 为另两种对照。`q4/compare.py` 在相同合成场景上评价各组，`q4/replay.py` 核验保存动作。运行命令见 [Q4 说明](q4/README.md)。
+Q4：`q4/experiment_informed.py` 为最终算法具名入口，`q4/control_*.py` 为上一版、普查、螺旋、随机游走和已知位置参考。`q4/compare.py` 进行同场评估，`q4/comparison_tables.py` 导出总表、分组表及逐场 CSV，`q4/replay.py` 核验动作。定义与复现见 [Q4 对照说明](q4/STRATEGY_CONTROLS.md)。

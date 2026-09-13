@@ -1,0 +1,36 @@
+{
+  "audited_scenes": 480,
+  "audited_actions": 214044,
+  "all_action_clocks_and_clear_receipts_consistent": true,
+  "same_80_scenes_in_all_six_groups": true,
+  "census_all_80_have_420_measurement_prefix": true,
+  "oracle_all_80_zero_measurements": true,
+  "replay_sample_rule": "first case of each of four source-count groups, for every strategy",
+  "replayed_scenes": 24,
+  "replays": {
+    "informed": {
+      "scene_count": 4,
+      "all_identical": true
+    },
+    "refined": {
+      "scene_count": 4,
+      "all_identical": true
+    },
+    "census_then_clear": {
+      "scene_count": 4,
+      "all_identical": true
+    },
+    "spiral_scan": {
+      "scene_count": 4,
+      "all_identical": true
+    },
+    "random_walk": {
+      "scene_count": 4,
+      "all_identical": true
+    },
+    "oracle": {
+      "scene_count": 4,
+      "all_identical": true
+    }
+  }
+}

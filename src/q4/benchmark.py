@@ -1,7 +1,7 @@
 """Truth-isolated benchmark for the final Q4 algorithm and controls.
 
-Candidate controllers get only SimulatorClient. Scenario truth is retained by
-the world and post-run audit. All controls use the same saved scenario specification.
+Ordinary controllers get only SimulatorClient. Only the explicitly whitelisted
+offline OracleController receives true positions. All groups share scene specs.
 """
 from __future__ import annotations
 
@@ -84,6 +84,19 @@ def controller_class(spec):
     return getattr(importlib.import_module(module),name)
 
 
+def make_controller(cls, client, sources, options, case_index=0):
+    """Keep privileged data in one explicit, offline-only construction branch."""
+    from src.q4.control_oracle import OracleController
+    from src.q4.control_random_walk import RandomWalkController
+    kwargs = dict(options)
+    if cls is OracleController:
+        return cls(client, known_positions={s.channel: s.position for s in sources}, **kwargs)
+    if cls is RandomWalkController:
+        # This index and independent public seed are unrelated to source truth.
+        kwargs['walk_seed'] = kwargs.get('walk_seed', 410000003) + case_index
+    return cls(client, **kwargs)
+
+
 def evaluate_benchmark(output,*,controller='src.q4.refined:RefinedController',options=None,
                       seed=230000000,cases_per_group=10,counts=(10,11,12,13,14,15,16),
                       profile='uniform',noise='hash',fraction=.5):
@@ -106,7 +119,7 @@ def evaluate_benchmark(output,*,controller='src.q4.refined:RefinedController',op
             sources=sample_scene(scene_seed,n,profile,fraction)
             world=make_world(sources,scene_seed,noise)
             client=SimulatorClient('research-q4',transport=world.transport)
-            control=cls(client,**execution_options)
+            control=make_controller(cls,client,sources,execution_options,group*1000+case)
             error=None
             started=time.monotonic()
             try:
@@ -125,6 +138,10 @@ def evaluate_benchmark(output,*,controller='src.q4.refined:RefinedController',op
                    and (not state.all_cleared or world.cleared==set(world.sources)))
             complete=error is None and audit and state.all_cleared and world.cleared==set(world.sources)
             row=dict(seed=scene_seed,source_count=n,cleared_count=len(world.cleared),
+                source_sha256=hashlib.sha256(json.dumps([asdict(s) for s in sources],sort_keys=True).encode()).hexdigest(),
+                actual_all_cleared=world.cleared==set(world.sources),
+                clearance_ratio=len(world.cleared)/n, raw_time_per_source_s=world.virtual_time_s/n,
+                privileged_truth=bool(getattr(state,'privileged_truth',False)),
                 all_cleared=complete,audit_passed=audit,total_time_s=world.virtual_time_s,
                 per_source_s=world.virtual_time_s/len(world.cleared) if world.cleared else None,
                 program_runtime_s=runtime,full_scan_count=len(state.full_scan_stations),
