@@ -1,6 +1,6 @@
 # Q2-B2-1 code design: minimal implementation architecture
 
-Status: design plus implementation contract through Task 5B. This document
+Status: design plus implementation contract through Task 6A. This document
 records the Q2 interfaces, mathematical semantics, and staged implementation.
 
 ## 1. Checked Q1 and common APIs to reuse
@@ -693,6 +693,7 @@ def same_distance_vertical_baseline(
     state: FirstState,
     *,
     direction_grid_deg: Sequence[float],
+    bearing_error_atoms: Sequence[BearingErrorAtom],
     config: Q2Config = Q2Config(),
 ) -> tuple[CandidateScore, CandidateScore]:
     ...
@@ -701,6 +702,13 @@ def same_distance_vertical_baseline(
 Use the first bearing axis `u=(cos theta, sin theta)` and lateral normal
 `n=(-sin theta, cos theta)`. Let `L = ||reference_q-S1||`; evaluate both
 `S1 + L n` and `S1 - L n`. Do not choose a side without scoring both.
+
+Task 6A implements this baseline. The nominal bearing-error atoms are explicit,
+matching `score_candidates(...)`. The function always returns both sides in
+`(+n, -n)` order and never silently chooses the better side. A side outside the
+`C_poss` outer proxy is still scored and returned, with
+`robust.in_c_poss_proxy=False`, so an unfavorable same-distance baseline is
+reported rather than hidden. If `L=0`, both returned points coincide with `S1`.
 
 ## 5. Theoretical set vs engineering outer region
 

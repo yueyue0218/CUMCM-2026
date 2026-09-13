@@ -19,6 +19,7 @@ from src.q2.optimizer import (
     select_pure_bayesian,
     select_pure_minimax,
     select_robust_envelope_hybrid,
+    same_distance_vertical_baseline,
 )
 
 
@@ -684,6 +685,245 @@ class RobustEnvelopeHybridTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(ValueError, "Bayesian score"):
             select_robust_envelope_hybrid((bad_bayes,), rho=0.1)
+
+
+
+class SameDistanceVerticalBaselineTests(unittest.TestCase):
+    @staticmethod
+    def make_state(
+        *,
+        station: tuple[float, float] = (100.0, 200.0),
+        bearing_deg: float = 0.0,
+    ) -> FirstState:
+        return FirstState(
+            observation=FirstDirectionObservation(station, bearing_deg),
+            exact_support_label="vertical baseline test support",
+            outer_region=(
+                (station[0] - 50.0, station[1] - 50.0),
+                (station[0] + 50.0, station[1] - 50.0),
+                (station[0] + 50.0, station[1] + 50.0),
+                (station[0] - 50.0, station[1] + 50.0),
+            ),
+            joint_samples=(
+                JointSample((station[0] + 40.0, station[1]), 1000.0, 1.0),
+            ),
+        )
+
+    @staticmethod
+    def bayes(
+        q: tuple[float, float],
+        *,
+        movement: float,
+    ) -> BayesianEvaluation:
+        return BayesianEvaluation(
+            q=q,
+            psi_d_m=10.0,
+            response_probabilities={},
+            metrics=(),
+            movement_m=movement,
+        )
+
+    @staticmethod
+    def robust(
+        q: tuple[float, float],
+        *,
+        movement: float,
+        in_c_poss: bool = True,
+    ) -> RobustEvaluation:
+        return RobustEvaluation(
+            q=q,
+            u_proxy_m=20.0,
+            u_bar_m=25.0,
+            worst_response_proxy=None,
+            worst_response_outer=None,
+            in_c_poss_proxy=in_c_poss,
+            in_c_rec_certified=False,
+            movement_m=movement,
+        )
+
+    def test_zero_degree_bearing_generates_north_and_south_points(self) -> None:
+        state = self.make_state(station=(100.0, 200.0), bearing_deg=0.0)
+        reference_q = (400.0, 600.0)  # distance 500
+        atoms = (BearingErrorAtom(0.0, 1.0),)
+
+        def fake_bayes(q, *_args, **_kwargs):
+            return self.bayes(q, movement=500.0)
+
+        def fake_robust(q, *_args, **_kwargs):
+            return self.robust(q, movement=500.0)
+
+        with (
+            patch("src.q2.optimizer.evaluate_bayesian", side_effect=fake_bayes),
+            patch("src.q2.optimizer.evaluate_robust", side_effect=fake_robust),
+        ):
+            plus, minus = same_distance_vertical_baseline(
+                reference_q,
+                state,
+                direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+                bearing_error_atoms=atoms,
+            )
+
+        self.assertAlmostEqual(plus.q[0], 100.0)
+        self.assertAlmostEqual(plus.q[1], 700.0)
+        self.assertAlmostEqual(minus.q[0], 100.0)
+        self.assertAlmostEqual(minus.q[1], -300.0)
+
+    def test_ninety_degree_bearing_rotates_vertical_axis_correctly(self) -> None:
+        state = self.make_state(station=(10.0, 20.0), bearing_deg=90.0)
+        reference_q = (110.0, 20.0)  # distance 100
+        atoms = (BearingErrorAtom(0.0, 1.0),)
+
+        with (
+            patch(
+                "src.q2.optimizer.evaluate_bayesian",
+                side_effect=lambda q, *_args, **_kwargs: self.bayes(q, movement=100.0),
+            ),
+            patch(
+                "src.q2.optimizer.evaluate_robust",
+                side_effect=lambda q, *_args, **_kwargs: self.robust(q, movement=100.0),
+            ),
+        ):
+            plus, minus = same_distance_vertical_baseline(
+                reference_q,
+                state,
+                direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+                bearing_error_atoms=atoms,
+            )
+
+        self.assertAlmostEqual(plus.q[0], -90.0, places=9)
+        self.assertAlmostEqual(plus.q[1], 20.0, places=9)
+        self.assertAlmostEqual(minus.q[0], 110.0, places=9)
+        self.assertAlmostEqual(minus.q[1], 20.0, places=9)
+
+    def test_both_sides_have_exact_reference_movement_distance(self) -> None:
+        state = self.make_state(station=(-30.0, 40.0), bearing_deg=37.0)
+        reference_q = (270.0, 440.0)
+        expected = math.dist(reference_q, state.observation.station)
+        atoms = (BearingErrorAtom(0.0, 1.0),)
+
+        with (
+            patch(
+                "src.q2.optimizer.evaluate_bayesian",
+                side_effect=lambda q, *_args, **_kwargs: self.bayes(q, movement=expected),
+            ),
+            patch(
+                "src.q2.optimizer.evaluate_robust",
+                side_effect=lambda q, *_args, **_kwargs: self.robust(q, movement=expected),
+            ),
+        ):
+            plus, minus = same_distance_vertical_baseline(
+                reference_q,
+                state,
+                direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+                bearing_error_atoms=atoms,
+            )
+
+        self.assertAlmostEqual(math.dist(plus.q, state.observation.station), expected)
+        self.assertAlmostEqual(math.dist(minus.q, state.observation.station), expected)
+
+    def test_scores_both_sides_and_forwards_explicit_error_atoms(self) -> None:
+        state = self.make_state()
+        reference_q = (400.0, 200.0)
+        atoms = (
+            BearingErrorAtom(-1.0, 0.25),
+            BearingErrorAtom(0.0, 0.50),
+            BearingErrorAtom(1.0, 0.25),
+        )
+
+        with (
+            patch(
+                "src.q2.optimizer.evaluate_bayesian",
+                side_effect=lambda q, *_args, **_kwargs: self.bayes(q, movement=300.0),
+            ) as bayes_eval,
+            patch(
+                "src.q2.optimizer.evaluate_robust",
+                side_effect=lambda q, *_args, **_kwargs: self.robust(q, movement=300.0),
+            ) as robust_eval,
+        ):
+            result = same_distance_vertical_baseline(
+                reference_q,
+                state,
+                direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+                bearing_error_atoms=atoms,
+            )
+
+        self.assertEqual(len(result), 2)
+        self.assertEqual(bayes_eval.call_count, 2)
+        self.assertEqual(robust_eval.call_count, 2)
+        for call in bayes_eval.call_args_list:
+            self.assertEqual(call.kwargs["bearing_error_atoms"], atoms)
+
+    def test_outside_c_poss_side_is_reported_not_silently_dropped(self) -> None:
+        state = self.make_state()
+        reference_q = (400.0, 200.0)
+        atoms = (BearingErrorAtom(0.0, 1.0),)
+
+        robust_calls = 0
+
+        def fake_robust(q, *_args, **_kwargs):
+            nonlocal robust_calls
+            robust_calls += 1
+            return self.robust(
+                q,
+                movement=300.0,
+                in_c_poss=(robust_calls == 1),
+            )
+
+        with (
+            patch(
+                "src.q2.optimizer.evaluate_bayesian",
+                side_effect=lambda q, *_args, **_kwargs: self.bayes(q, movement=300.0),
+            ),
+            patch("src.q2.optimizer.evaluate_robust", side_effect=fake_robust),
+        ):
+            plus, minus = same_distance_vertical_baseline(
+                reference_q,
+                state,
+                direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+                bearing_error_atoms=atoms,
+            )
+
+        self.assertTrue(plus.robust.in_c_poss_proxy)
+        self.assertFalse(minus.robust.in_c_poss_proxy)
+
+    def test_zero_distance_reference_returns_two_same_station_scores(self) -> None:
+        state = self.make_state()
+        atoms = (BearingErrorAtom(0.0, 1.0),)
+        station = state.observation.station
+
+        with (
+            patch(
+                "src.q2.optimizer.evaluate_bayesian",
+                side_effect=lambda q, *_args, **_kwargs: self.bayes(q, movement=0.0),
+            ),
+            patch(
+                "src.q2.optimizer.evaluate_robust",
+                side_effect=lambda q, *_args, **_kwargs: self.robust(q, movement=0.0),
+            ),
+        ):
+            plus, minus = same_distance_vertical_baseline(
+                station,
+                state,
+                direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+                bearing_error_atoms=atoms,
+            )
+
+        self.assertEqual(plus.q, station)
+        self.assertEqual(minus.q, station)
+
+    def test_rejects_nonfinite_or_malformed_reference_point(self) -> None:
+        state = self.make_state()
+        atoms = (BearingErrorAtom(0.0, 1.0),)
+
+        for bad in ((math.nan, 0.0), (math.inf, 0.0), (1.0,), (True, 0.0)):
+            with self.subTest(reference_q=bad):
+                with self.assertRaises(ValueError):
+                    same_distance_vertical_baseline(
+                        bad,  # type: ignore[arg-type]
+                        state,
+                        direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+                        bearing_error_atoms=atoms,
+                    )
 
 
 

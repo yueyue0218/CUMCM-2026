@@ -1,13 +1,14 @@
 """Minimal Q2 candidate scoring and selector utilities.
 
-Implemented through Task 5B:
+Implemented through Task 6A:
 - coarse candidate generation over the C_poss outer proxy;
 - pure minimax selection using RobustEvaluation.u_proxy_m;
 - one shared Bayesian + robust scoring path;
-- pure Bayesian selection with a numerical near-optimality tolerance; and
-- robust-envelope hybrid selection.
+- pure Bayesian selection with a numerical near-optimality tolerance;
+- robust-envelope hybrid selection; and
+- the same-distance two-sided vertical baseline.
 
-It does not implement local refinement, vertical baselines, plotting, or experiments.
+It does not implement local refinement, plotting, or large experiments.
 """
 
 from __future__ import annotations
@@ -16,7 +17,7 @@ import math
 from dataclasses import dataclass
 from typing import Sequence
 
-from src.common.geometry import Point
+from src.common.geometry import Point, distance, unit_vector
 from src.q2.model import (
     BayesianEvaluation,
     BearingErrorAtom,
@@ -354,3 +355,78 @@ def select_robust_envelope_hybrid(
             score.q[1],
         ),
     )
+
+
+
+def same_distance_vertical_baseline(
+    reference_q: Point,
+    state: FirstState,
+    *,
+    direction_grid_deg: Sequence[float],
+    bearing_error_atoms: Sequence[BearingErrorAtom],
+    config: Q2Config = Q2Config(),
+) -> tuple[CandidateScore, CandidateScore]:
+    """Score both perpendicular points at the reference movement distance.
+
+    Let ``L = ||reference_q - S1||`` and let ``u`` be the first measured bearing
+    axis.  With the left normal ``n = (-u_y, u_x)``, the two baseline points are
+
+        q_plus  = S1 + L n
+        q_minus = S1 - L n.
+
+    Both sides are always evaluated and returned in ``(+n, -n)`` order.  The
+    function does not silently pick the better side.  It also does not discard a
+    side merely because it falls outside the ``C_poss`` outer proxy: that flag is
+    preserved in the returned robust diagnostic so the comparison can report a
+    weak baseline honestly.
+
+    The nominal bearing-error quadrature/PMF is explicit, matching the shared
+    Bayesian evaluator; no probability law is inferred from the hard error bound.
+    """
+
+    if not isinstance(state, FirstState):
+        raise TypeError("state must be a FirstState")
+    try:
+        coordinates = tuple(reference_q)
+    except TypeError as exc:
+        raise ValueError("reference_q must be a finite 2D point") from exc
+    if len(coordinates) != 2 or not all(
+        isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and math.isfinite(float(value))
+        for value in coordinates
+    ):
+        raise ValueError("reference_q must be a finite 2D point")
+
+    reference = (float(coordinates[0]), float(coordinates[1]))
+    station = state.observation.station
+    movement = distance(reference, station)
+
+    forward = unit_vector(state.observation.bearing_deg)
+    normal = (-forward[1], forward[0])
+    q_plus = (
+        station[0] + movement * normal[0],
+        station[1] + movement * normal[1],
+    )
+    q_minus = (
+        station[0] - movement * normal[0],
+        station[1] - movement * normal[1],
+    )
+
+    def evaluate(q: Point) -> CandidateScore:
+        bayes = evaluate_bayesian(
+            q,
+            state,
+            direction_grid_deg=direction_grid_deg,
+            bearing_error_atoms=bearing_error_atoms,
+            config=config,
+        )
+        robust = evaluate_robust(
+            q,
+            state,
+            direction_grid_deg=direction_grid_deg,
+            config=config,
+        )
+        return CandidateScore(q=q, bayes=bayes, robust=robust)
+
+    return evaluate(q_plus), evaluate(q_minus)
