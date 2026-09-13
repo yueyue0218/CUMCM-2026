@@ -1,0 +1,366 @@
+{
+  "experiment": "Pure bearing-wedge intersection sensitivity at fixed 500 m station-source distance; alpha is the sole geometry parameter and the station baseline is therefore 2 L sin(alpha/2), not constant.",
+  "configuration": {
+    "source_m": [
+      0.0,
+      0.0
+    ],
+    "station_distance_m": 500.0,
+    "bearing_error_deg": 1.0,
+    "alpha_degrees": [
+      5.0,
+      10.0,
+      15.0,
+      20.0,
+      30.0,
+      45.0,
+      60.0,
+      75.0,
+      90.0
+    ],
+    "initial_box": {
+      "shape": "axis-aligned square centered at the origin",
+      "initial_half_extent_m": 10000.0,
+      "final_half_extent_m": 10000.0,
+      "full_width_m": 20000.0,
+      "boundary_margin_relative": 1e-06,
+      "boundary_margin_m": 0.01,
+      "expansion_factor": 2.0,
+      "expansion_count": 0,
+      "boundary_active": false
+    },
+    "analytic_sanity_abs_tolerance_m": 1e-08,
+    "production_diameter_abs_tolerance_m": 1e-08
+  },
+  "rows": [
+    {
+      "alpha_deg": 5.0,
+      "beta_deg": 2.5,
+      "station_distance_m": 500.0,
+      "station_baseline_m": 43.619387365336,
+      "region_vertex_count": 4,
+      "diameter_m": 476.2932597915368,
+      "area_m2": 4159.557739665163,
+      "mec_radius_m": 238.1466298957684,
+      "mec_over_half_d": 1.0,
+      "mec_le_20": false,
+      "boundary_active": false,
+      "analytic_sanity_check": {
+        "x_left_m": -142.93877110130302,
+        "x_right_m": 333.35448869023463,
+        "numerical_x_min_m": -142.93877110130404,
+        "numerical_x_max_m": 333.35448869023276,
+        "numerical_x_min_y_m": -6.039613253960852e-14,
+        "numerical_x_max_y_m": -5.684341886080802e-14,
+        "x_left_error_m": -1.0231815394945443e-12,
+        "x_right_error_m": -1.8758328224066645e-12,
+        "passed": true
+      },
+      "production_path_check": {
+        "region_vertex_count": 4,
+        "diameter_m": 476.2932597915377,
+        "diameter_minus_pure_wedge_m": 9.094947017729282e-13,
+        "diameter_matches_within_tolerance": true,
+        "pure_wedge_max_distance_from_origin_m": 333.35448869023276,
+        "pure_wedge_max_distance_from_either_station_m": 833.1641040108684,
+        "physical_constraints_contain_pure_wedge": true,
+        "physical_boundary_active": false
+      }
+    },
+    {
+      "alpha_deg": 10.0,
+      "beta_deg": 5.0,
+      "station_distance_m": 500.0,
+      "station_baseline_m": 87.15574274765817,
+      "region_vertex_count": 4,
+      "diameter_m": 208.5768443052135,
+      "area_m2": 1826.758088552307,
+      "mec_radius_m": 104.28842215260676,
+      "mec_over_half_d": 1.0,
+      "mec_le_20": false,
+      "boundary_active": false,
+      "analytic_sanity_check": {
+        "x_left_m": -83.48159865602946,
+        "x_right_m": 125.09524564917751,
+        "numerical_x_min_m": -83.48159865603577,
+        "numerical_x_max_m": 125.09524564917774,
+        "numerical_x_min_y_m": -6.679101716144942e-13,
+        "numerical_x_max_y_m": 0.0,
+        "x_left_error_m": -6.30961949354969e-12,
+        "x_right_error_m": 2.2737367544323206e-13,
+        "passed": true
+      },
+      "production_path_check": {
+        "region_vertex_count": 4,
+        "diameter_m": 208.57684430520663,
+        "diameter_minus_pure_wedge_m": -6.87805368215777e-12,
+        "diameter_matches_within_tolerance": true,
+        "pure_wedge_max_distance_from_origin_m": 125.09524564917774,
+        "pure_wedge_max_distance_from_either_station_m": 624.7143674962371,
+        "physical_constraints_contain_pure_wedge": true,
+        "physical_boundary_active": false
+      }
+    },
+    {
+      "alpha_deg": 15.0,
+      "beta_deg": 7.5,
+      "station_distance_m": 500.0,
+      "station_baseline_m": 130.52619222005157,
+      "region_vertex_count": 4,
+      "diameter_m": 136.1212704497649,
+      "area_m2": 1197.8890643043637,
+      "mec_radius_m": 68.06063522488245,
+      "mec_over_half_d": 1.0,
+      "mec_le_20": false,
+      "boundary_active": false,
+      "analytic_sanity_check": {
+        "x_left_m": -59.03685801839754,
+        "x_right_m": 77.084412431369,
+        "numerical_x_min_m": -59.036858018396856,
+        "numerical_x_max_m": 77.08441243136804,
+        "numerical_x_min_y_m": 9.947598300641403e-14,
+        "numerical_x_max_y_m": 0.0,
+        "x_left_error_m": 6.821210263296962e-13,
+        "x_right_error_m": -9.663381206337363e-13,
+        "passed": true
+      },
+      "production_path_check": {
+        "region_vertex_count": 4,
+        "diameter_m": 136.12127044976626,
+        "diameter_minus_pure_wedge_m": 1.3642420526593924e-12,
+        "diameter_matches_within_tolerance": true,
+        "pure_wedge_max_distance_from_origin_m": 77.08441243136804,
+        "pure_wedge_max_distance_from_either_station_m": 576.5127502813693,
+        "physical_constraints_contain_pure_wedge": true,
+        "physical_boundary_active": false
+      }
+    },
+    {
+      "alpha_deg": 20.0,
+      "beta_deg": 10.0,
+      "station_distance_m": 500.0,
+      "station_baseline_m": 173.64817766693034,
+      "region_vertex_count": 4,
+      "diameter_m": 101.51450749140287,
+      "area_m2": 899.3646751398438,
+      "mec_radius_m": 50.75725374570143,
+      "mec_over_half_d": 1.0,
+      "mec_le_20": false,
+      "boundary_active": false,
+      "analytic_sanity_check": {
+        "x_left_m": -45.7326616149378,
+        "x_right_m": 55.78184587646729,
+        "numerical_x_min_m": -45.732661614934216,
+        "numerical_x_max_m": 55.78184587646865,
+        "numerical_x_min_y_m": 6.821210263296962e-13,
+        "numerical_x_max_y_m": -2.2737367544323206e-13,
+        "x_left_error_m": 3.581135388230905e-12,
+        "x_right_error_m": 1.3642420526593924e-12,
+        "passed": true
+      },
+      "production_path_check": {
+        "region_vertex_count": 4,
+        "diameter_m": 101.51450749140508,
+        "diameter_minus_pure_wedge_m": 2.2168933355715126e-12,
+        "diameter_matches_within_tolerance": true,
+        "pure_wedge_max_distance_from_origin_m": 55.78184587646865,
+        "pure_wedge_max_distance_from_either_station_m": 555.0189263672587,
+        "physical_constraints_contain_pure_wedge": true,
+        "physical_boundary_active": false
+      }
+    },
+    {
+      "alpha_deg": 30.0,
+      "beta_deg": 15.0,
+      "station_distance_m": 500.0,
+      "station_baseline_m": 258.81904510252076,
+      "region_vertex_count": 4,
+      "diameter_m": 67.72860755075135,
+      "area_m2": 611.7691057509569,
+      "mec_radius_m": 33.864303775375674,
+      "mec_over_half_d": 1.0,
+      "mec_le_20": false,
+      "boundary_active": false,
+      "analytic_sanity_check": {
+        "x_left_m": -31.65827502871292,
+        "x_right_m": 36.07033252203786,
+        "numerical_x_min_m": -31.65827502871298,
+        "numerical_x_max_m": 36.07033252203837,
+        "numerical_x_min_y_m": -2.842170943040401e-14,
+        "numerical_x_max_y_m": 4.547473508864641e-13,
+        "x_left_error_m": -5.684341886080802e-14,
+        "x_right_error_m": 5.115907697472721e-13,
+        "passed": true
+      },
+      "production_path_check": {
+        "region_vertex_count": 4,
+        "diameter_m": 67.72860755075072,
+        "diameter_minus_pure_wedge_m": -6.252776074688882e-13,
+        "diameter_matches_within_tolerance": true,
+        "pure_wedge_max_distance_from_origin_m": 36.07033252203837,
+        "pure_wedge_max_distance_from_either_station_m": 534.9227370696838,
+        "physical_constraints_contain_pure_wedge": true,
+        "physical_boundary_active": false
+      }
+    },
+    {
+      "alpha_deg": 45.0,
+      "beta_deg": 22.5,
+      "station_distance_m": 500.0,
+      "station_baseline_m": 382.6834323650898,
+      "region_vertex_count": 4,
+      "diameter_m": 45.69342520179151,
+      "area_m2": 431.51663340273205,
+      "mec_radius_m": 22.846712600895756,
+      "mec_over_half_d": 1.0,
+      "mec_le_20": false,
+      "boundary_active": false,
+      "analytic_sanity_check": {
+        "x_left_m": -21.883946317822392,
+        "x_right_m": 23.809478883971394,
+        "numerical_x_min_m": -21.883946317821653,
+        "numerical_x_max_m": 23.80947888396986,
+        "numerical_x_min_y_m": 3.126388037344441e-13,
+        "numerical_x_max_y_m": 0.0,
+        "x_left_error_m": 7.389644451905042e-13,
+        "x_right_error_m": -1.5347723092418164e-12,
+        "passed": true
+      },
+      "production_path_check": {
+        "region_vertex_count": 4,
+        "diameter_m": 45.69342520179384,
+        "diameter_minus_pure_wedge_m": 2.3305801732931286e-12,
+        "diameter_matches_within_tolerance": true,
+        "pure_wedge_max_distance_from_origin_m": 23.80947888396986,
+        "pure_wedge_max_distance_from_either_station_m": 522.0766050163382,
+        "physical_constraints_contain_pure_wedge": true,
+        "physical_boundary_active": false
+      }
+    },
+    {
+      "alpha_deg": 60.0,
+      "beta_deg": 30.0,
+      "station_distance_m": 500.0,
+      "station_baseline_m": 499.99999999999994,
+      "region_vertex_count": 4,
+      "diameter_m": 34.942068230226255,
+      "area_m2": 352.0279513887421,
+      "mec_radius_m": 17.471034115113127,
+      "mec_over_half_d": 1.0,
+      "mec_le_20": true,
+      "boundary_active": false,
+      "analytic_sanity_check": {
+        "x_left_m": -16.9428313045899,
+        "x_right_m": 17.999236925636524,
+        "numerical_x_min_m": -16.942831304590186,
+        "numerical_x_max_m": 17.99923692563607,
+        "numerical_x_min_y_m": -1.9895196601282805e-13,
+        "numerical_x_max_y_m": 9.094947017729282e-13,
+        "x_left_error_m": -2.8421709430404007e-13,
+        "x_right_error_m": -4.547473508864641e-13,
+        "passed": true
+      },
+      "production_path_check": {
+        "region_vertex_count": 4,
+        "diameter_m": 34.94206823022603,
+        "diameter_minus_pure_wedge_m": -2.2737367544323206e-13,
+        "diameter_matches_within_tolerance": true,
+        "pure_wedge_max_distance_from_origin_m": 17.99923692563607,
+        "pure_wedge_max_distance_from_either_station_m": 515.6663349068285,
+        "physical_constraints_contain_pure_wedge": true,
+        "physical_boundary_active": false
+      }
+    },
+    {
+      "alpha_deg": 75.0,
+      "beta_deg": 37.5,
+      "station_distance_m": 500.0,
+      "station_baseline_m": 608.7614290087207,
+      "region_vertex_count": 4,
+      "diameter_m": 28.687924659128328,
+      "area_m2": 315.4943961272321,
+      "mec_radius_m": 14.343962329564164,
+      "mec_over_half_d": 1.0,
+      "mec_le_20": true,
+      "boundary_active": false,
+      "analytic_sanity_check": {
+        "x_left_m": -14.017667545576899,
+        "x_right_m": 14.670257113552168,
+        "numerical_x_min_m": -14.01766754557633,
+        "numerical_x_max_m": 14.670257113551997,
+        "numerical_x_min_y_m": 5.684341886080801e-13,
+        "numerical_x_max_y_m": 0.0,
+        "x_left_error_m": 5.684341886080801e-13,
+        "x_right_error_m": -1.7053025658242404e-13,
+        "passed": true
+      },
+      "production_path_check": {
+        "region_vertex_count": 4,
+        "diameter_m": 28.68792465912901,
+        "diameter_minus_pure_wedge_m": 6.821210263296962e-13,
+        "diameter_matches_within_tolerance": true,
+        "pure_wedge_max_distance_from_origin_m": 14.670257113551997,
+        "pure_wedge_max_distance_from_either_station_m": 511.71663440594295,
+        "physical_constraints_contain_pure_wedge": true,
+        "physical_boundary_active": false
+      }
+    },
+    {
+      "alpha_deg": 90.0,
+      "beta_deg": 45.0,
+      "station_distance_m": 500.0,
+      "station_baseline_m": 707.1067811865476,
+      "region_vertex_count": 4,
+      "diameter_m": 24.692712911867147,
+      "area_m2": 304.6793199315127,
+      "mec_radius_m": 12.346356455933574,
+      "mec_over_half_d": 1.0,
+      "mec_le_20": true,
+      "boundary_active": false,
+      "analytic_sanity_check": {
+        "x_left_m": -12.130850002368334,
+        "x_right_m": 12.56186290949887,
+        "numerical_x_min_m": -12.130850002368334,
+        "numerical_x_max_m": 12.561862909498814,
+        "numerical_x_min_y_m": 5.684341886080802e-14,
+        "numerical_x_max_y_m": 0.0,
+        "x_left_error_m": 0.0,
+        "x_right_error_m": -5.684341886080802e-14,
+        "passed": true
+      },
+      "production_path_check": {
+        "region_vertex_count": 4,
+        "diameter_m": 24.692712911867375,
+        "diameter_minus_pure_wedge_m": 2.2737367544323206e-13,
+        "diameter_matches_within_tolerance": true,
+        "pure_wedge_max_distance_from_origin_m": 12.561862909498814,
+        "pure_wedge_max_distance_from_either_station_m": 508.960095535396,
+        "physical_constraints_contain_pure_wedge": true,
+        "physical_boundary_active": false
+      }
+    }
+  ],
+  "checks": {
+    "all_initial_box_boundaries_inactive": true,
+    "all_analytic_sanity_checks_passed": true,
+    "production_physical_boundaries_active_at_alpha_deg": [],
+    "monotonicity_as_alpha_increases": {
+      "diameter_m": {
+        "nonincreasing": true,
+        "increasing_steps": []
+      },
+      "area_m2": {
+        "nonincreasing": true,
+        "increasing_steps": []
+      },
+      "mec_radius_m": {
+        "nonincreasing": true,
+        "increasing_steps": []
+      },
+      "mec_over_half_d": {
+        "nonincreasing": true,
+        "increasing_steps": []
+      }
+    }
+  }
+}

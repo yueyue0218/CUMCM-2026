@@ -308,12 +308,11 @@ def convex_hull(points: Iterable[Point], epsilon: float = 1e-12) -> list[Point]:
     return lower[:-1] + upper[:-1]
 
 
-def polygon_diameter(points: Sequence[Point]) -> float:
-    """Return the maximum distance between points of a convex polygon.
+def polygon_diameter_exhaustive(points: Sequence[Point]) -> float:
+    """Return a point set's convex-hull diameter by exhaustive enumeration.
 
-    The current implementation enumerates hull vertices.  It is deliberately
-    simple and serves as an independent reference for a later rotating-calipers
-    optimization.
+    This ``O(h^2)`` implementation is retained as a reference oracle, where
+    ``h`` is the number of convex-hull vertices.
     """
 
     hull = convex_hull(points)
@@ -321,6 +320,77 @@ def polygon_diameter(points: Sequence[Point]) -> float:
         (distance(hull[i], hull[j]) for i in range(len(hull)) for j in range(i)),
         default=0.0,
     )
+
+
+def polygon_diameter_calipers(points: Sequence[Point]) -> float:
+    """Return a point set's convex-hull diameter using rotating calipers.
+
+    The input need not already be a convex polygon or have any particular
+    ordering.  Constructing its ``h``-vertex convex hull takes ``O(n log n)``;
+    the monotone antipodal-pointer scan takes ``O(h)``.  The hull is the main
+    source of additional space.
+    """
+
+    hull = convex_hull(points)
+    hull_size = len(hull)
+    if hull_size < 2:
+        return 0.0
+    if hull_size == 2:
+        return distance(hull[0], hull[1])
+
+    def vertex(index: int) -> Point:
+        return hull[index % hull_size]
+
+    def doubled_area(edge_index: int, point_index: int) -> float:
+        edge_start = vertex(edge_index)
+        edge_end = vertex(edge_index + 1)
+        edge = (
+            edge_end[0] - edge_start[0],
+            edge_end[1] - edge_start[1],
+        )
+        relative = (
+            vertex(point_index)[0] - edge_start[0],
+            vertex(point_index)[1] - edge_start[1],
+        )
+        return cross(edge, relative)
+
+    antipodal = 1
+    maximum_distance = 0.0
+    for edge_index in range(hull_size):
+        while (
+            antipodal + 1 < edge_index + hull_size
+            and doubled_area(edge_index, antipodal + 1)
+            > doubled_area(edge_index, antipodal)
+        ):
+            antipodal += 1
+
+        candidate_indices = (antipodal,)
+        if (
+            antipodal + 1 < edge_index + hull_size
+            and doubled_area(edge_index, antipodal + 1)
+            == doubled_area(edge_index, antipodal)
+        ):
+            candidate_indices = (antipodal, antipodal + 1)
+
+        for candidate_index in candidate_indices:
+            maximum_distance = max(
+                maximum_distance,
+                distance(vertex(edge_index), vertex(candidate_index)),
+                distance(vertex(edge_index + 1), vertex(candidate_index)),
+            )
+
+    return maximum_distance
+
+
+def polygon_diameter(points: Sequence[Point]) -> float:
+    """Return a point set's convex-hull diameter using rotating calipers.
+
+    The input need not already be a convex hull.  For ``n`` input points and
+    ``h`` convex-hull vertices, hull construction takes ``O(n log n)`` and the
+    rotating-calipers scan takes ``O(h)``.
+    """
+
+    return polygon_diameter_calipers(points)
 
 
 def candidate_second_points(
