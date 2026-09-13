@@ -290,6 +290,8 @@ def build_summary(state, virtual_time_s, runtime_s=0.):
     result = build_completion_summary(state, virtual_time_s, runtime_s)
     result.update(baseline_name=getattr(state,'strategy_name','q4-mixed-batched-routing-v1'),
                   controller_class=getattr(state,'controller_class',None),
+                  control_config=getattr(state,'control_config',None),
+                  privileged_truth=bool(getattr(state,'privileged_truth',False)),
                   refinement_config=getattr(state,'refinement_config',None),
                   optical_probe_count=sum(a.certificate=='opportunistic_optical_probe' for a in state.clear_attempts),
                   coverage_plan_kind='mixed_direction_distance_cover',

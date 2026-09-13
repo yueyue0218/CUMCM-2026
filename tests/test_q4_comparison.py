@@ -12,7 +12,8 @@ class ComparisonTests(unittest.TestCase):
     def test_controls_share_scenes_and_saved_actions_replay(self):
         with tempfile.TemporaryDirectory() as folder, contextlib.redirect_stdout(io.StringIO()):
             root = Path(folder)
-            result = compare(root/'cases', cases_per_group=1, counts=(10,), seed=270000000)
+            result = compare(root/'cases', strategies=['informed', 'refined', 'adaptive', 'seven_grid'],
+                             cases_per_group=1, counts=(10,), seed=270000000)
             self.assertEqual(set(result['strategies']), {'informed', 'refined', 'adaptive', 'seven_grid'})
             sources = []
             for name, row in result['strategies'].items():

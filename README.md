@@ -95,4 +95,4 @@ Q3 已提供本地训练与模型评估入口：见 [Q3 训练说明](src/q3/TRA
 
 Q3最新默认策略为 `efficient`，10/12/14/16源各20场等权验证的每源平均时间257.2秒，全部清除80/80。新旧策略对比与命令见 [效率改进与分层结果](src/q3/EFFICIENCY.md)；这是本地合成测试，尚未作为官方成绩。
 
-Q4 最终算法为 `informed`，附 `refined`、`adaptive`、`seven_grid` 三个具名对照。正式代码和同场评估命令见 [Q4 说明](src/q4/README.md)，最终对比见 [Q4 结果](results/tables/q4_final_comparison.md)。本工作包不包含中间训练集、训练模型或探索日志。
+Q4 最终算法为 `informed`，参照 Q3 提供上一版 Q4、普查后清除、螺旋扫描、随机游走及已知位置参考的独立具名代码。定义与复现见 [Q4 对照说明](src/q4/STRATEGY_CONTROLS.md)，六组同场结果见 [Q4 比较表](results/tables/Q4_实验组与对照组_策略比较表.md)，原有 140 场配对见 [历史验证表](results/tables/q4_final_comparison.md)。本工作包不包含中间训练集、训练模型或探索日志。
