@@ -1,0 +1,57 @@
+{
+  "problem": "q3",
+  "run_type": "formal",
+  "case_code": "ZK6E-QFAK-AATW-JCKF",
+  "baseline_name": "q3-v1-search-localize-clear:efficient_v2",
+  "algorithm_version": "route-pool-v2",
+  "git_commit": "440565deeeabc19e699e675dbdda2615c58cf0ae",
+  "git_dirty": true,
+  "runtime_inputs_dirty": false,
+  "formal_tags": [
+    "q3-formal-v1"
+  ],
+  "parameters": {
+    "target_radius_m": 1800.0,
+    "conservative_receive_radius_m": 1000.0,
+    "hexagon_radius_m": 1150.0,
+    "coverage_points": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        1150.0,
+        0.0
+      ],
+      [
+        575.0000000000001,
+        995.9292143521044
+      ],
+      [
+        -574.9999999999998,
+        995.9292143521045
+      ],
+      [
+        -1150.0,
+        1.4083438190194562e-13
+      ],
+      [
+        -575.0000000000005,
+        -995.9292143521043
+      ],
+      [
+        575.0000000000001,
+        -995.9292143521044
+      ]
+    ],
+    "coverage_plan_kind": "route_pool",
+    "strategy": "efficient_v2",
+    "virtual_limit_s": 360000.0,
+    "exit_reserve_s": 20.0,
+    "adaptive_config": {},
+    "checkpoint": "None"
+  },
+  "random_seed": null,
+  "robot_id": "<redacted>",
+  "started_at": "2026-09-13T11:00:12.378313+08:00"
+}

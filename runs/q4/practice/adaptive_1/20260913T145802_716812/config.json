@@ -1,0 +1,11 @@
+{
+  "robot_id": "<redacted>",
+  "base_url": "http://127.0.0.1:2026",
+  "run_root": "runs\\q4\\practice\\adaptive_1",
+  "strategy": "adaptive",
+  "virtual_limit_s": 360000.0,
+  "max_actions": 4096,
+  "max_requests": 12300,
+  "max_compute_s": 900.0,
+  "route_mode": "relocated"
+}

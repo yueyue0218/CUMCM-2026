@@ -224,6 +224,7 @@ class MainRunnerTests(unittest.TestCase):
                 patch("src.q3.main.SimulatorClient", side_effect=client_factory),
                 patch("src.q3.main._git_commit", return_value="abc123"),
                 patch("src.q3.main._git_dirty", return_value=True),
+                patch("src.q3.main._formal_runtime_inputs_dirty", return_value=True),
                 redirect_stdout(io.StringIO()),
                 redirect_stderr(io.StringIO()) as stderr,
             ):
