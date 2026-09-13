@@ -95,6 +95,8 @@ def run_experiment(
     circle_vertices: int = 72,
     rho: float = 0.10,
     tau_m: float = 0.5,
+    # Internal convergence-runner reuse hook; not a separate experiment mode.
+    posterior_override: FirstPosteriorSamples | None = None,
 ) -> ExperimentSummary:
     if prior_draws <= 0 or seed < 0 or direction_bins < 3 or circle_vertices < 3:
         raise ValueError("prior_draws/seed must be non-negative (draws positive), and grid sizes >= 3")
@@ -105,10 +107,12 @@ def run_experiment(
     config = Q2Config(circle_vertices=circle_vertices, direction_angle_bins=direction_bins)
     observation = FirstDirectionObservation(station=station, bearing_deg=first_bearing_deg)
     label, error_bins, error_atoms = _nominal_error_model()
-    posterior = sample_first_direction_posterior(
+    posterior = posterior_override or sample_first_direction_posterior(
         observation, prior_draws=prior_draws, bearing_error_bins=error_bins,
         seed=seed, config=config,
     )
+    if posterior.prior_draws != prior_draws or posterior.seed != seed:
+        raise ValueError("posterior_override does not match prior_draws/seed")
     state = build_first_state(observation, samples=posterior.samples, config=config)
     direction_grid = tuple(i * 360.0 / direction_bins for i in range(direction_bins))
     coarse = coarse_grid_candidates(state, spacing_m=coarse_spacing_m, config=config)
