@@ -1,0 +1,9 @@
+{
+  "main_formula_labels": 41,
+  "seven_strategy_tables": "all cells agree with generated table",
+  "independent_tables": "means, total times, standard deviations, p90 and worst cells agree with raw JSON",
+  "math_and_local_links": "checked",
+  "historical_theory_body": "identical to prior committed theory",
+  "q3_controller_changes": false,
+  "main_sha256": "3fd00f5bba7072a60524ad1c974e21e7b47c9bd91d48ce5d68434abab1a571c3"
+}

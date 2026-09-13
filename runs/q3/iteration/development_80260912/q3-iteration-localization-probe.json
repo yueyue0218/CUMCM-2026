@@ -1,0 +1,1046 @@
+{
+  "rows": [
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 327.6800834126567,
+      "total": 3276.800834126567,
+      "runtime": 0.3494557000012719,
+      "stations": 8
+    },
+    {
+      "name": "toward",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 302.1732264598447,
+      "total": 3021.7322645984473,
+      "runtime": 0.30046320000110427,
+      "stations": 8
+    },
+    {
+      "name": "diagonal",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 320.7139372593187,
+      "total": 3207.139372593187,
+      "runtime": 0.35064170000259764,
+      "stations": 8
+    },
+    {
+      "name": "best",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 304.52703013480055,
+      "total": 3045.2703013480054,
+      "runtime": 0.3013017999983276,
+      "stations": 8
+    },
+    {
+      "name": "offset0",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 336.33552722465345,
+      "total": 3363.3552722465342,
+      "runtime": 0.4578317999985302,
+      "stations": 8
+    },
+    {
+      "name": "offset200",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 356.59798513765304,
+      "total": 3565.9798513765304,
+      "runtime": 0.3448013000015635,
+      "stations": 8
+    },
+    {
+      "name": "offset300",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 394.0603305140447,
+      "total": 3940.6033051404474,
+      "runtime": 0.28781529999832856,
+      "stations": 10
+    },
+    {
+      "name": "actual_targets",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 324.8497777911549,
+      "total": 3248.4977779115493,
+      "runtime": 0.3172177999949781,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 281.34494532277785,
+      "total": 2813.4494532277786,
+      "runtime": 0.343909099996381,
+      "stations": 8
+    },
+    {
+      "name": "toward",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 307.7682647341587,
+      "total": 3077.682647341587,
+      "runtime": 0.37569320000329753,
+      "stations": 8
+    },
+    {
+      "name": "diagonal",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 286.34378359340155,
+      "total": 2863.4378359340153,
+      "runtime": 0.3660340999995242,
+      "stations": 8
+    },
+    {
+      "name": "best",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 330.56983132891804,
+      "total": 3305.6983132891805,
+      "runtime": 0.3618391999989399,
+      "stations": 9
+    },
+    {
+      "name": "offset0",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 282.2608561935816,
+      "total": 2822.6085619358164,
+      "runtime": 0.5568961999961175,
+      "stations": 8
+    },
+    {
+      "name": "offset200",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 281.9260758773184,
+      "total": 2819.260758773184,
+      "runtime": 0.34803439999814145,
+      "stations": 8
+    },
+    {
+      "name": "offset300",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 288.7849582500022,
+      "total": 2887.8495825000223,
+      "runtime": 0.338698800005659,
+      "stations": 8
+    },
+    {
+      "name": "actual_targets",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 281.34494532277785,
+      "total": 2813.4494532277786,
+      "runtime": 0.34924060000048485,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 265.879475730316,
+      "total": 2658.79475730316,
+      "runtime": 0.32614789999934146,
+      "stations": 8
+    },
+    {
+      "name": "toward",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 292.10148447998563,
+      "total": 2921.0148447998563,
+      "runtime": 0.3827300999982981,
+      "stations": 9
+    },
+    {
+      "name": "diagonal",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 279.8636721782807,
+      "total": 2798.636721782807,
+      "runtime": 0.3020701999994344,
+      "stations": 8
+    },
+    {
+      "name": "best",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 281.53060297354375,
+      "total": 2815.3060297354377,
+      "runtime": 0.38019250000070315,
+      "stations": 8
+    },
+    {
+      "name": "offset0",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 275.18339197793887,
+      "total": 2751.8339197793885,
+      "runtime": 0.4015766000011354,
+      "stations": 8
+    },
+    {
+      "name": "offset200",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 268.6407827047294,
+      "total": 2686.407827047294,
+      "runtime": 0.36866079999890644,
+      "stations": 8
+    },
+    {
+      "name": "offset300",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 273.4560049006085,
+      "total": 2734.560049006085,
+      "runtime": 0.3843085000044084,
+      "stations": 8
+    },
+    {
+      "name": "actual_targets",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 265.879475730316,
+      "total": 2658.79475730316,
+      "runtime": 0.372873599997547,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 255.74953638203488,
+      "total": 3068.9944365844185,
+      "runtime": 0.3983053999982076,
+      "stations": 8
+    },
+    {
+      "name": "toward",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 251.14604410845345,
+      "total": 3013.7525293014414,
+      "runtime": 0.28140410000196425,
+      "stations": 7
+    },
+    {
+      "name": "diagonal",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 251.41410717373807,
+      "total": 3016.969286084857,
+      "runtime": 0.3600256999998237,
+      "stations": 8
+    },
+    {
+      "name": "best",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 259.6392855062819,
+      "total": 3115.671426075383,
+      "runtime": 0.5452469000010751,
+      "stations": 8
+    },
+    {
+      "name": "offset0",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 257.86175317670455,
+      "total": 3094.341038120455,
+      "runtime": 0.3976604000054067,
+      "stations": 8
+    },
+    {
+      "name": "offset200",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 259.5498035505187,
+      "total": 3114.597642606224,
+      "runtime": 0.33750400000280933,
+      "stations": 8
+    },
+    {
+      "name": "offset300",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 264.52866640415016,
+      "total": 3174.343996849802,
+      "runtime": 0.3497706999987713,
+      "stations": 8
+    },
+    {
+      "name": "actual_targets",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 255.74953638203488,
+      "total": 3068.9944365844185,
+      "runtime": 0.45098739999957616,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 294.7610590096291,
+      "total": 3537.132708115549,
+      "runtime": 0.5159234999955515,
+      "stations": 8
+    },
+    {
+      "name": "toward",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 265.2857160591541,
+      "total": 3183.428592709849,
+      "runtime": 0.4876813999944716,
+      "stations": 8
+    },
+    {
+      "name": "diagonal",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 275.8971366441836,
+      "total": 3310.765639730203,
+      "runtime": 0.47377440000127535,
+      "stations": 8
+    },
+    {
+      "name": "best",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 275.8971366441836,
+      "total": 3310.765639730203,
+      "runtime": 0.34417380000377307,
+      "stations": 8
+    },
+    {
+      "name": "offset0",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 300.97959256397473,
+      "total": 3611.755110767697,
+      "runtime": 0.40923649999604095,
+      "stations": 8
+    },
+    {
+      "name": "offset200",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 302.85086378314827,
+      "total": 3634.2103653977792,
+      "runtime": 0.2795858000026783,
+      "stations": 8
+    },
+    {
+      "name": "offset300",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 316.81153762844934,
+      "total": 3801.738451541392,
+      "runtime": 0.33882390000508167,
+      "stations": 8
+    },
+    {
+      "name": "actual_targets",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 294.7610590096291,
+      "total": 3537.132708115549,
+      "runtime": 0.3419445000035921,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 266.104843713655,
+      "total": 3193.25812456386,
+      "runtime": 0.452473800003645,
+      "stations": 8
+    },
+    {
+      "name": "toward",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 267.22269816639766,
+      "total": 3206.672377996772,
+      "runtime": 0.38265920000412734,
+      "stations": 8
+    },
+    {
+      "name": "diagonal",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 252.19696702500406,
+      "total": 3026.363604300049,
+      "runtime": 0.35995740000362275,
+      "stations": 8
+    },
+    {
+      "name": "best",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 257.93045832573364,
+      "total": 3095.1654999088037,
+      "runtime": 0.47417159999895375,
+      "stations": 8
+    },
+    {
+      "name": "offset0",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 271.71820152262643,
+      "total": 3260.6184182715174,
+      "runtime": 0.604163799995149,
+      "stations": 8
+    },
+    {
+      "name": "offset200",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 269.799354703769,
+      "total": 3237.5922564452276,
+      "runtime": 0.465502999999444,
+      "stations": 8
+    },
+    {
+      "name": "offset300",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 273.815319205493,
+      "total": 3285.783830465916,
+      "runtime": 0.39289889999781735,
+      "stations": 8
+    },
+    {
+      "name": "actual_targets",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 266.104843713655,
+      "total": 3193.25812456386,
+      "runtime": 0.4874878999980865,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 222.90304546883408,
+      "total": 3120.642636563677,
+      "runtime": 0.42614060000050813,
+      "stations": 8
+    },
+    {
+      "name": "toward",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 232.2060985182433,
+      "total": 3250.885379255406,
+      "runtime": 0.5087369000029867,
+      "stations": 9
+    },
+    {
+      "name": "diagonal",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 229.7482355966618,
+      "total": 3216.4752983532653,
+      "runtime": 0.6020571999979438,
+      "stations": 8
+    },
+    {
+      "name": "best",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 238.3848090456652,
+      "total": 3337.387326639313,
+      "runtime": 0.7661716000002343,
+      "stations": 9
+    },
+    {
+      "name": "offset0",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 225.73905428637244,
+      "total": 3160.346760009214,
+      "runtime": 0.7037635999949998,
+      "stations": 8
+    },
+    {
+      "name": "offset200",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 226.84159548466832,
+      "total": 3175.7823367853566,
+      "runtime": 0.48284289999719476,
+      "stations": 8
+    },
+    {
+      "name": "offset300",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 232.15646077498283,
+      "total": 3250.1904508497596,
+      "runtime": 0.43034240000270074,
+      "stations": 8
+    },
+    {
+      "name": "actual_targets",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 223.5026929878804,
+      "total": 3129.0377018303257,
+      "runtime": 0.4761651000007987,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 269.6766111837807,
+      "total": 3775.4725565729304,
+      "runtime": 0.538145300000906,
+      "stations": 9
+    },
+    {
+      "name": "toward",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 269.4012676085056,
+      "total": 3771.617746519078,
+      "runtime": 0.553238100001181,
+      "stations": 9
+    },
+    {
+      "name": "diagonal",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 266.0257784807592,
+      "total": 3724.360898730629,
+      "runtime": 0.748891299997922,
+      "stations": 9
+    },
+    {
+      "name": "best",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 258.89032487843093,
+      "total": 3624.464548298033,
+      "runtime": 0.6366352000040933,
+      "stations": 9
+    },
+    {
+      "name": "offset0",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 271.95682304511143,
+      "total": 3807.3955226315597,
+      "runtime": 0.6669251999992412,
+      "stations": 9
+    },
+    {
+      "name": "offset200",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 271.15194462361694,
+      "total": 3796.127224730637,
+      "runtime": 0.414590300002601,
+      "stations": 9
+    },
+    {
+      "name": "offset300",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 279.48466164273134,
+      "total": 3912.785262998239,
+      "runtime": 0.4421178999982658,
+      "stations": 9
+    },
+    {
+      "name": "actual_targets",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 256.4254428132471,
+      "total": 3589.95619938546,
+      "runtime": 0.4663961999976891,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 235.55972108584805,
+      "total": 3297.836095201873,
+      "runtime": 0.45436029999837046,
+      "stations": 9
+    },
+    {
+      "name": "toward",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 249.41723094793795,
+      "total": 3491.8412332711314,
+      "runtime": 0.49593319999985397,
+      "stations": 8
+    },
+    {
+      "name": "diagonal",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 248.77659412481287,
+      "total": 3482.8723177473803,
+      "runtime": 0.5223301000005449,
+      "stations": 10
+    },
+    {
+      "name": "best",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 248.77659412481287,
+      "total": 3482.8723177473803,
+      "runtime": 0.429816199997731,
+      "stations": 10
+    },
+    {
+      "name": "offset0",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 235.94843924345187,
+      "total": 3303.278149408326,
+      "runtime": 0.6074598999985028,
+      "stations": 9
+    },
+    {
+      "name": "offset200",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 249.30533918254332,
+      "total": 3490.2747485556065,
+      "runtime": 0.5668684999982361,
+      "stations": 9
+    },
+    {
+      "name": "offset300",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 254.32206253759858,
+      "total": 3560.50887552638,
+      "runtime": 0.5112219999937224,
+      "stations": 9
+    },
+    {
+      "name": "actual_targets",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 234.00984186092253,
+      "total": 3276.1377860529155,
+      "runtime": 0.5580031999998027,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 174.50001296325848,
+      "total": 2792.0002074121358,
+      "runtime": 0.7746697999973549,
+      "stations": 7
+    },
+    {
+      "name": "toward",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 186.66476675186442,
+      "total": 2986.6362680298307,
+      "runtime": 0.5468763999961084,
+      "stations": 8
+    },
+    {
+      "name": "diagonal",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 188.14459398338818,
+      "total": 3010.313503734211,
+      "runtime": 0.49413650000497,
+      "stations": 8
+    },
+    {
+      "name": "best",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 187.37849315934994,
+      "total": 2998.055890549599,
+      "runtime": 0.5056847000014386,
+      "stations": 8
+    },
+    {
+      "name": "offset0",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 179.5797071013461,
+      "total": 2873.2753136215374,
+      "runtime": 0.6504830999983824,
+      "stations": 7
+    },
+    {
+      "name": "offset200",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 175.9193590140511,
+      "total": 2814.7097442248178,
+      "runtime": 0.5381639000042924,
+      "stations": 7
+    },
+    {
+      "name": "offset300",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 180.63500396207183,
+      "total": 2890.1600633931494,
+      "runtime": 0.5221626999991713,
+      "stations": 7
+    },
+    {
+      "name": "actual_targets",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 170.11667550447842,
+      "total": 2721.8668080716548,
+      "runtime": 0.7388444000025629,
+      "stations": 6
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 217.05590774719576,
+      "total": 3472.894523955132,
+      "runtime": 0.5346171999990474,
+      "stations": 8
+    },
+    {
+      "name": "toward",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 201.25450865568774,
+      "total": 3220.072138491004,
+      "runtime": 0.4478309999976773,
+      "stations": 8
+    },
+    {
+      "name": "diagonal",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 212.44845666426255,
+      "total": 3399.175306628201,
+      "runtime": 0.48823799999809125,
+      "stations": 9
+    },
+    {
+      "name": "best",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 213.50835514157896,
+      "total": 3416.1336822652634,
+      "runtime": 0.5056419999964419,
+      "stations": 8
+    },
+    {
+      "name": "offset0",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 217.59261765367853,
+      "total": 3481.4818824588565,
+      "runtime": 0.5908927000054973,
+      "stations": 8
+    },
+    {
+      "name": "offset200",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 224.49907668655547,
+      "total": 3591.9852269848875,
+      "runtime": 0.7248213000057149,
+      "stations": 8
+    },
+    {
+      "name": "offset300",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 232.01007708050653,
+      "total": 3712.1612332881045,
+      "runtime": 0.7659453000014764,
+      "stations": 8
+    },
+    {
+      "name": "actual_targets",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 217.05590774719576,
+      "total": 3472.894523955132,
+      "runtime": 0.5040510999970138,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 185.04263578562936,
+      "total": 2960.6821725700697,
+      "runtime": 0.5630502999993041,
+      "stations": 6
+    },
+    {
+      "name": "toward",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 184.1634340006202,
+      "total": 2946.6149440099234,
+      "runtime": 0.5392788000026485,
+      "stations": 7
+    },
+    {
+      "name": "diagonal",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 196.27306547652043,
+      "total": 3140.369047624327,
+      "runtime": 0.7562324000027729,
+      "stations": 8
+    },
+    {
+      "name": "best",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 190.6658263342047,
+      "total": 3050.653221347275,
+      "runtime": 0.652962899999693,
+      "stations": 8
+    },
+    {
+      "name": "offset0",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 185.52556628260567,
+      "total": 2968.4090605216907,
+      "runtime": 0.7283912999992026,
+      "stations": 6
+    },
+    {
+      "name": "offset200",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 187.34717394726167,
+      "total": 2997.5547831561867,
+      "runtime": 0.5810816000011982,
+      "stations": 6
+    },
+    {
+      "name": "offset300",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 191.5782064607456,
+      "total": 3065.2513033719297,
+      "runtime": 0.515658500000427,
+      "stations": 6
+    },
+    {
+      "name": "actual_targets",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 181.8727600375255,
+      "total": 2909.964160600408,
+      "runtime": 0.617820200001006,
+      "stations": 6
+    }
+  ],
+  "summary": {
+    "v1": {
+      "mean": 249.68815648380132,
+      "success": 12,
+      "groups": [
+        291.63483482191685,
+        272.20514636843967,
+        242.71312591282094,
+        192.19951883202788
+      ]
+    },
+    "toward": {
+      "mean": 250.73372837423778,
+      "success": 12,
+      "groups": [
+        300.6809918913297,
+        261.21815277800175,
+        250.34153235822893,
+        190.6942364693908
+      ]
+    },
+    "diagonal": {
+      "mean": 250.65386068336096,
+      "success": 12,
+      "groups": [
+        295.64046434366696,
+        259.83607028097526,
+        248.1835360674113,
+        198.95537204139038
+      ]
+    },
+    "best": {
+      "mean": 253.97489563312536,
+      "success": 12,
+      "groups": [
+        305.54248814575413,
+        264.48896015873305,
+        248.68390934963634,
+        197.18422487837788
+      ]
+    },
+    "offset0": {
+      "mean": 253.39012752267047,
+      "success": 12,
+      "groups": [
+        297.92659179872464,
+        276.8531824211019,
+        244.54810552497858,
+        194.23263034587677
+      ]
+    },
+    "offset200": {
+      "mean": 256.2024462246528,
+      "success": 12,
+      "groups": [
+        302.38828123990027,
+        277.40000734581196,
+        249.0996264302762,
+        195.92186988262276
+      ]
+    },
+    "offset300": {
+      "mean": 265.13694078011537,
+      "success": 12,
+      "groups": [
+        318.7670978882185,
+        285.0518410793642,
+        255.32106165177092,
+        201.40776250110798
+      ]
+    },
+    "actual_targets": {
+      "mean": 247.6394132417348,
+      "success": 12,
+      "groups": [
+        290.69139961474957,
+        272.20514636843967,
+        237.97932588735003,
+        189.6817810963999
+      ]
+    }
+  }
+}

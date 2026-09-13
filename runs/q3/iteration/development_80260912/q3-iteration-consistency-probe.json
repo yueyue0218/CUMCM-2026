@@ -1,0 +1,526 @@
+{
+  "rows": [
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 327.6800834126567,
+      "total": 3276.800834126567,
+      "runtime": 0.31425640000088606,
+      "stations": 8
+    },
+    {
+      "name": "no_future",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 361.8579385784866,
+      "total": 3618.579385784866,
+      "runtime": 0.2631219999966561,
+      "stations": 9
+    },
+    {
+      "name": "likely_future",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 361.8579385784866,
+      "total": 3618.579385784866,
+      "runtime": 0.25593020000087563,
+      "stations": 9
+    },
+    {
+      "name": "lock",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 319.80412038435065,
+      "total": 3198.0412038435065,
+      "runtime": 0.15491089999704855,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 281.34494532277785,
+      "total": 2813.4494532277786,
+      "runtime": 0.29938620000029914,
+      "stations": 8
+    },
+    {
+      "name": "no_future",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 307.81903892609404,
+      "total": 3078.1903892609403,
+      "runtime": 0.27237199999945005,
+      "stations": 10
+    },
+    {
+      "name": "likely_future",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 307.81903892609404,
+      "total": 3078.1903892609403,
+      "runtime": 0.30801059999794234,
+      "stations": 10
+    },
+    {
+      "name": "lock",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 293.7021232092087,
+      "total": 2937.0212320920873,
+      "runtime": 0.2514322999995784,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 265.879475730316,
+      "total": 2658.79475730316,
+      "runtime": 0.33670100000017555,
+      "stations": 8
+    },
+    {
+      "name": "no_future",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 292.5463212079994,
+      "total": 2925.4632120799943,
+      "runtime": 0.2535091999961878,
+      "stations": 10
+    },
+    {
+      "name": "likely_future",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 292.5463212079994,
+      "total": 2925.4632120799943,
+      "runtime": 0.2365806000016164,
+      "stations": 10
+    },
+    {
+      "name": "lock",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 277.52251015962025,
+      "total": 2775.2251015962024,
+      "runtime": 0.19481700000324054,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 255.74953638203488,
+      "total": 3068.9944365844185,
+      "runtime": 0.33408130000316305,
+      "stations": 8
+    },
+    {
+      "name": "no_future",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 248.11382985079965,
+      "total": 2977.3659582095956,
+      "runtime": 0.2905490000048303,
+      "stations": 8
+    },
+    {
+      "name": "likely_future",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 248.11382985079965,
+      "total": 2977.3659582095956,
+      "runtime": 0.2946698000014294,
+      "stations": 8
+    },
+    {
+      "name": "lock",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 248.67843844568972,
+      "total": 2984.1412613482767,
+      "runtime": 0.22595860000001267,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 294.7610590096291,
+      "total": 3537.132708115549,
+      "runtime": 0.3255607999963104,
+      "stations": 8
+    },
+    {
+      "name": "no_future",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 315.21778315983073,
+      "total": 3782.613397917969,
+      "runtime": 0.3735152000008384,
+      "stations": 11
+    },
+    {
+      "name": "likely_future",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 315.21778315983073,
+      "total": 3782.613397917969,
+      "runtime": 0.3453769999978249,
+      "stations": 11
+    },
+    {
+      "name": "lock",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 298.7473718676338,
+      "total": 3584.9684624116053,
+      "runtime": 0.19694239999807905,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 266.104843713655,
+      "total": 3193.25812456386,
+      "runtime": 0.38579769999341806,
+      "stations": 8
+    },
+    {
+      "name": "no_future",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 263.6328295737238,
+      "total": 3163.593954884686,
+      "runtime": 0.2704040999960853,
+      "stations": 9
+    },
+    {
+      "name": "likely_future",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 263.6328295737238,
+      "total": 3163.593954884686,
+      "runtime": 0.27183789999980945,
+      "stations": 9
+    },
+    {
+      "name": "lock",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 252.51761556162353,
+      "total": 3030.2113867394824,
+      "runtime": 0.19184709999535698,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 222.90304546883408,
+      "total": 3120.642636563677,
+      "runtime": 0.4383065000001807,
+      "stations": 8
+    },
+    {
+      "name": "no_future",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 234.490428405697,
+      "total": 3282.865997679758,
+      "runtime": 0.318256399994425,
+      "stations": 9
+    },
+    {
+      "name": "likely_future",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 234.490428405697,
+      "total": 3282.865997679758,
+      "runtime": 0.31232119999913266,
+      "stations": 9
+    },
+    {
+      "name": "lock",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 230.93772227249414,
+      "total": 3233.128111814918,
+      "runtime": 0.24886050000350224,
+      "stations": 9
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 269.6766111837807,
+      "total": 3775.4725565729304,
+      "runtime": 0.49781130000337726,
+      "stations": 9
+    },
+    {
+      "name": "no_future",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 263.98955112260614,
+      "total": 3695.853715716486,
+      "runtime": 0.4461911000034888,
+      "stations": 10
+    },
+    {
+      "name": "likely_future",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 263.98955112260614,
+      "total": 3695.853715716486,
+      "runtime": 0.43171040000015637,
+      "stations": 10
+    },
+    {
+      "name": "lock",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 248.40144179305665,
+      "total": 3477.620185102793,
+      "runtime": 0.27923310000187485,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 235.55972108584805,
+      "total": 3297.836095201873,
+      "runtime": 0.442777100004605,
+      "stations": 9
+    },
+    {
+      "name": "no_future",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 230.69877495671304,
+      "total": 3229.7828493939824,
+      "runtime": 0.29850509999960195,
+      "stations": 12
+    },
+    {
+      "name": "likely_future",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 230.69877495671304,
+      "total": 3229.7828493939824,
+      "runtime": 0.2781293000007281,
+      "stations": 12
+    },
+    {
+      "name": "lock",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 238.65260558113386,
+      "total": 3341.136478135874,
+      "runtime": 0.2059981999991578,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 174.50001296325848,
+      "total": 2792.0002074121358,
+      "runtime": 0.5370342000023811,
+      "stations": 7
+    },
+    {
+      "name": "no_future",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 177.29328212250684,
+      "total": 2836.6925139601094,
+      "runtime": 0.3309884999980568,
+      "stations": 8
+    },
+    {
+      "name": "likely_future",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 177.29328212250684,
+      "total": 2836.6925139601094,
+      "runtime": 0.3135153999974136,
+      "stations": 8
+    },
+    {
+      "name": "lock",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 178.78951856886667,
+      "total": 2860.6322971018667,
+      "runtime": 0.26938499999960186,
+      "stations": 7
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 217.05590774719576,
+      "total": 3472.894523955132,
+      "runtime": 0.5666975999993156,
+      "stations": 8
+    },
+    {
+      "name": "no_future",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 225.89815552748573,
+      "total": 3614.3704884397716,
+      "runtime": 0.588827699997637,
+      "stations": 11
+    },
+    {
+      "name": "likely_future",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 225.89815552748573,
+      "total": 3614.3704884397716,
+      "runtime": 0.5114685000007739,
+      "stations": 11
+    },
+    {
+      "name": "lock",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 217.9044770000578,
+      "total": 3486.4716320009247,
+      "runtime": 0.3810224999979255,
+      "stations": 6
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 185.04263578562936,
+      "total": 2960.6821725700697,
+      "runtime": 0.631083000000217,
+      "stations": 6
+    },
+    {
+      "name": "no_future",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 207.22924331525178,
+      "total": 3315.6678930440285,
+      "runtime": 0.6434289000026183,
+      "stations": 8
+    },
+    {
+      "name": "likely_future",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 207.22924331525178,
+      "total": 3315.6678930440285,
+      "runtime": 0.6204731000034371,
+      "stations": 8
+    },
+    {
+      "name": "lock",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 209.1107998417732,
+      "total": 3345.772797468371,
+      "runtime": 0.5026310000030207,
+      "stations": 8
+    }
+  ],
+  "summary": {
+    "v1": {
+      "mean": 249.68815648380132,
+      "success": 12,
+      "groups": [
+        291.63483482191685,
+        272.20514636843967,
+        242.71312591282094,
+        192.19951883202788
+      ]
+    },
+    "no_future": {
+      "mean": 260.7322647289329,
+      "success": 12,
+      "groups": [
+        320.74109957086,
+        275.65481419478476,
+        243.05958482833873,
+        203.47356032174812
+      ]
+    },
+    "likely_future": {
+      "mean": 260.7322647289329,
+      "success": 12,
+      "groups": [
+        320.74109957086,
+        275.65481419478476,
+        243.05958482833873,
+        203.47356032174812
+      ]
+    },
+    "lock": {
+      "mean": 251.23072872379242,
+      "success": 12,
+      "groups": [
+        297.0095845843932,
+        266.64780862498236,
+        239.33058988222822,
+        201.9349318035659
+      ]
+    }
+  }
+}

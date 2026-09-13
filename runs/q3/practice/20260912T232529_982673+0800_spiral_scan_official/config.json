@@ -1,0 +1,8 @@
+{
+  "problem": "q3",
+  "run_type": "practice",
+  "control_group": "spiral_scan",
+  "algorithm_version": "control-spiral-v1",
+  "base_url": "http://127.0.0.1:2026",
+  "started_at": "2026-09-12T23:25:29.982673+08:00"
+}

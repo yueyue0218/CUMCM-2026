@@ -1,0 +1,583 @@
+{
+  "baseline_name": "实验组_第二版路线候选池",
+  "coverage_points": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      1150.0,
+      0.0
+    ],
+    [
+      575.0000000000001,
+      995.9292143521044
+    ],
+    [
+      -574.9999999999998,
+      995.9292143521045
+    ],
+    [
+      -1150.0,
+      1.4083438190194562e-13
+    ],
+    [
+      -575.0000000000005,
+      -995.9292143521043
+    ],
+    [
+      575.0000000000001,
+      -995.9292143521044
+    ]
+  ],
+  "completed_coverage_points": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      1350.0,
+      0.0
+    ],
+    [
+      813.1727983645297,
+      813.1727983645297
+    ],
+    [
+      -297.6419018678987,
+      1110.8147002324285
+    ],
+    [
+      -1303.999865490242,
+      349.40571088840335
+    ],
+    [
+      -995.9292143521046,
+      -574.9999999999997
+    ],
+    [
+      -775.0000000000007,
+      -1342.3393758658797
+    ],
+    [
+      575.0000000000001,
+      -995.9292143521044
+    ]
+  ],
+  "detected_channels": [
+    1,
+    2,
+    4,
+    5,
+    6,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    20
+  ],
+  "excluded_channels": [
+    3,
+    7,
+    8,
+    9,
+    18,
+    19
+  ],
+  "detected_count": 14,
+  "measure_count": 117,
+  "direction_count": 48,
+  "near_count": 2,
+  "no_signal_count": 67,
+  "final_virtual_time_s": 3346.894916,
+  "completed_full_cover": true,
+  "all_cleared": true,
+  "cleared_count": 14,
+  "total_count": 14,
+  "clearance_ratio": 1.0,
+  "average_localization_clearance_time_s": 239.06392257142858,
+  "program_runtime_s": 2.9220000000000255,
+  "failure_reason": null,
+  "cleared_channels": [
+    1,
+    2,
+    4,
+    5,
+    6,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    20
+  ],
+  "active_channels": [],
+  "unknown_channels": [],
+  "channel_statuses": {
+    "1": "cleared",
+    "2": "cleared",
+    "3": "excluded_after_full_cover",
+    "4": "cleared",
+    "5": "cleared",
+    "6": "cleared",
+    "7": "excluded_after_full_cover",
+    "8": "excluded_after_full_cover",
+    "9": "excluded_after_full_cover",
+    "10": "cleared",
+    "11": "cleared",
+    "12": "cleared",
+    "13": "cleared",
+    "14": "cleared",
+    "15": "cleared",
+    "16": "cleared",
+    "17": "cleared",
+    "18": "excluded_after_full_cover",
+    "19": "excluded_after_full_cover",
+    "20": "cleared"
+  },
+  "coverage_receipts": {
+    "1": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "2": [
+      0
+    ],
+    "3": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "4": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "5": [
+      0
+    ],
+    "6": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "7": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "8": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "9": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "10": [
+      0
+    ],
+    "11": [
+      0
+    ],
+    "12": [
+      0,
+      2
+    ],
+    "13": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "14": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "15": [
+      0,
+      3
+    ],
+    "16": [
+      0
+    ],
+    "17": [
+      0,
+      5
+    ],
+    "18": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "19": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "20": [
+      0
+    ]
+  },
+  "clear_attempts": [
+    {
+      "channel": 16,
+      "position": [
+        1385.2441724287203,
+        -43.701095099223366
+      ],
+      "result": "success",
+      "virtual_time_s": 451.754881,
+      "certificate": "q1",
+      "radius_upper_m": 19.966588915586044
+    },
+    {
+      "channel": 12,
+      "position": [
+        -87.92349097299874,
+        693.8785497917023
+      ],
+      "result": "success",
+      "virtual_time_s": 981.652765,
+      "certificate": "q1",
+      "radius_upper_m": 17.681206944336115
+    },
+    {
+      "channel": 11,
+      "position": [
+        -105.40171814189179,
+        1328.2386140568667
+      ],
+      "result": "success",
+      "virtual_time_s": 1161.051432,
+      "certificate": "q1",
+      "radius_upper_m": 2.3179077840326885
+    },
+    {
+      "channel": 13,
+      "position": [
+        -1060.8048561271883,
+        1325.1280702615086
+      ],
+      "result": "success",
+      "virtual_time_s": 1490.649245,
+      "certificate": "near",
+      "radius_upper_m": 5.0
+    },
+    {
+      "channel": 10,
+      "position": [
+        -706.8565387362856,
+        941.3254412386309
+      ],
+      "result": "success",
+      "virtual_time_s": 1600.068375,
+      "certificate": "q1",
+      "radius_upper_m": 12.15034026578813
+    },
+    {
+      "channel": 20,
+      "position": [
+        -468.4732038280998,
+        577.1875941744704
+      ],
+      "result": "success",
+      "virtual_time_s": 1692.113877,
+      "certificate": "q1",
+      "radius_upper_m": 14.674677634422501
+    },
+    {
+      "channel": 15,
+      "position": [
+        -661.4699565011979,
+        231.29921617718495
+      ],
+      "result": "success",
+      "virtual_time_s": 1782.331682,
+      "certificate": "q1",
+      "radius_upper_m": 16.862832728657438
+    },
+    {
+      "channel": 14,
+      "position": [
+        -1485.442521326977,
+        303.4246326165134
+      ],
+      "result": "success",
+      "virtual_time_s": 1975.948571,
+      "certificate": "q1",
+      "radius_upper_m": 15.77657388301406
+    },
+    {
+      "channel": 6,
+      "position": [
+        -1554.650925362918,
+        202.85711488632393
+      ],
+      "result": "success",
+      "virtual_time_s": 2173.071639,
+      "certificate": "q1",
+      "radius_upper_m": 5.395881307916513
+    },
+    {
+      "channel": 4,
+      "position": [
+        -1550.7718101433734,
+        -796.3462746908758
+      ],
+      "result": "success",
+      "virtual_time_s": 2400.830807,
+      "certificate": "q1",
+      "radius_upper_m": 13.811959730583753
+    },
+    {
+      "channel": 2,
+      "position": [
+        -691.6322516831804,
+        -433.88940877294726
+      ],
+      "result": "success",
+      "virtual_time_s": 2655.896593,
+      "certificate": "q1",
+      "radius_upper_m": 9.169480366977718
+    },
+    {
+      "channel": 5,
+      "position": [
+        -431.6141492295292,
+        -383.5822992684908
+      ],
+      "result": "success",
+      "virtual_time_s": 2713.86459,
+      "certificate": "q1",
+      "radius_upper_m": 19.04992588767858
+    },
+    {
+      "channel": 17,
+      "position": [
+        -407.95923550162615,
+        -892.436720982907
+      ],
+      "result": "success",
+      "virtual_time_s": 2820.745379,
+      "certificate": "q1",
+      "radius_upper_m": 19.19477992608197
+    },
+    {
+      "channel": 1,
+      "position": [
+        -702.6748131807115,
+        -1476.7202052142939
+      ],
+      "result": "success",
+      "virtual_time_s": 2966.626159,
+      "certificate": "near",
+      "radius_upper_m": 5.0
+    }
+  ],
+  "clear_count": 14,
+  "termination_reason": "all_cleared",
+  "total_count_basis": "dynamic_reception_disk_coverage_and_clear_receipts",
+  "coverage_plan_kind": "certified_route_pool_with_legacy_candidate",
+  "full_scan_stations": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      1350.0,
+      0.0
+    ],
+    [
+      813.1727983645297,
+      813.1727983645297
+    ],
+    [
+      -297.6419018678987,
+      1110.8147002324285
+    ],
+    [
+      -1303.999865490242,
+      349.40571088840335
+    ],
+    [
+      -995.9292143521046,
+      -574.9999999999997
+    ],
+    [
+      -775.0000000000007,
+      -1342.3393758658797
+    ],
+    [
+      575.0000000000001,
+      -995.9292143521044
+    ]
+  ],
+  "negative_coverage_receipts": {
+    "1": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "2": [],
+    "3": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "4": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "5": [],
+    "6": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "7": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "8": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "9": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "10": [],
+    "11": [],
+    "12": [],
+    "13": [
+      0,
+      1,
+      2
+    ],
+    "14": [
+      0,
+      1,
+      2
+    ],
+    "15": [],
+    "16": [],
+    "17": [],
+    "18": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "19": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "20": []
+  },
+  "source_count_upper": 16,
+  "source_count_evidence_channels": [],
+  "excluded_by_source_count": [],
+  "routing_steps": 33,
+  "fallback_channels": [],
+  "algorithm_version": "route-pool-v2",
+  "route_pool_layouts": 18,
+  "auxiliary_measurement_range_m": 1000,
+  "route_targets": "actual_next_measurement_or_certified_clear_position",
+  "exit_failure": null,
+  "exit_skipped_reason": null,
+  "pending_action": null,
+  "last_confirmed_virtual_time_s": 3346.894916,
+  "strategy": "efficient_v2",
+  "run_type": "practice",
+  "case_code": null,
+  "git_commit": "db2816a559b0fb1bdf9b605642ec8e5bc5144ae6",
+  "formal_tags": []
+}

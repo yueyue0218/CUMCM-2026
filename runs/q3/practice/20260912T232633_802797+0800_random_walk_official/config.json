@@ -1,0 +1,8 @@
+{
+  "problem": "q3",
+  "run_type": "practice",
+  "control_group": "random_walk",
+  "algorithm_version": "control-random-v1",
+  "base_url": "http://127.0.0.1:2026",
+  "started_at": "2026-09-12T23:26:33.802797+08:00"
+}

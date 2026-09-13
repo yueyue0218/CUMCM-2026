@@ -1,0 +1,396 @@
+{
+  "rows": [
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 327.6800834126567,
+      "total": 3276.800834126567,
+      "runtime": 0.3575749999945401,
+      "stations": 8
+    },
+    {
+      "name": "reception",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 331.4779706796803,
+      "total": 3314.779706796803,
+      "runtime": 0.2955484999984037,
+      "stations": 8
+    },
+    {
+      "name": "reception_cover",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 336.5969453448367,
+      "total": 3365.969453448367,
+      "runtime": 1.060816999997769,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 281.34494532277785,
+      "total": 2813.4494532277786,
+      "runtime": 0.3054946000047494,
+      "stations": 8
+    },
+    {
+      "name": "reception",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 281.2508331367406,
+      "total": 2812.508331367406,
+      "runtime": 0.2742517000006046,
+      "stations": 8
+    },
+    {
+      "name": "reception_cover",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 282.2587588478722,
+      "total": 2822.5875884787215,
+      "runtime": 1.095281399997475,
+      "stations": 7
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 265.879475730316,
+      "total": 2658.79475730316,
+      "runtime": 0.2953933999961009,
+      "stations": 8
+    },
+    {
+      "name": "reception",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 265.879475730316,
+      "total": 2658.79475730316,
+      "runtime": 0.2644841000001179,
+      "stations": 8
+    },
+    {
+      "name": "reception_cover",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 274.8253077830859,
+      "total": 2748.253077830859,
+      "runtime": 1.0956138999972609,
+      "stations": 7
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 255.74953638203488,
+      "total": 3068.9944365844185,
+      "runtime": 0.33644169999752194,
+      "stations": 8
+    },
+    {
+      "name": "reception",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 255.74953638203488,
+      "total": 3068.9944365844185,
+      "runtime": 0.29614489999949,
+      "stations": 8
+    },
+    {
+      "name": "reception_cover",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 247.3881148393757,
+      "total": 2968.6573780725084,
+      "runtime": 1.2847450999979628,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 294.7610590096291,
+      "total": 3537.132708115549,
+      "runtime": 0.3116414000032819,
+      "stations": 8
+    },
+    {
+      "name": "reception",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 293.52549597532294,
+      "total": 3522.305951703875,
+      "runtime": 0.22960040000180015,
+      "stations": 9
+    },
+    {
+      "name": "reception_cover",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 286.6861404976075,
+      "total": 3440.23368597129,
+      "runtime": 1.2036743000062415,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 266.104843713655,
+      "total": 3193.25812456386,
+      "runtime": 0.4698530999958166,
+      "stations": 8
+    },
+    {
+      "name": "reception",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 253.80161534091144,
+      "total": 3045.6193840909373,
+      "runtime": 0.3982986999981222,
+      "stations": 8
+    },
+    {
+      "name": "reception_cover",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 256.51351989464956,
+      "total": 3078.1622387357947,
+      "runtime": 1.2540676999997231,
+      "stations": 7
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 222.90304546883408,
+      "total": 3120.642636563677,
+      "runtime": 0.4102322999970056,
+      "stations": 8
+    },
+    {
+      "name": "reception",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 214.01364446775014,
+      "total": 2996.191022548502,
+      "runtime": 0.3284222000002046,
+      "stations": 8
+    },
+    {
+      "name": "reception_cover",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 223.1114344106377,
+      "total": 3123.560081748928,
+      "runtime": 1.426866699999664,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 269.6766111837807,
+      "total": 3775.4725565729304,
+      "runtime": 0.40166750000207685,
+      "stations": 9
+    },
+    {
+      "name": "reception",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 255.3299831500955,
+      "total": 3574.619764101337,
+      "runtime": 0.3295032000023639,
+      "stations": 9
+    },
+    {
+      "name": "reception_cover",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 243.68536558662439,
+      "total": 3411.5951182127415,
+      "runtime": 1.086271599997417,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 235.55972108584805,
+      "total": 3297.836095201873,
+      "runtime": 0.3942287999961991,
+      "stations": 9
+    },
+    {
+      "name": "reception",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 242.25699980245807,
+      "total": 3391.597997234413,
+      "runtime": 0.35515899999882095,
+      "stations": 9
+    },
+    {
+      "name": "reception_cover",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 211.2833210342037,
+      "total": 2957.966494478852,
+      "runtime": 1.3759405000018887,
+      "stations": 7
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 174.50001296325848,
+      "total": 2792.0002074121358,
+      "runtime": 0.5191145999997389,
+      "stations": 7
+    },
+    {
+      "name": "reception",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 173.47336747458365,
+      "total": 2775.5738795933385,
+      "runtime": 0.4745102999950177,
+      "stations": 7
+    },
+    {
+      "name": "reception_cover",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 182.7216488166465,
+      "total": 2923.546381066344,
+      "runtime": 1.693475899999612,
+      "stations": 7
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 217.05590774719576,
+      "total": 3472.894523955132,
+      "runtime": 0.4569690999996965,
+      "stations": 8
+    },
+    {
+      "name": "reception",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 217.90815710688756,
+      "total": 3486.530513710201,
+      "runtime": 0.44486110000434564,
+      "stations": 8
+    },
+    {
+      "name": "reception_cover",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 226.7321264819271,
+      "total": 3627.7140237108338,
+      "runtime": 1.5911963999969885,
+      "stations": 6
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 185.04263578562936,
+      "total": 2960.6821725700697,
+      "runtime": 0.5697913999974844,
+      "stations": 6
+    },
+    {
+      "name": "reception",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 188.781735072392,
+      "total": 3020.507761158272,
+      "runtime": 0.42678169999999227,
+      "stations": 7
+    },
+    {
+      "name": "reception_cover",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 196.05377106920383,
+      "total": 3136.8603371072613,
+      "runtime": 1.5426559000043198,
+      "stations": 8
+    }
+  ],
+  "summary": {
+    "v1": {
+      "mean": 249.68815648380132,
+      "success": 12,
+      "groups": [
+        291.63483482191685,
+        272.20514636843967,
+        242.71312591282094,
+        192.19951883202788
+      ]
+    },
+    "reception": {
+      "mean": 247.78740119326443,
+      "success": 12,
+      "groups": [
+        292.869426515579,
+        267.6922158994231,
+        237.20020914010124,
+        193.3877532179544
+      ]
+    },
+    "reception_cover": {
+      "mean": 247.32137121722258,
+      "success": 12,
+      "groups": [
+        297.89367065859824,
+        263.52925841054423,
+        226.0267070104886,
+        201.83584878925916
+      ]
+    }
+  }
+}

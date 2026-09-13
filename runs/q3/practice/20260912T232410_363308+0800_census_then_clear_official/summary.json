@@ -1,0 +1,678 @@
+{
+  "baseline_name": "q3-efficient-batched-routing-v1",
+  "coverage_points": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      1150.0,
+      0.0
+    ],
+    [
+      575.0000000000001,
+      995.9292143521044
+    ],
+    [
+      -574.9999999999998,
+      995.9292143521045
+    ],
+    [
+      -1150.0,
+      1.4083438190194562e-13
+    ],
+    [
+      -575.0000000000005,
+      -995.9292143521043
+    ],
+    [
+      575.0000000000001,
+      -995.9292143521044
+    ]
+  ],
+  "completed_coverage_points": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      1150.0,
+      0.0
+    ],
+    [
+      575.0000000000001,
+      995.9292143521044
+    ],
+    [
+      -574.9999999999998,
+      995.9292143521045
+    ],
+    [
+      -1150.0,
+      1.4083438190194562e-13
+    ],
+    [
+      -575.0000000000005,
+      -995.9292143521043
+    ],
+    [
+      575.0000000000001,
+      -995.9292143521044
+    ]
+  ],
+  "detected_channels": [
+    1,
+    3,
+    4,
+    5,
+    6,
+    7,
+    9,
+    10,
+    11,
+    13,
+    14,
+    15,
+    16,
+    17,
+    20
+  ],
+  "excluded_channels": [
+    2,
+    8,
+    12,
+    18,
+    19
+  ],
+  "detected_count": 15,
+  "measure_count": 150,
+  "direction_count": 48,
+  "near_count": 1,
+  "no_signal_count": 101,
+  "final_virtual_time_s": 4358.145535,
+  "completed_full_cover": true,
+  "all_cleared": true,
+  "cleared_count": 15,
+  "total_count": 15,
+  "clearance_ratio": 1.0,
+  "average_localization_clearance_time_s": 290.54303566666664,
+  "program_runtime_s": 1.1570000000001528,
+  "failure_reason": null,
+  "cleared_channels": [
+    1,
+    3,
+    4,
+    5,
+    6,
+    7,
+    9,
+    10,
+    11,
+    13,
+    14,
+    15,
+    16,
+    17,
+    20
+  ],
+  "active_channels": [],
+  "unknown_channels": [],
+  "channel_statuses": {
+    "1": "cleared",
+    "2": "excluded_after_full_cover",
+    "3": "cleared",
+    "4": "cleared",
+    "5": "cleared",
+    "6": "cleared",
+    "7": "cleared",
+    "8": "excluded_after_full_cover",
+    "9": "cleared",
+    "10": "cleared",
+    "11": "cleared",
+    "12": "excluded_after_full_cover",
+    "13": "cleared",
+    "14": "cleared",
+    "15": "cleared",
+    "16": "cleared",
+    "17": "cleared",
+    "18": "excluded_after_full_cover",
+    "19": "excluded_after_full_cover",
+    "20": "cleared"
+  },
+  "coverage_receipts": {
+    "1": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "2": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "3": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "4": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "5": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "6": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "7": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "8": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "9": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "10": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "11": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "12": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "13": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "14": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "15": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "16": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "17": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "18": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "19": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "20": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  "clear_attempts": [
+    {
+      "channel": 15,
+      "position": [
+        559.6524448583222,
+        -826.305091873234
+      ],
+      "result": "success",
+      "virtual_time_s": 2252.063406,
+      "certificate": "q1",
+      "radius_upper_m": 17.28205056199625
+    },
+    {
+      "channel": 11,
+      "position": [
+        -5.984813833598757,
+        -952.1190791005472
+      ],
+      "result": "success",
+      "virtual_time_s": 2372.95554,
+      "certificate": "q1",
+      "radius_upper_m": 18.105317554985334
+    },
+    {
+      "channel": 5,
+      "position": [
+        355.287361132303,
+        -1293.035601040122
+      ],
+      "result": "success",
+      "virtual_time_s": 2484.968315,
+      "certificate": "q1",
+      "radius_upper_m": 9.176087563628283
+    },
+    {
+      "channel": 13,
+      "position": [
+        1066.4633132185836,
+        -1324.1991912907733
+      ],
+      "result": "success",
+      "virtual_time_s": 2639.5737,
+      "certificate": "q1",
+      "radius_upper_m": 6.283439187434202
+    },
+    {
+      "channel": 9,
+      "position": [
+        1050.222364366011,
+        -546.6486217181524
+      ],
+      "result": "success",
+      "virtual_time_s": 2800.117733,
+      "certificate": "q1",
+      "radius_upper_m": 17.13880339885703
+    },
+    {
+      "channel": 20,
+      "position": [
+        1493.1268818160925,
+        116.71728575372049
+      ],
+      "result": "success",
+      "virtual_time_s": 2971.574476,
+      "certificate": "q1",
+      "radius_upper_m": 13.868070452532253
+    },
+    {
+      "channel": 6,
+      "position": [
+        1172.5627529122983,
+        714.6523836082138
+      ],
+      "result": "success",
+      "virtual_time_s": 3112.263494,
+      "certificate": "q1",
+      "radius_upper_m": 18.613911051057254
+    },
+    {
+      "channel": 3,
+      "position": [
+        502.5250127971767,
+        298.11398959849
+      ],
+      "result": "success",
+      "virtual_time_s": 3275.055104,
+      "certificate": "q1",
+      "radius_upper_m": 14.790244375395599
+    },
+    {
+      "channel": 17,
+      "position": [
+        194.785785767297,
+        1277.81900294032
+      ],
+      "result": "success",
+      "virtual_time_s": 3495.115794,
+      "certificate": "q1",
+      "radius_upper_m": 11.826600326852354
+    },
+    {
+      "channel": 16,
+      "position": [
+        -259.9864945596758,
+        1426.2149285180794
+      ],
+      "result": "success",
+      "virtual_time_s": 3603.642514,
+      "certificate": "q1",
+      "radius_upper_m": 4.636671232993541
+    },
+    {
+      "channel": 7,
+      "position": [
+        -930.2160975945787,
+        448.51207339938014
+      ],
+      "result": "success",
+      "virtual_time_s": 3851.717236,
+      "certificate": "near",
+      "radius_upper_m": 5.0
+    },
+    {
+      "channel": 14,
+      "position": [
+        -787.7335517762372,
+        -173.08636922604845
+      ],
+      "result": "success",
+      "virtual_time_s": 3984.261095,
+      "certificate": "q1",
+      "radius_upper_m": 19.870946927976533
+    },
+    {
+      "channel": 10,
+      "position": [
+        -1229.908227442776,
+        -93.85688643272738
+      ],
+      "result": "success",
+      "virtual_time_s": 4181.332494,
+      "certificate": "q1",
+      "radius_upper_m": 8.768914078198074
+    },
+    {
+      "channel": 4,
+      "position": [
+        -1320.5103956798735,
+        -505.91587182206354
+      ],
+      "result": "success",
+      "virtual_time_s": 4280.155736,
+      "certificate": "q1",
+      "radius_upper_m": 9.05334739140534
+    },
+    {
+      "channel": 1,
+      "position": [
+        -1119.203333075412,
+        -773.3853684039852
+      ],
+      "result": "success",
+      "virtual_time_s": 4358.145535,
+      "certificate": "q1",
+      "radius_upper_m": 7.7213234592142745
+    }
+  ],
+  "clear_count": 15,
+  "termination_reason": "all_cleared",
+  "total_count_basis": "dynamic_reception_disk_coverage_and_clear_receipts",
+  "coverage_plan_kind": "dynamic_certified_disk_union_with_fixed_layout_fallback",
+  "full_scan_stations": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      1150.0,
+      0.0
+    ],
+    [
+      575.0000000000001,
+      995.9292143521044
+    ],
+    [
+      -574.9999999999998,
+      995.9292143521045
+    ],
+    [
+      -1150.0,
+      1.4083438190194562e-13
+    ],
+    [
+      -575.0000000000005,
+      -995.9292143521043
+    ],
+    [
+      575.0000000000001,
+      -995.9292143521044
+    ]
+  ],
+  "negative_coverage_receipts": {
+    "1": [
+      0,
+      1,
+      2,
+      3,
+      6
+    ],
+    "2": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "3": [
+      4,
+      5
+    ],
+    "4": [
+      0,
+      1,
+      2,
+      3,
+      6
+    ],
+    "5": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "6": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "7": [
+      1,
+      2,
+      5,
+      6
+    ],
+    "8": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "9": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "10": [
+      0,
+      1,
+      2,
+      3,
+      5,
+      6
+    ],
+    "11": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "12": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "13": [
+      0,
+      2,
+      3,
+      4,
+      5
+    ],
+    "14": [
+      1,
+      2,
+      3,
+      6
+    ],
+    "15": [
+      2,
+      3,
+      4
+    ],
+    "16": [
+      0,
+      1,
+      4,
+      5,
+      6
+    ],
+    "17": [
+      0,
+      1,
+      4,
+      5,
+      6
+    ],
+    "18": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "19": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "20": [
+      0,
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  "source_count_upper": 16,
+  "source_count_evidence_channels": [],
+  "excluded_by_source_count": [],
+  "routing_steps": 0,
+  "fallback_channels": [],
+  "control_group": "census_then_clear",
+  "algorithm_version": "control-census-v1",
+  "exit_failure": null,
+  "pending_action": null,
+  "last_confirmed_virtual_time_s": 4358.145535
+}

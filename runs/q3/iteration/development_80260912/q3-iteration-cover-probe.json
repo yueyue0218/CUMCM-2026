@@ -1,0 +1,266 @@
+{
+  "rows": [
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 327.6800834126567,
+      "total": 3276.800834126567,
+      "runtime": 0.2992625999977463,
+      "stations": 8
+    },
+    {
+      "name": "cover_plan",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 330.9476270422958,
+      "total": 3309.476270422958,
+      "runtime": 0.8766480999984196,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 281.34494532277785,
+      "total": 2813.4494532277786,
+      "runtime": 0.2839802000016789,
+      "stations": 8
+    },
+    {
+      "name": "cover_plan",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 282.2587588478722,
+      "total": 2822.5875884787215,
+      "runtime": 1.0286219999979949,
+      "stations": 7
+    },
+    {
+      "name": "v1",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 265.879475730316,
+      "total": 2658.79475730316,
+      "runtime": 0.27008460000070045,
+      "stations": 8
+    },
+    {
+      "name": "cover_plan",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 274.8253077830859,
+      "total": 2748.253077830859,
+      "runtime": 1.0663822999995318,
+      "stations": 7
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 255.74953638203488,
+      "total": 3068.9944365844185,
+      "runtime": 0.3535989000010886,
+      "stations": 8
+    },
+    {
+      "name": "cover_plan",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 247.27017993266836,
+      "total": 2967.24215919202,
+      "runtime": 1.2404210999957286,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 294.7610590096291,
+      "total": 3537.132708115549,
+      "runtime": 0.296029199998884,
+      "stations": 8
+    },
+    {
+      "name": "cover_plan",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 287.85246259318905,
+      "total": 3454.229551118269,
+      "runtime": 1.3016617999965092,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 266.104843713655,
+      "total": 3193.25812456386,
+      "runtime": 0.4111972999962745,
+      "stations": 8
+    },
+    {
+      "name": "cover_plan",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 256.51351989464956,
+      "total": 3078.1622387357947,
+      "runtime": 1.3040183999983128,
+      "stations": 7
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 222.90304546883408,
+      "total": 3120.642636563677,
+      "runtime": 0.4278677000038442,
+      "stations": 8
+    },
+    {
+      "name": "cover_plan",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 226.8861140534588,
+      "total": 3176.4055967484232,
+      "runtime": 1.4363228000001982,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 269.6766111837807,
+      "total": 3775.4725565729304,
+      "runtime": 0.428944400002365,
+      "stations": 9
+    },
+    {
+      "name": "cover_plan",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 231.46097669809598,
+      "total": 3240.453673773344,
+      "runtime": 1.5040631000010762,
+      "stations": 8
+    },
+    {
+      "name": "v1",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 235.55972108584805,
+      "total": 3297.836095201873,
+      "runtime": 0.37092679999477696,
+      "stations": 9
+    },
+    {
+      "name": "cover_plan",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 211.2833210342037,
+      "total": 2957.966494478852,
+      "runtime": 1.4533449000009568,
+      "stations": 7
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 174.50001296325848,
+      "total": 2792.0002074121358,
+      "runtime": 0.5389148999965983,
+      "stations": 7
+    },
+    {
+      "name": "cover_plan",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 182.7216488166465,
+      "total": 2923.546381066344,
+      "runtime": 1.8497767000008025,
+      "stations": 7
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 217.05590774719576,
+      "total": 3472.894523955132,
+      "runtime": 0.4833677999995416,
+      "stations": 8
+    },
+    {
+      "name": "cover_plan",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 214.76865365215974,
+      "total": 3436.298458434556,
+      "runtime": 1.6295074000008754,
+      "stations": 6
+    },
+    {
+      "name": "v1",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 185.04263578562936,
+      "total": 2960.6821725700697,
+      "runtime": 0.6531957999977749,
+      "stations": 6
+    },
+    {
+      "name": "cover_plan",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 181.10879509056784,
+      "total": 2897.7407214490854,
+      "runtime": 1.9047138999958406,
+      "stations": 5
+    }
+  ],
+  "summary": {
+    "v1": {
+      "mean": 249.68815648380132,
+      "success": 12,
+      "groups": [
+        291.63483482191685,
+        272.20514636843967,
+        242.71312591282094,
+        192.19951883202788
+      ]
+    },
+    "cover_plan": {
+      "mean": 243.99144711990778,
+      "success": 12,
+      "groups": [
+        296.0105645577513,
+        263.87872080683564,
+        223.2101372619195,
+        192.8663658531247
+      ]
+    }
+  }
+}

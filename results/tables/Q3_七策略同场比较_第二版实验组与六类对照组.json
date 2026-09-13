@@ -1,0 +1,124 @@
+{
+  "scope": "historical matched-scene extension; not a new independent holdout",
+  "source_counts": [
+    10,
+    12,
+    14,
+    16
+  ],
+  "cases_per_group": 20,
+  "seed_start": 70260912,
+  "historical_report": "results/tables/Q3_实验组与对照组_策略比较表.json",
+  "extension_report": "runs/q3/iteration/historical_extension_70260912/20260912T194357_766922+0800_第二版与上一版独立验收/Q3_自主迭代_实验组第二版与对照组上一版.json",
+  "source_scene_consistency": "all 640 historical/replay/extension traces verified, 80 unique scenes",
+  "previous_replay": "80/80 costs and outcomes equal historical records",
+  "extension_action_audit": "160/160 virtual clocks and clearance sets verified",
+  "source_snapshot": "SHA-256 verified, implementation unchanged",
+  "rows": [
+    {
+      "mode": "route_pool",
+      "strategy": "实验组：第二版路线候选池",
+      "clearance_ratio": 1.0,
+      "per_source_s": 248.385949716324,
+      "total_time_s": 3152.6365233592223,
+      "success_count": 80,
+      "case_count": 80,
+      "groups": {
+        "10": 297.62295057345256,
+        "12": 261.0907916593125,
+        "14": 228.02690916494075,
+        "16": 206.80314746759018
+      }
+    },
+    {
+      "mode": "joint_routing",
+      "strategy": "对照组：上一版集中测量与联合路线",
+      "clearance_ratio": 1.0,
+      "per_source_s": 257.2131538164539,
+      "total_time_s": 3264.1845920333626,
+      "success_count": 80,
+      "case_count": 80,
+      "groups": {
+        "10": 309.9107389214974,
+        "12": 266.94236264858233,
+        "14": 238.8347959981433,
+        "16": 213.16471769759258
+      }
+    },
+    {
+      "mode": "census_then_clear",
+      "strategy": "对照组：普查后清除",
+      "clearance_ratio": 1.0,
+      "per_source_s": 330.20672398460647,
+      "total_time_s": 4201.493486094663,
+      "success_count": 80,
+      "case_count": 80,
+      "groups": {
+        "10": 385.0632929241423,
+        "12": 349.97834915141084,
+        "14": 308.4816182428319,
+        "16": 277.30363562004084
+      }
+    },
+    {
+      "mode": "spiral_scan",
+      "strategy": "对照组：螺旋扫描",
+      "clearance_ratio": 1.0,
+      "per_source_s": 489.72019133549395,
+      "total_time_s": 6149.25080448142,
+      "success_count": 80,
+      "case_count": 80,
+      "groups": {
+        "10": 607.380420580677,
+        "12": 538.8635733690297,
+        "14": 472.67610529287555,
+        "16": 339.96066609939356
+      }
+    },
+    {
+      "mode": "random_walk",
+      "strategy": "对照组：随机游走",
+      "clearance_ratio": 0.9977083333333333,
+      "per_source_s": 1456.7218101771348,
+      "total_time_s": 17798.91316050604,
+      "success_count": 53,
+      "case_count": 80,
+      "groups": {
+        "10": 2102.9255703454255,
+        "12": 1685.7899906558648,
+        "14": 1336.9149123082295,
+        "16": 701.2567673990195
+      }
+    },
+    {
+      "mode": "oracle",
+      "strategy": "对照组：上帝视角",
+      "clearance_ratio": 1.0,
+      "per_source_s": 144.7394966278635,
+      "total_time_s": 1854.3836190968025,
+      "success_count": 80,
+      "case_count": 80,
+      "groups": {
+        "10": 157.4555569513623,
+        "12": 155.63375864606738,
+        "14": 139.2624657518056,
+        "16": 126.60620516221879
+      }
+    },
+    {
+      "mode": "legacy_ppo_planner",
+      "strategy": "对照组：旧PPO辅助规划",
+      "clearance_ratio": 1.0,
+      "per_source_s": 608.091382819857,
+      "total_time_s": 7810.259997683622,
+      "success_count": 80,
+      "case_count": 80,
+      "groups": {
+        "10": 675.0055545830784,
+        "12": 615.5576048553364,
+        "14": 582.2723814082719,
+        "16": 559.5299904327412
+      }
+    }
+  ]
+}

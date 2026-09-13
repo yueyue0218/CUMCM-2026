@@ -1,0 +1,416 @@
+{
+  "rows": [
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 10,
+      "seed": 80260912,
+      "ok": true,
+      "seconds_per_source": 330.67758187400665,
+      "total": 3306.7758187400664,
+      "runtime": 0.8002275999970152,
+      "stations": 8
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 10,
+      "seed": 80260913,
+      "ok": true,
+      "seconds_per_source": 278.052777465392,
+      "total": 2780.52777465392,
+      "runtime": 1.0245858999987831,
+      "stations": 7
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 10,
+      "seed": 80260914,
+      "ok": true,
+      "seconds_per_source": 273.3478360942866,
+      "total": 2733.478360942866,
+      "runtime": 1.0403042000034475,
+      "stations": 7
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 10,
+      "seed": 80260915,
+      "ok": true,
+      "seconds_per_source": 297.6467824653565,
+      "total": 2976.467824653565,
+      "runtime": 0.9789732999997796,
+      "stations": 7
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 10,
+      "seed": 80260916,
+      "ok": true,
+      "seconds_per_source": 307.97603937478397,
+      "total": 3079.7603937478398,
+      "runtime": 1.1422520000051009,
+      "stations": 8
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 10,
+      "seed": 80260917,
+      "ok": true,
+      "seconds_per_source": 274.75137103797914,
+      "total": 2747.5137103797915,
+      "runtime": 1.1158081000030506,
+      "stations": 7
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 10,
+      "seed": 80260918,
+      "ok": true,
+      "seconds_per_source": 295.40706857354496,
+      "total": 2954.07068573545,
+      "runtime": 1.0130577000018093,
+      "stations": 7
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 10,
+      "seed": 80260919,
+      "ok": true,
+      "seconds_per_source": 270.2711485261004,
+      "total": 2702.711485261004,
+      "runtime": 0.7720221999989008,
+      "stations": 7
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 10,
+      "seed": 80260920,
+      "ok": true,
+      "seconds_per_source": 309.82121224768963,
+      "total": 3098.212122476896,
+      "runtime": 0.9775394000025699,
+      "stations": 7
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 10,
+      "seed": 80260921,
+      "ok": true,
+      "seconds_per_source": 290.11845990540775,
+      "total": 2901.1845990540774,
+      "runtime": 1.0644819000008283,
+      "stations": 7
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 12,
+      "seed": 80261912,
+      "ok": true,
+      "seconds_per_source": 242.1934828131053,
+      "total": 2906.3217937572635,
+      "runtime": 1.1637018000037642,
+      "stations": 8
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 12,
+      "seed": 80261913,
+      "ok": true,
+      "seconds_per_source": 286.81274260513436,
+      "total": 3441.7529112616126,
+      "runtime": 0.946876500005601,
+      "stations": 8
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 12,
+      "seed": 80261914,
+      "ok": true,
+      "seconds_per_source": 254.51059640690178,
+      "total": 3054.1271568828215,
+      "runtime": 1.2372019000031287,
+      "stations": 7
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 12,
+      "seed": 80261915,
+      "ok": true,
+      "seconds_per_source": 254.53728031069855,
+      "total": 3054.4473637283827,
+      "runtime": 1.0693711000058101,
+      "stations": 8
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 12,
+      "seed": 80261916,
+      "ok": true,
+      "seconds_per_source": 253.41940870105,
+      "total": 3041.0329044126,
+      "runtime": 1.0192621000023792,
+      "stations": 8
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 12,
+      "seed": 80261917,
+      "ok": true,
+      "seconds_per_source": 271.6706224654782,
+      "total": 3260.047469585738,
+      "runtime": 0.9119997000016156,
+      "stations": 8
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 12,
+      "seed": 80261918,
+      "ok": true,
+      "seconds_per_source": 258.12934563608604,
+      "total": 3097.5521476330327,
+      "runtime": 1.1481926999986172,
+      "stations": 7
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 12,
+      "seed": 80261919,
+      "ok": true,
+      "seconds_per_source": 229.38564500259426,
+      "total": 2752.627740031131,
+      "runtime": 1.397848200002045,
+      "stations": 7
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 12,
+      "seed": 80261920,
+      "ok": true,
+      "seconds_per_source": 247.84364388783956,
+      "total": 2974.1237266540747,
+      "runtime": 0.9264994999975897,
+      "stations": 8
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 12,
+      "seed": 80261921,
+      "ok": true,
+      "seconds_per_source": 241.35055112054354,
+      "total": 2896.2066134465226,
+      "runtime": 1.0543136999986018,
+      "stations": 7
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 14,
+      "seed": 80262912,
+      "ok": true,
+      "seconds_per_source": 218.58596236005886,
+      "total": 3060.203473040824,
+      "runtime": 1.3459427000052528,
+      "stations": 8
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 14,
+      "seed": 80262913,
+      "ok": true,
+      "seconds_per_source": 259.59026710070924,
+      "total": 3634.2637394099293,
+      "runtime": 1.484346999997797,
+      "stations": 7
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 14,
+      "seed": 80262914,
+      "ok": true,
+      "seconds_per_source": 207.59276305655482,
+      "total": 2906.2986827917675,
+      "runtime": 1.1553595000004862,
+      "stations": 8
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 14,
+      "seed": 80262915,
+      "ok": true,
+      "seconds_per_source": 228.53760393238895,
+      "total": 3199.5264550534453,
+      "runtime": 1.5241831000021193,
+      "stations": 7
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 14,
+      "seed": 80262916,
+      "ok": true,
+      "seconds_per_source": 221.41886774848658,
+      "total": 3099.8641484788122,
+      "runtime": 1.6661010000025271,
+      "stations": 9
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 14,
+      "seed": 80262917,
+      "ok": true,
+      "seconds_per_source": 238.19002815400432,
+      "total": 3334.6603941560606,
+      "runtime": 1.3048894999956246,
+      "stations": 8
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 14,
+      "seed": 80262918,
+      "ok": true,
+      "seconds_per_source": 225.3775431467075,
+      "total": 3155.285604053905,
+      "runtime": 1.546713899995666,
+      "stations": 8
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 14,
+      "seed": 80262919,
+      "ok": true,
+      "seconds_per_source": 218.68685415663643,
+      "total": 3061.61595819291,
+      "runtime": 1.5451616999998805,
+      "stations": 8
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 14,
+      "seed": 80262920,
+      "ok": true,
+      "seconds_per_source": 197.41762093454142,
+      "total": 2763.84669308358,
+      "runtime": 1.7289212000032421,
+      "stations": 8
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 14,
+      "seed": 80262921,
+      "ok": true,
+      "seconds_per_source": 240.59979664958905,
+      "total": 3368.3971530942467,
+      "runtime": 1.4325056000016048,
+      "stations": 8
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 16,
+      "seed": 80263912,
+      "ok": true,
+      "seconds_per_source": 167.10389094827053,
+      "total": 2673.6622551723285,
+      "runtime": 1.9620272000029217,
+      "stations": 6
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 16,
+      "seed": 80263913,
+      "ok": true,
+      "seconds_per_source": 219.00841131037146,
+      "total": 3504.1345809659433,
+      "runtime": 1.875326800000039,
+      "stations": 6
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 16,
+      "seed": 80263914,
+      "ok": true,
+      "seconds_per_source": 172.714632012738,
+      "total": 2763.434112203808,
+      "runtime": 1.7009966000041459,
+      "stations": 6
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 16,
+      "seed": 80263915,
+      "ok": true,
+      "seconds_per_source": 196.13082947709484,
+      "total": 3138.0932716335174,
+      "runtime": 1.3534024999971734,
+      "stations": 6
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 16,
+      "seed": 80263916,
+      "ok": true,
+      "seconds_per_source": 200.61976227899214,
+      "total": 3209.9161964638743,
+      "runtime": 1.7222676999954274,
+      "stations": 5
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 16,
+      "seed": 80263917,
+      "ok": true,
+      "seconds_per_source": 215.8635232036562,
+      "total": 3453.816371258499,
+      "runtime": 1.7557212000028812,
+      "stations": 8
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 16,
+      "seed": 80263918,
+      "ok": true,
+      "seconds_per_source": 197.54873594065424,
+      "total": 3160.779775050468,
+      "runtime": 1.447090500005288,
+      "stations": 6
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 16,
+      "seed": 80263919,
+      "ok": true,
+      "seconds_per_source": 210.89610644911747,
+      "total": 3374.3377031858795,
+      "runtime": 1.654318400003831,
+      "stations": 7
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 16,
+      "seed": 80263920,
+      "ok": true,
+      "seconds_per_source": 184.04032336398674,
+      "total": 2944.645173823788,
+      "runtime": 1.3963772000060999,
+      "stations": 7
+    },
+    {
+      "name": "r1000_refined_actual_pool",
+      "n": 16,
+      "seed": 80263921,
+      "ok": true,
+      "seconds_per_source": 219.67454115859087,
+      "total": 3514.792658537454,
+      "runtime": 1.5938090000054217,
+      "stations": 7
+    }
+  ],
+  "summary": {
+    "r1000_refined_actual_pool": {
+      "mean": 242.68804149742823,
+      "success": 40,
+      "groups": [
+        292.8070277564548,
+        253.98533189494316,
+        225.59973072396772,
+        198.36007561434724
+      ]
+    }
+  }
+}
