@@ -1,6 +1,18 @@
+# 无线电干扰源的快速自动定位与清除
+
 ## 摘要
 
-### 关键词
+本文通过研究无源干扰源的定位、选点、多源清除及复杂混合场景下的搜索问题，提出了基于几何凸外包分析、多目标主动选点、神经-符号强化学习与多维粒子滤波的自适应决策闭环。
+
+对于问题一，针对有界测向误差与单/多次示向检测下的几何定位与不确定性评估问题，提出了基于有界误差模型与集合交会的连续凸定位区域构建方法，利用旋转卡壳算法基于凸多边形外包计算几何直径，结合确定性增量算法求解最小包围圆（MEC），并基于 Jung 定理进行覆盖判定。研究表明，直径圆并不必然覆盖定位区域，通过确立“最小包围圆半径等于直径之半”这一等价覆盖判据，为单点安全清除提供了可靠的安全接口。
+
+对于问题二，针对首次检测后主动选择最佳第二检测点以压缩定位不确定性的问题，提出了联合维护真实硬支持集、名义联合后验与闭合凸外包的主动选点框架，建立了融合 Bayesian（后验期望直径）、Minimax（鲁棒代理直径）与 Hybrid（鲁棒包络约束）的选点策略，并采用多尺度局部精化搜索求解。结果表明，Hybrid 策略能在鲁棒包络约束下实现平均性能与最坏性能的最佳折中，定位效果显著优于固定几何布点基线。
+
+对于问题三，针对复杂多频段、多未知源在非线性虚拟时间成本下的全局搜索与清除问题，提出了基于四类互斥集合三值逻辑状态追踪器的几何消元方法，构建了融合 TSP 路径、高信息增益路径与快速消除路径的“多路线候选池”评估机制，并结合神经-符号 PPO（NS-PPO）算法进行在线 MDP 决策。实验证明该框架实现了 100% 的清除成功率，路线候选池机制将实际物理移动与测量耗时降低了 10%~20%，显著提升了全局搜索清除效率。
+
+对于问题四，针对全向源与存在背向盲区的定向源混合并存、辐射特性未知的极高复杂度场景，提出了包含高维粒子滤波（位置-朝向-半径联合估计）、阴性观测空间消元、动态双环候选选点、开放路径 DP 路由优化以及两级光学检测与解析网格后备的自适应决策闭环。研究成功将阴性观测转化为有效的几何剔除依据，在保证 100% 安全清除的前提下，使总虚拟耗时较传统单频道搜寻降低 35.8% 以上，且具备完备的退化退出能力。
+
+### 关键词：无源干扰源定位；主动选点；神经-符号强化学习；粒子滤波；阴性观测
 
 ## 一、问题重述
 
@@ -1087,3 +1099,19 @@ $$U(\mathbf{x}) = \sum_{m \in \mathcal{K}_{\text{active}}} \left( \Delta H^{(m)}
 [5] BERTSIMAS D, SIM M. The price of robustness[J]. Operations Research, 2004, 52(1): 35-53. DOI: 10.1287/opre.1030.0065.
 
 [6] ALAMO T, BRAVO J M, CAMACHO E F. Guaranteed state estimation by zonotopes[J]. Automatica, 2005, 41(6): 1035-1043. DOI: 10.1016/j.automatica.2004.12.008.
+
+[7] Schulman J, et al. [Proximal Policy Optimization Algorithms](https://arxiv.org/abs/1707.06347), 2017.
+
+[8] Schulman J, et al. [High-Dimensional Continuous Control Using Generalized Advantage Estimation](https://arxiv.org/abs/1506.02438), 2015.
+
+[9] Huang S, Ontañón S. [A Closer Look at Invalid Action Masking in Policy Gradient Algorithms](https://arxiv.org/abs/2006.14171), 2020.
+
+[10] Huang S, et al. [The 37 Implementation Details of Proximal Policy Optimization](https://iclr-blog-track.github.io/2022/03/25/ppo-implementation-details/), 2022. 该文为实现与复现实验的作者报告；本方案引用其训练细节讨论，不把其他任务的默认参数当成本题最优值。
+
+[11] Alshiekh M, et al. [Safe Reinforcement Learning via Shielding](https://arxiv.org/abs/1708.08611), 2017.
+
+[12] Dumitrescu A, Mitchell J S B. [Approximation algorithms for TSP with neighborhoods in the plane](https://arxiv.org/abs/1703.01640).
+
+[13] Janner M, et al. [When to Trust Your Model: Model-Based Policy Optimization](https://arxiv.org/abs/1906.08253), 2019.
+
+[14] Silver D, Veness J. [Monte-Carlo Planning in Large POMDPs](https://papers.nips.cc/paper_files/paper/2010/hash/edfbe1afcf9246bb0d40eb4d8027d90f-Abstract.html), 2010.
