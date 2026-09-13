@@ -614,12 +614,19 @@ def score_candidates(
     state: FirstState,
     *,
     direction_grid_deg: Sequence[float],
+    bearing_error_atoms: Sequence[BearingErrorAtom],
     config: Q2Config = Q2Config(),
 ) -> tuple[CandidateScore, ...]:
     ...
 ```
 
 This single scoring path is mandatory for fair comparison across all strategies.
+Task 5A requires the nominal second-bearing error quadrature/PMF explicitly via
+`bearing_error_atoms`; the optimizer must not invent a uniform law from the hard
+`±1°` bound. Candidates outside the `C_poss` outer proxy are skipped before
+either evaluator is called. Every returned `CandidateScore` therefore contains
+Bayesian and robust evaluations for the same admissible point and the same
+direction grid.
 
 ```python
 def select_pure_bayesian(
@@ -633,6 +640,9 @@ def select_pure_bayesian(
 Select minimum `psi_d_m`; among points with `psi_d_m <= best + tau_m`, choose
 minimum movement `||q-S1||`. `tau_m` is numerical tolerance, not a preference
 parameter.
+
+Task 5A implements this selector. Coordinates are used only as the final
+deterministic tie-break when both Bayesian proxy and movement are tied.
 
 ```python
 def select_pure_minimax(scores: Sequence[CandidateScore]) -> CandidateScore:

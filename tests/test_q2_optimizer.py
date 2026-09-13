@@ -3,13 +3,21 @@ import unittest
 from unittest.mock import patch
 
 from src.q2.model import (
+    BayesianEvaluation,
+    BearingErrorAtom,
     FirstDirectionObservation,
     FirstState,
     JointSample,
     Q2Config,
     RobustEvaluation,
 )
-from src.q2.optimizer import coarse_grid_candidates, minimax_baseline
+from src.q2.optimizer import (
+    CandidateScore,
+    coarse_grid_candidates,
+    minimax_baseline,
+    score_candidates,
+    select_pure_bayesian,
+)
 
 
 class CoarseGridCandidateTests(unittest.TestCase):
@@ -271,6 +279,252 @@ class MinimaxBaselineTests(unittest.TestCase):
                     state,
                     direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
                 )
+
+
+class UnifiedScoringTests(unittest.TestCase):
+    def make_state(self) -> FirstState:
+        return FirstState(
+            observation=FirstDirectionObservation((0.0, 0.0), 0.0),
+            exact_support_label="optimizer scoring test support",
+            outer_region=(
+                (-100.0, -100.0),
+                (100.0, -100.0),
+                (100.0, 100.0),
+                (-100.0, 100.0),
+            ),
+            joint_samples=(JointSample((50.0, 0.0), 1000.0, 1.0),),
+        )
+
+    @staticmethod
+    def bayes(
+        q: tuple[float, float],
+        *,
+        psi: float,
+        movement: float,
+    ) -> BayesianEvaluation:
+        return BayesianEvaluation(
+            q=q,
+            psi_d_m=psi,
+            response_probabilities={},
+            metrics=(),
+            movement_m=movement,
+        )
+
+    @staticmethod
+    def robust(
+        q: tuple[float, float],
+        *,
+        u_proxy: float,
+        movement: float,
+        in_c_poss: bool = True,
+    ) -> RobustEvaluation:
+        return RobustEvaluation(
+            q=q,
+            u_proxy_m=u_proxy,
+            u_bar_m=u_proxy + 5.0,
+            worst_response_proxy=None,
+            worst_response_outer=None,
+            in_c_poss_proxy=in_c_poss,
+            in_c_rec_certified=False,
+            movement_m=movement,
+        )
+
+    def test_candidate_score_requires_matching_q(self) -> None:
+        with self.assertRaisesRegex(ValueError, "same q"):
+            CandidateScore(
+                q=(0.0, 0.0),
+                bayes=self.bayes((1.0, 0.0), psi=10.0, movement=1.0),
+                robust=self.robust((0.0, 0.0), u_proxy=20.0, movement=0.0),
+            )
+
+    def test_score_candidates_uses_same_candidates_and_explicit_error_atoms(self) -> None:
+        state = self.make_state()
+        candidates = ((0.0, 0.0), (50.0, 0.0))
+        atoms = (
+            BearingErrorAtom(-1.0, 0.25),
+            BearingErrorAtom(0.0, 0.50),
+            BearingErrorAtom(1.0, 0.25),
+        )
+
+        with (
+            patch(
+                "src.q2.optimizer.evaluate_candidate_domains",
+                side_effect=lambda q, *_args, **_kwargs: type(
+                    "Flags", (), {"in_c_poss_proxy": True}
+                )(),
+            ),
+            patch(
+                "src.q2.optimizer.evaluate_bayesian",
+                side_effect=lambda q, *_args, **_kwargs: self.bayes(
+                    q, psi=10.0 + q[0], movement=abs(q[0])
+                ),
+            ) as bayes_eval,
+            patch(
+                "src.q2.optimizer.evaluate_robust",
+                side_effect=lambda q, *_args, **_kwargs: self.robust(
+                    q, u_proxy=20.0 + q[0], movement=abs(q[0])
+                ),
+            ) as robust_eval,
+        ):
+            scores = score_candidates(
+                candidates,
+                state,
+                direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+                bearing_error_atoms=atoms,
+            )
+
+        self.assertEqual(tuple(score.q for score in scores), candidates)
+        self.assertEqual(bayes_eval.call_count, 2)
+        self.assertEqual(robust_eval.call_count, 2)
+        for call in bayes_eval.call_args_list:
+            self.assertEqual(call.kwargs["bearing_error_atoms"], atoms)
+
+    def test_score_candidates_skips_outside_c_poss_before_evaluation(self) -> None:
+        state = self.make_state()
+        candidates = ((0.0, 0.0), (5000.0, 0.0))
+        atoms = (BearingErrorAtom(0.0, 1.0),)
+
+        def flags(q, *_args, **_kwargs):
+            return type("Flags", (), {"in_c_poss_proxy": q == candidates[0]})()
+
+        with (
+            patch("src.q2.optimizer.evaluate_candidate_domains", side_effect=flags),
+            patch(
+                "src.q2.optimizer.evaluate_bayesian",
+                return_value=self.bayes(candidates[0], psi=10.0, movement=0.0),
+            ) as bayes_eval,
+            patch(
+                "src.q2.optimizer.evaluate_robust",
+                return_value=self.robust(candidates[0], u_proxy=20.0, movement=0.0),
+            ) as robust_eval,
+        ):
+            scores = score_candidates(
+                candidates,
+                state,
+                direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+                bearing_error_atoms=atoms,
+            )
+
+        self.assertEqual(tuple(score.q for score in scores), (candidates[0],))
+        self.assertEqual(bayes_eval.call_count, 1)
+        self.assertEqual(robust_eval.call_count, 1)
+
+    def test_score_candidates_rejects_empty_and_fully_inadmissible_inputs(self) -> None:
+        state = self.make_state()
+        atoms = (BearingErrorAtom(0.0, 1.0),)
+
+        with self.assertRaisesRegex(ValueError, "non-empty"):
+            score_candidates(
+                (),
+                state,
+                direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+                bearing_error_atoms=atoms,
+            )
+
+        with patch(
+            "src.q2.optimizer.evaluate_candidate_domains",
+            return_value=type("Flags", (), {"in_c_poss_proxy": False})(),
+        ):
+            with self.assertRaisesRegex(ValueError, "C_poss"):
+                score_candidates(
+                    ((5000.0, 0.0),),
+                    state,
+                    direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+                    bearing_error_atoms=atoms,
+                )
+
+    def test_score_candidates_detects_domain_inconsistency(self) -> None:
+        state = self.make_state()
+        q = (0.0, 0.0)
+        atoms = (BearingErrorAtom(0.0, 1.0),)
+
+        with (
+            patch(
+                "src.q2.optimizer.evaluate_candidate_domains",
+                return_value=type("Flags", (), {"in_c_poss_proxy": True})(),
+            ),
+            patch(
+                "src.q2.optimizer.evaluate_bayesian",
+                return_value=self.bayes(q, psi=10.0, movement=0.0),
+            ),
+            patch(
+                "src.q2.optimizer.evaluate_robust",
+                return_value=self.robust(
+                    q, u_proxy=20.0, movement=0.0, in_c_poss=False
+                ),
+            ),
+        ):
+            with self.assertRaisesRegex(ValueError, "inconsistency"):
+                score_candidates(
+                    (q,),
+                    state,
+                    direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+                    bearing_error_atoms=atoms,
+                )
+
+
+class PureBayesianSelectorTests(unittest.TestCase):
+    @staticmethod
+    def score(
+        q: tuple[float, float],
+        *,
+        psi: float,
+        movement: float,
+    ) -> CandidateScore:
+        bayes = BayesianEvaluation(
+            q=q,
+            psi_d_m=psi,
+            response_probabilities={},
+            metrics=(),
+            movement_m=movement,
+        )
+        robust = RobustEvaluation(
+            q=q,
+            u_proxy_m=100.0,
+            u_bar_m=110.0,
+            worst_response_proxy=None,
+            worst_response_outer=None,
+            in_c_poss_proxy=True,
+            in_c_rec_certified=False,
+            movement_m=movement,
+        )
+        return CandidateScore(q=q, bayes=bayes, robust=robust)
+
+    def test_selects_smallest_psi_when_tau_zero(self) -> None:
+        scores = (
+            self.score((10.0, 0.0), psi=10.0, movement=10.0),
+            self.score((1.0, 0.0), psi=11.0, movement=1.0),
+        )
+        chosen = select_pure_bayesian(scores)
+        self.assertEqual(chosen.q, (10.0, 0.0))
+
+    def test_tau_allows_shorter_movement_among_near_optimal_scores(self) -> None:
+        scores = (
+            self.score((10.0, 0.0), psi=10.0, movement=10.0),
+            self.score((1.0, 0.0), psi=10.4, movement=1.0),
+            self.score((0.5, 0.0), psi=10.8, movement=0.5),
+        )
+        chosen = select_pure_bayesian(scores, tau_m=0.5)
+        self.assertEqual(chosen.q, (1.0, 0.0))
+
+    def test_coordinates_break_complete_tie_deterministically(self) -> None:
+        scores = (
+            self.score((1.0, 2.0), psi=10.0, movement=5.0),
+            self.score((-1.0, 2.0), psi=10.0, movement=5.0),
+        )
+        chosen = select_pure_bayesian(scores)
+        self.assertEqual(chosen.q, (-1.0, 2.0))
+
+    def test_rejects_invalid_tau_and_empty_scores(self) -> None:
+        with self.assertRaisesRegex(ValueError, "non-empty"):
+            select_pure_bayesian(())
+
+        score = self.score((0.0, 0.0), psi=10.0, movement=0.0)
+        for tau in (-1.0, math.inf, math.nan, True):
+            with self.subTest(tau=tau):
+                with self.assertRaises(ValueError):
+                    select_pure_bayesian((score,), tau_m=tau)  # type: ignore[arg-type]
+
 
 
 if __name__ == "__main__":
