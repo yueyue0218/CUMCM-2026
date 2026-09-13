@@ -17,6 +17,8 @@ from src.q2.optimizer import (
     minimax_baseline,
     score_candidates,
     select_pure_bayesian,
+    select_pure_minimax,
+    select_robust_envelope_hybrid,
 )
 
 
@@ -524,6 +526,164 @@ class PureBayesianSelectorTests(unittest.TestCase):
             with self.subTest(tau=tau):
                 with self.assertRaises(ValueError):
                     select_pure_bayesian((score,), tau_m=tau)  # type: ignore[arg-type]
+
+
+
+class RobustEnvelopeHybridTests(unittest.TestCase):
+    @staticmethod
+    def score(
+        q: tuple[float, float],
+        *,
+        psi: float,
+        u_proxy: float,
+        u_bar: float | None = None,
+        movement: float,
+    ) -> CandidateScore:
+        bayes = BayesianEvaluation(
+            q=q,
+            psi_d_m=psi,
+            response_probabilities={},
+            metrics=(),
+            movement_m=movement,
+        )
+        robust = RobustEvaluation(
+            q=q,
+            u_proxy_m=u_proxy,
+            u_bar_m=u_proxy if u_bar is None else u_bar,
+            worst_response_proxy=None,
+            worst_response_outer=None,
+            in_c_poss_proxy=True,
+            in_c_rec_certified=False,
+            movement_m=movement,
+        )
+        return CandidateScore(q=q, bayes=bayes, robust=robust)
+
+    def test_unified_pure_minimax_matches_proxy_then_movement_rule(self) -> None:
+        scores = (
+            self.score((100.0, 0.0), psi=1.0, u_proxy=10.0, movement=100.0),
+            self.score((10.0, 0.0), psi=9.0, u_proxy=10.0, movement=10.0),
+            self.score((1.0, 0.0), psi=0.1, u_proxy=11.0, movement=1.0),
+        )
+
+        chosen = select_pure_minimax(scores)
+
+        self.assertEqual(chosen.q, (10.0, 0.0))
+
+    def test_rho_zero_reduces_hybrid_to_minimax_envelope(self) -> None:
+        scores = (
+            self.score((10.0, 0.0), psi=20.0, u_proxy=10.0, movement=10.0),
+            self.score((20.0, 0.0), psi=1.0, u_proxy=11.0, movement=20.0),
+        )
+
+        chosen = select_robust_envelope_hybrid(scores, rho=0.0)
+
+        self.assertEqual(chosen.q, (10.0, 0.0))
+
+    def test_positive_rho_admits_better_bayesian_point(self) -> None:
+        scores = (
+            self.score((10.0, 0.0), psi=20.0, u_proxy=10.0, movement=10.0),
+            self.score((20.0, 0.0), psi=1.0, u_proxy=11.0, movement=20.0),
+            self.score((30.0, 0.0), psi=0.1, u_proxy=13.0, movement=30.0),
+        )
+
+        chosen = select_robust_envelope_hybrid(scores, rho=0.10)
+
+        self.assertEqual(chosen.q, (20.0, 0.0))
+
+    def test_tau_uses_movement_only_inside_robust_envelope(self) -> None:
+        scores = (
+            self.score((10.0, 0.0), psi=10.0, u_proxy=10.0, movement=10.0),
+            self.score((1.0, 0.0), psi=10.3, u_proxy=10.5, movement=1.0),
+            self.score((0.5, 0.0), psi=10.4, u_proxy=13.0, movement=0.5),
+        )
+
+        chosen = select_robust_envelope_hybrid(
+            scores,
+            rho=0.05,
+            tau_m=0.5,
+        )
+
+        self.assertEqual(chosen.q, (1.0, 0.0))
+
+    def test_outer_envelope_can_select_differently_from_proxy_envelope(self) -> None:
+        scores = (
+            self.score(
+                (1.0, 0.0),
+                psi=5.0,
+                u_proxy=10.0,
+                u_bar=30.0,
+                movement=1.0,
+            ),
+            self.score(
+                (2.0, 0.0),
+                psi=1.0,
+                u_proxy=11.0,
+                u_bar=20.0,
+                movement=2.0,
+            ),
+        )
+
+        proxy_choice = select_robust_envelope_hybrid(scores, rho=0.0)
+        outer_choice = select_robust_envelope_hybrid(
+            scores,
+            rho=0.0,
+            use_outer_envelope=True,
+        )
+
+        self.assertEqual(proxy_choice.q, (1.0, 0.0))
+        self.assertEqual(outer_choice.q, (2.0, 0.0))
+
+    def test_boundary_point_at_one_plus_rho_is_included(self) -> None:
+        scores = (
+            self.score((1.0, 0.0), psi=10.0, u_proxy=100.0, movement=1.0),
+            self.score((2.0, 0.0), psi=1.0, u_proxy=110.0, movement=2.0),
+        )
+
+        chosen = select_robust_envelope_hybrid(scores, rho=0.10)
+
+        self.assertEqual(chosen.q, (2.0, 0.0))
+
+    def test_rejects_invalid_rho_tau_and_empty_scores(self) -> None:
+        score = self.score((0.0, 0.0), psi=1.0, u_proxy=1.0, movement=0.0)
+
+        with self.assertRaisesRegex(ValueError, "non-empty"):
+            select_robust_envelope_hybrid((), rho=0.1)
+
+        for rho in (-0.1, math.inf, math.nan, True):
+            with self.subTest(rho=rho):
+                with self.assertRaises(ValueError):
+                    select_robust_envelope_hybrid(
+                        (score,),
+                        rho=rho,  # type: ignore[arg-type]
+                    )
+
+        for tau in (-0.1, math.inf, math.nan, True):
+            with self.subTest(tau=tau):
+                with self.assertRaises(ValueError):
+                    select_robust_envelope_hybrid(
+                        (score,),
+                        rho=0.1,
+                        tau_m=tau,  # type: ignore[arg-type]
+                    )
+
+    def test_rejects_nonfinite_or_negative_metrics(self) -> None:
+        bad_robust = self.score(
+            (0.0, 0.0),
+            psi=1.0,
+            u_proxy=math.inf,
+            movement=0.0,
+        )
+        with self.assertRaisesRegex(ValueError, "robust envelope metric"):
+            select_robust_envelope_hybrid((bad_robust,), rho=0.1)
+
+        bad_bayes = self.score(
+            (0.0, 0.0),
+            psi=math.inf,
+            u_proxy=1.0,
+            movement=0.0,
+        )
+        with self.assertRaisesRegex(ValueError, "Bayesian score"):
+            select_robust_envelope_hybrid((bad_bayes,), rho=0.1)
 
 
 

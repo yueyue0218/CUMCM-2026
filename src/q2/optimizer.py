@@ -1,13 +1,13 @@
 """Minimal Q2 candidate scoring and selector utilities.
 
-Implemented through Task 5A:
+Implemented through Task 5B:
 - coarse candidate generation over the C_poss outer proxy;
 - pure minimax selection using RobustEvaluation.u_proxy_m;
-- one shared Bayesian + robust scoring path; and
-- pure Bayesian selection with a numerical near-optimality tolerance.
+- one shared Bayesian + robust scoring path;
+- pure Bayesian selection with a numerical near-optimality tolerance; and
+- robust-envelope hybrid selection.
 
-It does not implement local refinement, hybrid selection, vertical baselines,
-plotting, or experiments.
+It does not implement local refinement, vertical baselines, plotting, or experiments.
 """
 
 from __future__ import annotations
@@ -233,6 +233,121 @@ def select_pure_bayesian(
     ]
     return min(
         near_optimal,
+        key=lambda score: (
+            score.bayes.movement_m,
+            score.q[0],
+            score.q[1],
+        ),
+    )
+
+
+
+def select_pure_minimax(scores: Sequence[CandidateScore]) -> CandidateScore:
+    """Select the pure finite-grid minimax candidate from shared scores.
+
+    The primary criterion is ``robust.u_proxy_m``.  Movement distance and then
+    coordinates provide deterministic tie-breaks.  ``u_bar_m`` is reported with
+    the chosen score but is not used as the ranking metric here.
+    """
+
+    if not scores:
+        raise ValueError("scores must be non-empty")
+    return min(
+        scores,
+        key=lambda score: (
+            score.robust.u_proxy_m,
+            score.robust.movement_m,
+            score.q[0],
+            score.q[1],
+        ),
+    )
+
+
+def select_robust_envelope_hybrid(
+    scores: Sequence[CandidateScore],
+    *,
+    rho: float,
+    tau_m: float = 0.0,
+    use_outer_envelope: bool = False,
+) -> CandidateScore:
+    """Select the Bayesian optimum inside a robust near-minimax envelope.
+
+    For the default numerical strategy, let
+
+        U* = min_q u_proxy(q)
+
+    and retain
+
+        A_rho = {q : u_proxy(q) <= (1 + rho) U*}.
+
+    If ``use_outer_envelope`` is true, the same construction instead uses
+    ``u_bar_m``.  That variant should be described as a conservative
+    outer-envelope implementation because ``u_bar_m`` is an engineering upper
+    bound, not exact ``U``.
+
+    Within the envelope, minimize ``psi_d_m``.  Points with
+    ``psi_d_m <= psi_best + tau_m`` are treated as numerically near-optimal, and
+    movement distance then coordinates break ties.
+
+    ``rho`` is a modeling/sensitivity parameter expressing allowed relative
+    degradation from the minimax robust score.  It is not a problem constant.
+    ``tau_m`` is only a numerical tolerance.
+    """
+
+    if not scores:
+        raise ValueError("scores must be non-empty")
+
+    for name, value in (("rho", rho), ("tau_m", tau_m)):
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            raise ValueError(f"{name} must be a finite non-negative number")
+        if not math.isfinite(float(value)) or float(value) < 0.0:
+            raise ValueError(f"{name} must be a finite non-negative number")
+
+    rho_value = float(rho)
+    tolerance = float(tau_m)
+
+    def robust_metric(score: CandidateScore) -> float:
+        value = (
+            score.robust.u_bar_m
+            if use_outer_envelope
+            else score.robust.u_proxy_m
+        )
+        if not math.isfinite(value) or value < 0.0:
+            raise ValueError("robust envelope metric must be finite and non-negative")
+        return value
+
+    robust_values = tuple(robust_metric(score) for score in scores)
+    robust_best = min(robust_values)
+    threshold = (1.0 + rho_value) * robust_best
+
+    envelope = [
+        score
+        for score, value in zip(scores, robust_values)
+        if value <= threshold
+    ]
+    if not envelope:
+        # Mathematically impossible for valid finite non-negative metrics because
+        # the minimax point itself satisfies the threshold. Keep fail-closed in
+        # case future numeric representations violate that invariant.
+        raise ValueError("robust envelope is unexpectedly empty")
+
+    for score in envelope:
+        if not math.isfinite(score.bayes.psi_d_m) or score.bayes.psi_d_m < 0.0:
+            raise ValueError("Bayesian score must be finite and non-negative")
+        if (
+            not math.isfinite(score.bayes.movement_m)
+            or score.bayes.movement_m < 0.0
+        ):
+            raise ValueError("movement distance must be finite and non-negative")
+
+    best_psi = min(score.bayes.psi_d_m for score in envelope)
+    bayes_near_optimal = [
+        score
+        for score in envelope
+        if score.bayes.psi_d_m <= best_psi + tolerance
+    ]
+    return min(
+        bayes_near_optimal,
         key=lambda score: (
             score.bayes.movement_m,
             score.q[0],

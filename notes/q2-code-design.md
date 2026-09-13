@@ -1,7 +1,7 @@
 # Q2-B2-1 code design: minimal implementation architecture
 
-Status: design only. This document records the code interfaces for the later
-Q2 implementation. It does not implement Q2 algorithms.
+Status: design plus implementation contract through Task 5B. This document
+records the Q2 interfaces, mathematical semantics, and staged implementation.
 
 ## 1. Checked Q1 and common APIs to reuse
 
@@ -678,6 +678,14 @@ conservative outer-envelope implementation. In either case, minimize `psi_d_m`
 inside the envelope and then movement among Bayesian near-optimal points.
 
 Reject negative `rho`. Do not interpret `rho` as a problem constant.
+
+Task 5B implements both `select_pure_minimax(scores)` and
+`select_robust_envelope_hybrid(...)` on the shared `CandidateScore` collection.
+For the default hybrid, `U*` and the envelope are computed from `u_proxy_m`;
+`u_bar_m` is used only when `use_outer_envelope=True`. A point exactly on the
+`(1+rho)U*` boundary is included. Inside the envelope, `tau_m` defines the
+Bayesian numerical near-optimal set before movement and coordinates break ties.
+Both `rho` and `tau_m` must be finite and non-negative.
 
 ```python
 def same_distance_vertical_baseline(
