@@ -1,8 +1,8 @@
 """Minimal Q2 model primitives.
 
 This module covers state construction, candidate-domain checks, second-response
-validation, and second-response support updates.  It intentionally does not
-implement Bayesian/robust evaluators, optimizers, or experiments.
+support updates, and the nominal Bayesian candidate evaluator.  It intentionally
+does not implement the robust evaluator, optimizer, or large experiments.
 """
 
 from __future__ import annotations
@@ -17,7 +17,9 @@ from src.common.geometry import (
     clip_polygon_to_bearing_wedge,
     clip_polygon_to_circle_outer,
     distance,
+    minimum_enclosing_circle,
     normalize_angle_deg,
+    polygon_diameter,
     signed_angle_difference_deg,
 )
 from src.common.localization import BearingObservation, localization_region
@@ -164,6 +166,45 @@ class SecondSupport:
     true_support_label: str
     sample_support: tuple[JointSample, ...]
     conservative_outer_region: tuple[Point, ...]
+
+
+@dataclass(frozen=True)
+class BearingErrorAtom:
+    """One explicit quadrature atom for the nominal bearing-error model.
+
+    The official problem supplies only a hard error bound, not a probability
+    density.  Task 3A therefore requires callers to provide the nominal error
+    law explicitly instead of silently assuming a uniform distribution.
+    """
+
+    offset_deg: float
+    probability: float
+
+    def __post_init__(self) -> None:
+        if not _is_finite_number(self.offset_deg):
+            raise ValueError("bearing error offset must be finite")
+        if not _is_finite_number(self.probability):
+            raise ValueError("bearing error probability must be finite")
+        if self.probability < 0.0:
+            raise ValueError("bearing error probability must be non-negative")
+
+
+@dataclass(frozen=True)
+class ResponseMetric:
+    response: SecondResponse
+    probability: float
+    diameter_true_proxy_m: float
+    diameter_outer_m: float
+    clear_radius_outer_m: float | None
+
+
+@dataclass(frozen=True)
+class BayesianEvaluation:
+    q: Point
+    psi_d_m: float
+    response_probabilities: dict[SecondResponseKind, float]
+    metrics: tuple[ResponseMetric, ...]
+    movement_m: float
 
 
 def build_first_state(
@@ -319,6 +360,296 @@ def second_support(
         sample_support=sample_support,
         conservative_outer_region=tuple(outer_region),
     )
+
+
+
+def evaluate_bayesian(
+    q: Point,
+    state: FirstState,
+    *,
+    direction_grid_deg: Sequence[float],
+    bearing_error_atoms: Sequence[BearingErrorAtom],
+    config: Q2Config = Q2Config(),
+) -> BayesianEvaluation:
+    """Evaluate the nominal expected post-measurement support diameter.
+
+    ``state.joint_samples`` is interpreted as a weighted nominal approximation
+    to the joint posterior ``p(G, R | H1)``.  The weights need not be normalized.
+
+    The statement gives only the hard bearing-error bound.  A probability law is
+    therefore *not* invented here: callers must provide an explicit discrete
+    quadrature/PMF through ``bearing_error_atoms``.  The returned ``psi_d_m`` is
+    a sample-and-grid proxy, not an exact Bayesian integral.
+
+    For a second measurement at exactly the first station, the fixed same-place
+    error rule is respected: the observed direction is reused exactly and no
+    independent error draw is applied.
+    """
+
+    _validate_point(q, "q")
+    if not isinstance(state, FirstState):
+        raise TypeError("state must be a FirstState")
+    if not state.outer_region:
+        raise ValueError("state.outer_region must be non-empty")
+
+    centers, bin_width_deg = _prepare_direction_grid(direction_grid_deg)
+    atoms = _validate_bearing_error_atoms(bearing_error_atoms, config)
+
+    weighted_samples = tuple(sample for sample in state.joint_samples if sample.weight > 0.0)
+    total_weight = sum(sample.weight for sample in weighted_samples)
+    if not weighted_samples or total_weight <= 0.0 or not math.isfinite(total_weight):
+        raise ValueError("state.joint_samples must contain positive finite total weight")
+
+    # Same-location repeats reuse the fixed first error and cannot create new
+    # independent bearing information.
+    if distance(q, state.observation.station) <= _DISTANCE_TOLERANCE_M:
+        positions = tuple(sample.position for sample in weighted_samples)
+        true_proxy = polygon_diameter(positions)
+        outer = tuple(state.outer_region)
+        outer_diameter = polygon_diameter(outer)
+        clear_radius = minimum_enclosing_circle(outer).radius
+        response = SecondResponse(
+            SecondResponseKind.DIRECTION,
+            state.observation.bearing_deg,
+        )
+        metric = ResponseMetric(
+            response=response,
+            probability=1.0,
+            diameter_true_proxy_m=true_proxy,
+            diameter_outer_m=outer_diameter,
+            clear_radius_outer_m=clear_radius,
+        )
+        return BayesianEvaluation(
+            q=q,
+            psi_d_m=true_proxy,
+            response_probabilities={
+                SecondResponseKind.NEAR: 0.0,
+                SecondResponseKind.DIRECTION: 1.0,
+                SecondResponseKind.NO_SIGNAL: 0.0,
+            },
+            metrics=(metric,),
+            movement_m=0.0,
+        )
+
+    # Each branch stores total probability mass and the posterior-support
+    # positions that receive non-zero mass under the explicit nominal model.
+    branch_mass: dict[tuple[SecondResponseKind, float | None], float] = {}
+    branch_positions: dict[
+        tuple[SecondResponseKind, float | None],
+        set[Point],
+    ] = {}
+
+    def add_mass(
+        key: tuple[SecondResponseKind, float | None],
+        sample: JointSample,
+        mass: float,
+    ) -> None:
+        if mass <= 0.0:
+            return
+        branch_mass[key] = branch_mass.get(key, 0.0) + mass
+        branch_positions.setdefault(key, set()).add(sample.position)
+
+    for sample in weighted_samples:
+        source_distance = distance(sample.position, q)
+        if source_distance <= config.near_radius_m + _DISTANCE_TOLERANCE_M:
+            add_mass((SecondResponseKind.NEAR, None), sample, sample.weight)
+            continue
+        if source_distance > sample.reception_radius_m + _DISTANCE_TOLERANCE_M:
+            add_mass((SecondResponseKind.NO_SIGNAL, None), sample, sample.weight)
+            continue
+
+        true_bearing = _bearing_deg(q, sample.position)
+        for atom in atoms:
+            if atom.probability <= 0.0:
+                continue
+            measured_bearing = normalize_angle_deg(true_bearing + atom.offset_deg)
+            center = _nearest_direction_center(measured_bearing, centers)
+            add_mass(
+                (SecondResponseKind.DIRECTION, center),
+                sample,
+                sample.weight * atom.probability,
+            )
+
+    total_branch_mass = sum(branch_mass.values())
+    if total_branch_mass <= 0.0 or not math.isfinite(total_branch_mass):
+        raise ValueError("nominal response model produced zero total probability")
+
+    probability_tolerance = 1e-10
+    expected_total = total_weight
+    if not math.isclose(
+        total_branch_mass,
+        expected_total,
+        rel_tol=probability_tolerance,
+        abs_tol=probability_tolerance,
+    ):
+        raise ValueError("nominal response masses do not sum to the sample weight")
+
+    def sort_key(
+        item: tuple[SecondResponseKind, float | None],
+    ) -> tuple[int, float]:
+        kind, bearing = item
+        if kind is SecondResponseKind.NEAR:
+            return (0, 0.0)
+        if kind is SecondResponseKind.DIRECTION:
+            assert bearing is not None
+            return (1, bearing)
+        return (2, 0.0)
+
+    metrics: list[ResponseMetric] = []
+    kind_probabilities = {
+        SecondResponseKind.NEAR: 0.0,
+        SecondResponseKind.DIRECTION: 0.0,
+        SecondResponseKind.NO_SIGNAL: 0.0,
+    }
+
+    for key in sorted(branch_mass, key=sort_key):
+        kind, bearing = key
+        probability = branch_mass[key] / total_weight
+        positions = tuple(sorted(branch_positions[key]))
+        true_proxy = polygon_diameter(positions)
+
+        if kind is SecondResponseKind.NEAR:
+            response = SecondResponse(SecondResponseKind.NEAR)
+            outer = second_support(q, response, state, config=config).conservative_outer_region
+        elif kind is SecondResponseKind.NO_SIGNAL:
+            response = SecondResponse(SecondResponseKind.NO_SIGNAL)
+            outer = second_support(q, response, state, config=config).conservative_outer_region
+        else:
+            assert bearing is not None
+            response = SecondResponse(SecondResponseKind.DIRECTION, bearing)
+            outer = _direction_bin_outer_region(
+                q,
+                bearing,
+                bin_width_deg,
+                state,
+                config,
+            )
+
+        if not outer:
+            raise ValueError(
+                "positive-probability response has an empty conservative outer region"
+            )
+
+        outer_diameter = polygon_diameter(outer)
+        clear_radius = minimum_enclosing_circle(outer).radius
+        metric = ResponseMetric(
+            response=response,
+            probability=probability,
+            diameter_true_proxy_m=true_proxy,
+            diameter_outer_m=outer_diameter,
+            clear_radius_outer_m=clear_radius,
+        )
+        metrics.append(metric)
+        kind_probabilities[kind] += probability
+
+    probability_sum = sum(metric.probability for metric in metrics)
+    if not math.isclose(probability_sum, 1.0, rel_tol=1e-10, abs_tol=1e-10):
+        raise ValueError("response probabilities do not sum to one")
+
+    psi_d = sum(
+        metric.probability * metric.diameter_true_proxy_m
+        for metric in metrics
+    )
+    return BayesianEvaluation(
+        q=q,
+        psi_d_m=psi_d,
+        response_probabilities=kind_probabilities,
+        metrics=tuple(metrics),
+        movement_m=distance(q, state.observation.station),
+    )
+
+
+def _validate_bearing_error_atoms(
+    atoms: Sequence[BearingErrorAtom],
+    config: Q2Config,
+) -> tuple[BearingErrorAtom, ...]:
+    if not atoms:
+        raise ValueError(
+            "bearing_error_atoms is required because the problem gives no error density"
+        )
+
+    prepared = tuple(
+        atom if isinstance(atom, BearingErrorAtom) else BearingErrorAtom(*atom)  # type: ignore[arg-type]
+        for atom in atoms
+    )
+    for atom in prepared:
+        if abs(atom.offset_deg) > config.bearing_error_deg + _ANGLE_TOLERANCE_DEG:
+            raise ValueError("bearing error atom lies outside the hard error bound")
+
+    probability_sum = sum(atom.probability for atom in prepared)
+    if not math.isclose(probability_sum, 1.0, rel_tol=1e-10, abs_tol=1e-10):
+        raise ValueError("bearing error atom probabilities must sum to one")
+    if not any(atom.probability > 0.0 for atom in prepared):
+        raise ValueError("bearing error model must contain positive probability")
+    return prepared
+
+
+def _prepare_direction_grid(
+    direction_grid_deg: Sequence[float],
+) -> tuple[tuple[float, ...], float]:
+    if len(direction_grid_deg) < 3:
+        raise ValueError("direction_grid_deg must contain at least three centers")
+    if not all(_is_finite_number(value) for value in direction_grid_deg):
+        raise ValueError("direction_grid_deg centers must be finite")
+
+    centers = tuple(sorted(normalize_angle_deg(float(value)) for value in direction_grid_deg))
+    if len(set(centers)) != len(centers):
+        raise ValueError("direction_grid_deg centers must be unique modulo 360 degrees")
+
+    expected_gap = 360.0 / len(centers)
+    gaps = [
+        (centers[(index + 1) % len(centers)] - centers[index]) % 360.0
+        for index in range(len(centers))
+    ]
+    if not all(
+        math.isclose(gap, expected_gap, rel_tol=1e-10, abs_tol=1e-10)
+        for gap in gaps
+    ):
+        raise ValueError(
+            "direction_grid_deg must form an equally spaced circular partition"
+        )
+    return centers, expected_gap
+
+
+def _nearest_direction_center(
+    angle_deg: float,
+    centers: Sequence[float],
+) -> float:
+    return min(
+        centers,
+        key=lambda center: (
+            abs(signed_angle_difference_deg(angle_deg, center)),
+            center,
+        ),
+    )
+
+
+def _direction_bin_outer_region(
+    q: Point,
+    center_bearing_deg: float,
+    bin_width_deg: float,
+    state: FirstState,
+    config: Q2Config,
+) -> tuple[Point, ...]:
+    widened_error = config.bearing_error_deg + bin_width_deg / 2.0
+    if widened_error >= 90.0:
+        raise ValueError(
+            "direction grid is too coarse for a bearing-wedge outer certificate"
+        )
+
+    region = clip_polygon_to_bearing_wedge(
+        state.outer_region,
+        q,
+        center_bearing_deg,
+        widened_error,
+    )
+    region = clip_polygon_to_circle_outer(
+        region,
+        q,
+        config.reception_radius_max_m,
+        config.circle_vertices,
+    )
+    return tuple(region)
 
 
 def _is_sample_compatible_with_second_response(

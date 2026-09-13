@@ -352,6 +352,16 @@ is a model conflict.
 
 ```python
 @dataclass(frozen=True)
+class BearingErrorAtom:
+    offset_deg: float
+    probability: float
+```
+
+This is a modeling input, not a题设 constant. Different nominal error laws should
+be compared in sensitivity analysis.
+
+```python
+@dataclass(frozen=True)
 class ResponseMetric:
     response: SecondResponse
     probability: float
@@ -376,14 +386,22 @@ def evaluate_bayesian(
     state: FirstState,
     *,
     direction_grid_deg: Sequence[float],
+    bearing_error_atoms: Sequence[BearingErrorAtom],
     config: Q2Config = Q2Config(),
 ) -> BayesianEvaluation:
     ...
 ```
 
-Inputs: candidate point, first state, direction quadrature grid. Output:
-nominal `Psi_D(q)` and response probabilities. The first implementation may use
-weighted joint samples:
+Inputs: candidate point, first state, direction quadrature grid, and an
+**explicit nominal bearing-error quadrature/PMF** supplied by the caller. The
+problem gives only the hard `±1°` bound and does not specify an error density, so
+the implementation must not silently assume a uniform law. `BearingErrorAtom`
+records `(offset_deg, probability)` atoms inside the hard bound; their
+probabilities must sum to one. Same-location repeats reuse the already fixed
+first error rather than drawing a fresh atom.
+
+Output: nominal `Psi_D(q)` and response probabilities. The first implementation
+may use weighted joint samples:
 
 - probability by summing compatible sample weights;
 - `D(S2)` by `polygon_diameter` on compatible sample positions or their

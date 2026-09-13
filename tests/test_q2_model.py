@@ -4,15 +4,19 @@ from unittest.mock import patch
 
 from src.q2 import model
 from src.q2.model import (
+    BayesianEvaluation,
+    BearingErrorAtom,
     CandidateDomainFlags,
     FirstDirectionObservation,
     FirstState,
     JointSample,
     Q2Config,
+    ResponseMetric,
     SecondResponse,
     SecondResponseKind,
     SecondSupport,
     build_first_state,
+    evaluate_bayesian,
     evaluate_candidate_domains,
     second_support,
 )
@@ -359,6 +363,213 @@ class SecondSupportTests(unittest.TestCase):
                 SecondResponse(SecondResponseKind.NEAR),
                 self.make_state(),
             )
+
+
+class BayesianEvaluatorTests(unittest.TestCase):
+    def make_state(
+        self,
+        *,
+        station: tuple[float, float] = (-500.0, 0.0),
+        bearing_deg: float = 0.0,
+        samples: tuple[JointSample, ...] | None = None,
+    ) -> FirstState:
+        if samples is None:
+            samples = (
+                JointSample((3.0, 0.0), 1000.0, 1.0),
+                JointSample((100.0, 0.0), 1000.0, 2.0),
+                JointSample((1200.0, 0.0), 1000.0, 1.0),
+            )
+        return FirstState(
+            observation=FirstDirectionObservation(station, bearing_deg),
+            exact_support_label="synthetic posterior support for evaluator tests",
+            outer_region=(
+                (-20.0, -20.0),
+                (1300.0, -20.0),
+                (1300.0, 20.0),
+                (-20.0, 20.0),
+            ),
+            joint_samples=samples,
+        )
+
+    def test_bearing_error_model_is_explicit_and_validated(self) -> None:
+        state = self.make_state()
+        grid = (0.0, 90.0, 180.0, 270.0)
+
+        with self.assertRaisesRegex(ValueError, "required"):
+            evaluate_bayesian(
+                (0.0, 0.0),
+                state,
+                direction_grid_deg=grid,
+                bearing_error_atoms=(),
+                config=Q2Config(circle_vertices=36),
+            )
+
+        with self.assertRaisesRegex(ValueError, "sum to one"):
+            evaluate_bayesian(
+                (0.0, 0.0),
+                state,
+                direction_grid_deg=grid,
+                bearing_error_atoms=(
+                    BearingErrorAtom(0.0, 0.4),
+                    BearingErrorAtom(1.0, 0.4),
+                ),
+                config=Q2Config(circle_vertices=36),
+            )
+
+        with self.assertRaisesRegex(ValueError, "outside"):
+            evaluate_bayesian(
+                (0.0, 0.0),
+                state,
+                direction_grid_deg=grid,
+                bearing_error_atoms=(BearingErrorAtom(1.1, 1.0),),
+                config=Q2Config(circle_vertices=36),
+            )
+
+    def test_response_probabilities_follow_joint_sample_weights(self) -> None:
+        result = evaluate_bayesian(
+            (0.0, 0.0),
+            self.make_state(),
+            direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+            bearing_error_atoms=(BearingErrorAtom(0.0, 1.0),),
+            config=Q2Config(circle_vertices=36),
+        )
+
+        self.assertIsInstance(result, BayesianEvaluation)
+        self.assertAlmostEqual(
+            result.response_probabilities[SecondResponseKind.NEAR],
+            0.25,
+        )
+        self.assertAlmostEqual(
+            result.response_probabilities[SecondResponseKind.DIRECTION],
+            0.50,
+        )
+        self.assertAlmostEqual(
+            result.response_probabilities[SecondResponseKind.NO_SIGNAL],
+            0.25,
+        )
+        self.assertAlmostEqual(sum(metric.probability for metric in result.metrics), 1.0)
+
+    def test_expected_diameter_proxy_is_probability_weighted(self) -> None:
+        samples = (
+            JointSample((1.0, 0.0), 1000.0, 1.0),
+            JointSample((5.0, 0.0), 1000.0, 1.0),
+            JointSample((1200.0, 0.0), 1000.0, 2.0),
+        )
+        result = evaluate_bayesian(
+            (0.0, 0.0),
+            self.make_state(samples=samples),
+            direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+            bearing_error_atoms=(BearingErrorAtom(0.0, 1.0),),
+            config=Q2Config(circle_vertices=36),
+        )
+
+        # near has probability 1/2 and support diameter 4 m; no_signal has
+        # probability 1/2 and one sampled position, so its proxy diameter is 0.
+        self.assertAlmostEqual(result.psi_d_m, 2.0)
+
+    def test_direction_grid_wraparound_maps_to_zero_center(self) -> None:
+        angle = math.radians(-0.2)
+        sample = JointSample(
+            (100.0 * math.cos(angle), 100.0 * math.sin(angle)),
+            1000.0,
+            1.0,
+        )
+        result = evaluate_bayesian(
+            (0.0, 0.0),
+            self.make_state(samples=(sample,)),
+            direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+            bearing_error_atoms=(BearingErrorAtom(0.0, 1.0),),
+            config=Q2Config(circle_vertices=36),
+        )
+
+        direction_metrics = [
+            metric
+            for metric in result.metrics
+            if metric.response.kind is SecondResponseKind.DIRECTION
+        ]
+        self.assertEqual(len(direction_metrics), 1)
+        self.assertEqual(direction_metrics[0].response.bearing_deg, 0.0)
+
+    def test_same_station_repeat_reuses_fixed_direction_and_gives_no_new_split(self) -> None:
+        samples = (
+            JointSample((100.0, 0.0), 1000.0, 1.0),
+            JointSample((200.0, 1.0), 1000.0, 1.0),
+        )
+        state = self.make_state(
+            station=(0.0, 0.0),
+            bearing_deg=0.0,
+            samples=samples,
+        )
+        expected_diameter = math.dist(samples[0].position, samples[1].position)
+
+        result = evaluate_bayesian(
+            (0.0, 0.0),
+            state,
+            direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+            bearing_error_atoms=(
+                BearingErrorAtom(-1.0, 0.25),
+                BearingErrorAtom(0.0, 0.50),
+                BearingErrorAtom(1.0, 0.25),
+            ),
+            config=Q2Config(circle_vertices=36),
+        )
+
+        self.assertEqual(len(result.metrics), 1)
+        self.assertIs(result.metrics[0].response.kind, SecondResponseKind.DIRECTION)
+        self.assertEqual(result.metrics[0].response.bearing_deg, 0.0)
+        self.assertAlmostEqual(result.psi_d_m, expected_diameter)
+        self.assertEqual(result.movement_m, 0.0)
+
+    def test_direction_bin_outer_uses_widened_wedge(self) -> None:
+        sample = JointSample((100.0, 0.0), 1000.0, 1.0)
+        result = evaluate_bayesian(
+            (0.0, 0.0),
+            self.make_state(samples=(sample,)),
+            direction_grid_deg=tuple(float(value) for value in range(0, 360, 10)),
+            bearing_error_atoms=(BearingErrorAtom(1.0, 1.0),),
+            config=Q2Config(circle_vertices=72),
+        )
+
+        metric = next(
+            metric
+            for metric in result.metrics
+            if metric.response.kind is SecondResponseKind.DIRECTION
+        )
+        self.assertGreaterEqual(metric.diameter_outer_m + 1e-9, metric.diameter_true_proxy_m)
+        self.assertIsNotNone(metric.clear_radius_outer_m)
+
+    def test_direction_grid_must_be_full_equally_spaced_partition(self) -> None:
+        state = self.make_state()
+        atoms = (BearingErrorAtom(0.0, 1.0),)
+
+        with self.assertRaisesRegex(ValueError, "equally spaced"):
+            evaluate_bayesian(
+                (0.0, 0.0),
+                state,
+                direction_grid_deg=(0.0, 80.0, 180.0, 270.0),
+                bearing_error_atoms=atoms,
+                config=Q2Config(circle_vertices=36),
+            )
+
+        with self.assertRaisesRegex(ValueError, "unique"):
+            evaluate_bayesian(
+                (0.0, 0.0),
+                state,
+                direction_grid_deg=(0.0, 120.0, 360.0),
+                bearing_error_atoms=atoms,
+                config=Q2Config(circle_vertices=36),
+            )
+
+    def test_non_finite_candidate_is_rejected(self) -> None:
+        with self.assertRaises(ValueError):
+            evaluate_bayesian(
+                (math.nan, 0.0),
+                self.make_state(),
+                direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+                bearing_error_atoms=(BearingErrorAtom(0.0, 1.0),),
+                config=Q2Config(circle_vertices=36),
+            )
+
 
 
 class CandidateDomainTests(unittest.TestCase):
