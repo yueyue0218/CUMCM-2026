@@ -1,14 +1,15 @@
 """Minimal Q2 candidate scoring and selector utilities.
 
-Implemented through Task 6A:
+Implemented through Task 6B:
 - coarse candidate generation over the C_poss outer proxy;
+- deterministic derivative-free local candidate refinement;
 - pure minimax selection using RobustEvaluation.u_proxy_m;
 - one shared Bayesian + robust scoring path;
 - pure Bayesian selection with a numerical near-optimality tolerance;
 - robust-envelope hybrid selection; and
 - the same-distance two-sided vertical baseline.
 
-It does not implement local refinement, plotting, or large experiments.
+It does not implement plotting or large experiments.
 """
 
 from __future__ import annotations
@@ -96,6 +97,104 @@ def coarse_grid_candidates(
                 candidates.append(q)
 
     return tuple(candidates)
+
+
+def refine_candidates(
+    seeds: Sequence[Point],
+    state: FirstState,
+    *,
+    step_schedule_m: Sequence[float],
+    dedup_tolerance_m: float = 1e-6,
+    config: Q2Config = Q2Config(),
+) -> tuple[Point, ...]:
+    """Generate a deterministic multi-scale local cloud around seed points.
+
+    Refinement is deliberately objective-free: it does not evaluate Bayesian,
+    minimax, or hybrid scores.  The caller supplies already interesting seeds,
+    this function adds eight equally spaced neighbors at each requested radius,
+    and the combined set is rescored later through ``score_candidates(...)``.
+
+    Only points inside the engineering ``C_poss`` outer proxy are retained.
+    Detector positions are not clipped to the 1800 m source arena.
+
+    Points within ``dedup_tolerance_m`` Euclidean distance of an already retained
+    point are treated as duplicates.  The default tolerance is 1 micrometre,
+    negligible relative to metre-scale search steps but sufficient to remove
+    floating-point duplicates produced by repeated seeds or overlapping stars.
+
+    Output order is deterministic: admissible seeds first (input order), then
+    neighbors by step-schedule order, seed order, and angles
+    0, 45, ..., 315 degrees.
+    """
+
+    if not isinstance(state, FirstState):
+        raise TypeError("state must be a FirstState")
+    if not seeds:
+        raise ValueError("seeds must be non-empty")
+    if not step_schedule_m:
+        raise ValueError("step_schedule_m must be non-empty")
+
+    if (
+        isinstance(dedup_tolerance_m, bool)
+        or not isinstance(dedup_tolerance_m, (int, float))
+        or not math.isfinite(float(dedup_tolerance_m))
+        or float(dedup_tolerance_m) < 0.0
+    ):
+        raise ValueError("dedup_tolerance_m must be a finite non-negative number")
+    tolerance = float(dedup_tolerance_m)
+
+    normalized_seeds: list[Point] = []
+    for seed in seeds:
+        try:
+            coordinates = tuple(seed)
+        except TypeError as exc:
+            raise ValueError("each seed must be a finite 2D point") from exc
+        if len(coordinates) != 2 or not all(
+            isinstance(value, (int, float))
+            and not isinstance(value, bool)
+            and math.isfinite(float(value))
+            for value in coordinates
+        ):
+            raise ValueError("each seed must be a finite 2D point")
+        normalized_seeds.append((float(coordinates[0]), float(coordinates[1])))
+
+    steps: list[float] = []
+    for step in step_schedule_m:
+        if (
+            isinstance(step, bool)
+            or not isinstance(step, (int, float))
+            or not math.isfinite(float(step))
+            or float(step) <= 0.0
+        ):
+            raise ValueError("every refinement step must be a finite positive number")
+        steps.append(float(step))
+
+    retained: list[Point] = []
+
+    def is_duplicate(q: Point) -> bool:
+        return any(distance(q, existing) <= tolerance for existing in retained)
+
+    def retain_if_admissible(q: Point) -> None:
+        if is_duplicate(q):
+            return
+        domain = evaluate_candidate_domains(q, state, config=config)
+        if domain.in_c_poss_proxy:
+            retained.append(q)
+
+    for seed in normalized_seeds:
+        retain_if_admissible(seed)
+
+    angles_deg = tuple(float(angle) for angle in range(0, 360, 45))
+    unit_offsets = tuple(unit_vector(angle) for angle in angles_deg)
+    for step in steps:
+        for seed in normalized_seeds:
+            for ux, uy in unit_offsets:
+                q = (seed[0] + step * ux, seed[1] + step * uy)
+                retain_if_admissible(q)
+
+    if not retained:
+        raise ValueError("no refined candidate lies in the C_poss outer proxy")
+    return tuple(retained)
 
 
 def minimax_baseline(

@@ -10,11 +10,13 @@ from src.q2.model import (
     JointSample,
     Q2Config,
     RobustEvaluation,
+    evaluate_candidate_domains,
 )
 from src.q2.optimizer import (
     CandidateScore,
     coarse_grid_candidates,
     minimax_baseline,
+    refine_candidates,
     score_candidates,
     select_pure_bayesian,
     select_pure_minimax,
@@ -118,6 +120,137 @@ class CoarseGridCandidateTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(ValueError, "outer_region"):
             coarse_grid_candidates(state, spacing_m=100.0)
+
+
+class RefineCandidateTests(unittest.TestCase):
+    @staticmethod
+    def make_state(
+        outer_region: tuple[tuple[float, float], ...] = (
+            (-100.0, -100.0),
+            (100.0, -100.0),
+            (100.0, 100.0),
+            (-100.0, 100.0),
+        ),
+    ) -> FirstState:
+        return FirstState(
+            observation=FirstDirectionObservation((0.0, 0.0), 0.0),
+            exact_support_label="refinement test support",
+            outer_region=outer_region,
+            joint_samples=(JointSample((50.0, 0.0), 1000.0, 1.0),),
+        )
+
+    def test_one_step_generates_seed_plus_eight_neighbors(self) -> None:
+        state = self.make_state()
+        candidates = refine_candidates(
+            ((0.0, 0.0),),
+            state,
+            step_schedule_m=(100.0,),
+        )
+
+        self.assertEqual(len(candidates), 9)
+        self.assertEqual(candidates[0], (0.0, 0.0))
+        for q in candidates[1:]:
+            self.assertAlmostEqual(math.hypot(q[0], q[1]), 100.0)
+
+    def test_multiple_scales_are_deterministic_and_keep_seed_first(self) -> None:
+        state = self.make_state()
+        first = refine_candidates(
+            ((0.0, 0.0),),
+            state,
+            step_schedule_m=(100.0, 40.0),
+        )
+        second = refine_candidates(
+            ((0.0, 0.0),),
+            state,
+            step_schedule_m=(100.0, 40.0),
+        )
+
+        self.assertEqual(first, second)
+        self.assertEqual(first[0], (0.0, 0.0))
+        self.assertEqual(len(first), 17)
+
+    def test_duplicate_seeds_and_overlapping_points_are_deduplicated(self) -> None:
+        state = self.make_state()
+        candidates = refine_candidates(
+            ((0.0, 0.0), (5e-7, 0.0)),
+            state,
+            step_schedule_m=(100.0,),
+            dedup_tolerance_m=1e-6,
+        )
+
+        # The almost-identical seeds collapse, as do their corresponding stars.
+        self.assertEqual(len(candidates), 9)
+
+    def test_filters_by_c_poss_proxy_without_arena_clipping(self) -> None:
+        state = self.make_state(
+            (
+                (1750.0, -50.0),
+                (1850.0, -50.0),
+                (1850.0, 50.0),
+                (1750.0, 50.0),
+            )
+        )
+        candidates = refine_candidates(
+            ((1800.0, 0.0),),
+            state,
+            step_schedule_m=(200.0,),
+        )
+
+        self.assertTrue(
+            all(
+                evaluate_candidate_domains(q, state).in_c_poss_proxy
+                for q in candidates
+            )
+        )
+        self.assertTrue(any(math.hypot(*q) > 1800.0 for q in candidates))
+
+    def test_outside_seed_can_still_contribute_admissible_neighbor(self) -> None:
+        state = self.make_state()
+        candidates = refine_candidates(
+            ((1700.0, 0.0),),
+            state,
+            step_schedule_m=(200.0,),
+        )
+
+        self.assertNotIn((1700.0, 0.0), candidates)
+        self.assertTrue(any(q[0] < 1700.0 for q in candidates))
+
+    def test_rejects_bad_inputs(self) -> None:
+        state = self.make_state()
+
+        with self.assertRaisesRegex(ValueError, "seeds"):
+            refine_candidates((), state, step_schedule_m=(100.0,))
+        with self.assertRaisesRegex(ValueError, "step_schedule"):
+            refine_candidates(((0.0, 0.0),), state, step_schedule_m=())
+
+        for bad_seed in ((math.nan, 0.0), (math.inf, 0.0), (1.0,), (True, 0.0)):
+            with self.subTest(seed=bad_seed):
+                with self.assertRaises(ValueError):
+                    refine_candidates(
+                        (bad_seed,),  # type: ignore[arg-type]
+                        state,
+                        step_schedule_m=(100.0,),
+                    )
+
+        for bad_step in (0.0, -1.0, math.inf, math.nan, True):
+            with self.subTest(step=bad_step):
+                with self.assertRaises(ValueError):
+                    refine_candidates(
+                        ((0.0, 0.0),),
+                        state,
+                        step_schedule_m=(bad_step,),  # type: ignore[arg-type]
+                    )
+
+        for bad_tol in (-1.0, math.inf, math.nan, True):
+            with self.subTest(tolerance=bad_tol):
+                with self.assertRaises(ValueError):
+                    refine_candidates(
+                        ((0.0, 0.0),),
+                        state,
+                        step_schedule_m=(100.0,),
+                        dedup_tolerance_m=bad_tol,  # type: ignore[arg-type]
+                    )
+
 
 
 class MinimaxBaselineTests(unittest.TestCase):

@@ -1,6 +1,6 @@
 # Q2-B2-1 code design: minimal implementation architecture
 
-Status: design plus implementation contract through Task 6A. This document
+Status: design plus implementation contract through Task 6B. This document
 records the Q2 interfaces, mathematical semantics, and staged implementation.
 
 ## 1. Checked Q1 and common APIs to reuse
@@ -599,14 +599,26 @@ def refine_candidates(
     state: FirstState,
     *,
     step_schedule_m: Sequence[float],
-    direction_grid_deg: Sequence[float],
+    dedup_tolerance_m: float = 1e-6,
     config: Q2Config = Q2Config(),
 ) -> tuple[Point, ...]:
     ...
 ```
 
-Minimal local refinement should stay derivative-free. SQP is not a main solver.
-Candidate deduplication must use a documented tolerance.
+Task 6B implements local refinement as deterministic, derivative-free candidate
+generation rather than objective-specific optimization. For every supplied seed
+and each positive radius in `step_schedule_m`, generate eight neighbors at
+angles `0,45,...,315` degrees. Keep admissible seeds themselves, filter every
+point through the `C_poss` outer proxy, and do not clip detector positions to the
+1800 m source arena.
+
+Candidate deduplication uses Euclidean distance with documented default
+`dedup_tolerance_m = 1e-6` m. Output order is deterministic: admissible seeds in
+input order, followed by neighbors in step-schedule, seed, then angle order.
+The function does not evaluate Bayes/minimax/hybrid objectives; all refined
+points are rescored later through the same `score_candidates(...)` path. This is
+why Task 6B removes the unused `direction_grid_deg` argument from the refinement
+generator. SQP is not a main solver.
 
 ```python
 def score_candidates(
