@@ -1,8 +1,8 @@
 """Minimal Q2 model primitives.
 
-This module intentionally stops at Task 1: state construction, candidate-domain
-checks, and second-response validation.  It does not implement Q2 evaluators,
-second-support updates, optimizers, or experiments.
+This module covers state construction, candidate-domain checks, second-response
+validation, and second-response support updates.  It intentionally does not
+implement Bayesian/robust evaluators, optimizers, or experiments.
 """
 
 from __future__ import annotations
@@ -14,6 +14,8 @@ from typing import Sequence
 
 from src.common.geometry import (
     Point,
+    clip_polygon_to_bearing_wedge,
+    clip_polygon_to_circle_outer,
     distance,
     normalize_angle_deg,
     signed_angle_difference_deg,
@@ -154,6 +156,16 @@ class SecondResponse:
             raise ValueError("near and no_signal responses must not include bearing_deg")
 
 
+@dataclass(frozen=True)
+class SecondSupport:
+    """Nominal sample support plus a conservative positional outer region."""
+
+    response: SecondResponse
+    true_support_label: str
+    sample_support: tuple[JointSample, ...]
+    conservative_outer_region: tuple[Point, ...]
+
+
 def build_first_state(
     observation: FirstDirectionObservation,
     *,
@@ -233,6 +245,106 @@ def evaluate_candidate_domains(
         ),
         min_distance_to_outer_m=min_distance,
         max_distance_to_outer_m=max_distance,
+    )
+
+
+def second_support(
+    q: Point,
+    response: SecondResponse,
+    state: FirstState,
+    *,
+    config: Q2Config = Q2Config(),
+) -> SecondSupport:
+    """Update the nominal samples and conservative outer region for one response.
+
+    ``sample_support`` is a weighted-sample proxy for the theoretical joint
+    ``(G, R)`` support.  ``conservative_outer_region`` is a positional outer
+    region used for engineering bounds; it must not be interpreted as the exact
+    support.
+    """
+
+    _validate_point(q, "q")
+    if not isinstance(response, SecondResponse):
+        raise TypeError("response must be a SecondResponse")
+    if not isinstance(state, FirstState):
+        raise TypeError("state must be a FirstState")
+    if not state.outer_region:
+        raise ValueError("state.outer_region must be non-empty")
+
+    sample_support = tuple(
+        sample
+        for sample in state.joint_samples
+        if sample.weight > 0.0
+        and _is_sample_compatible_with_second_response(sample, q, response, config)
+    )
+
+    if response.kind is SecondResponseKind.NEAR:
+        outer_region = clip_polygon_to_circle_outer(
+            state.outer_region,
+            q,
+            config.near_radius_m,
+            config.circle_vertices,
+        )
+        true_support_label = "F1 cap B(q,5)"
+
+    elif response.kind is SecondResponseKind.DIRECTION:
+        assert response.bearing_deg is not None
+        outer_region = clip_polygon_to_bearing_wedge(
+            state.outer_region,
+            q,
+            response.bearing_deg,
+            config.bearing_error_deg,
+        )
+        outer_region = clip_polygon_to_circle_outer(
+            outer_region,
+            q,
+            config.reception_radius_max_m,
+            config.circle_vertices,
+        )
+        true_support_label = (
+            "joint (G,R) support compatible with 5 < ||G-q|| <= R and "
+            "the second bearing hard bound"
+        )
+
+    else:
+        # ``no_signal`` implies ||G-q|| > R >= 1000 in the theoretical joint
+        # support.  Until a reliable non-convex outer construction is added,
+        # retaining K1_out is deliberately loose but conservative.
+        outer_region = list(state.outer_region)
+        true_support_label = "joint (G,R) support compatible with ||G-q|| > R"
+
+    return SecondSupport(
+        response=response,
+        true_support_label=true_support_label,
+        sample_support=sample_support,
+        conservative_outer_region=tuple(outer_region),
+    )
+
+
+def _is_sample_compatible_with_second_response(
+    sample: JointSample,
+    q: Point,
+    response: SecondResponse,
+    config: Q2Config,
+) -> bool:
+    source_distance = distance(sample.position, q)
+
+    if response.kind is SecondResponseKind.NEAR:
+        return source_distance <= config.near_radius_m + _DISTANCE_TOLERANCE_M
+
+    if response.kind is SecondResponseKind.NO_SIGNAL:
+        return source_distance > sample.reception_radius_m + _DISTANCE_TOLERANCE_M
+
+    assert response.bearing_deg is not None
+    if source_distance <= config.near_radius_m + _DISTANCE_TOLERANCE_M:
+        return False
+    if source_distance > sample.reception_radius_m + _DISTANCE_TOLERANCE_M:
+        return False
+
+    true_bearing = _bearing_deg(q, sample.position)
+    return (
+        abs(signed_angle_difference_deg(true_bearing, response.bearing_deg))
+        <= config.bearing_error_deg + _ANGLE_TOLERANCE_DEG
     )
 
 

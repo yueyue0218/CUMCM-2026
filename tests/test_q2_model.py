@@ -11,8 +11,10 @@ from src.q2.model import (
     Q2Config,
     SecondResponse,
     SecondResponseKind,
+    SecondSupport,
     build_first_state,
     evaluate_candidate_domains,
+    second_support,
 )
 
 
@@ -178,6 +180,185 @@ class FirstStateTests(unittest.TestCase):
             FirstDirectionObservation((math.inf, 0.0), 0.0)
         with self.assertRaises(ValueError):
             FirstDirectionObservation((0.0, 0.0), math.nan)
+
+
+
+class SecondSupportTests(unittest.TestCase):
+    def make_state(self) -> FirstState:
+        samples = (
+            JointSample((3.0, 4.0), 1000.0, 1.0),
+            JointSample((100.0, 0.0), 1000.0, 2.0),
+            JointSample((0.0, 100.0), 1000.0, 3.0),
+            JointSample((1200.0, 0.0), 1000.0, 4.0),
+        )
+        return FirstState(
+            observation=FirstDirectionObservation((-500.0, 0.0), 0.0),
+            exact_support_label="test support",
+            outer_region=(
+                (-1300.0, -1300.0),
+                (1300.0, -1300.0),
+                (1300.0, 1300.0),
+                (-1300.0, 1300.0),
+            ),
+            joint_samples=samples,
+        )
+
+    def test_near_filters_samples_and_uses_five_meter_outer_disk(self) -> None:
+        config = Q2Config(circle_vertices=36)
+        state = self.make_state()
+
+        support = second_support(
+            (0.0, 0.0),
+            SecondResponse(SecondResponseKind.NEAR),
+            state,
+            config=config,
+        )
+
+        self.assertIsInstance(support, SecondSupport)
+        self.assertEqual(
+            tuple(sample.position for sample in support.sample_support),
+            ((3.0, 4.0),),
+        )
+        self.assertTrue(support.conservative_outer_region)
+        maximum_outer_radius = config.near_radius_m / math.cos(
+            math.pi / config.circle_vertices
+        )
+        self.assertTrue(
+            all(
+                math.dist(point, (0.0, 0.0)) <= maximum_outer_radius + 1e-8
+                for point in support.conservative_outer_region
+            )
+        )
+
+    def test_direction_filters_by_near_radius_fixed_r_and_bearing(self) -> None:
+        state = self.make_state()
+
+        support = second_support(
+            (0.0, 0.0),
+            SecondResponse(SecondResponseKind.DIRECTION, 0.0),
+            state,
+            config=Q2Config(circle_vertices=36),
+        )
+
+        self.assertEqual(
+            tuple(sample.position for sample in support.sample_support),
+            ((100.0, 0.0),),
+        )
+        self.assertEqual(support.sample_support[0].reception_radius_m, 1000.0)
+
+    def test_direction_outer_region_reuses_wedge_and_1500m_outer_disk(self) -> None:
+        config = Q2Config(circle_vertices=72)
+        state = self.make_state()
+
+        support = second_support(
+            (0.0, 0.0),
+            SecondResponse(SecondResponseKind.DIRECTION, 0.0),
+            state,
+            config=config,
+        )
+
+        maximum_outer_radius = config.reception_radius_max_m / math.cos(
+            math.pi / config.circle_vertices
+        )
+        self.assertTrue(support.conservative_outer_region)
+        for point in support.conservative_outer_region:
+            self.assertLessEqual(
+                math.dist(point, (0.0, 0.0)),
+                maximum_outer_radius + 1e-8,
+            )
+            if math.dist(point, (0.0, 0.0)) > 1e-8:
+                bearing = math.degrees(math.atan2(point[1], point[0])) % 360.0
+                error = abs(
+                    model.signed_angle_difference_deg(bearing, 0.0)
+                )
+                self.assertLessEqual(error, config.bearing_error_deg + 1e-8)
+
+    def test_no_signal_filters_by_each_samples_fixed_r_and_keeps_k1_outer(self) -> None:
+        state = self.make_state()
+
+        support = second_support(
+            (0.0, 0.0),
+            SecondResponse(SecondResponseKind.NO_SIGNAL),
+            state,
+            config=Q2Config(circle_vertices=36),
+        )
+
+        self.assertEqual(
+            tuple(sample.position for sample in support.sample_support),
+            ((1200.0, 0.0),),
+        )
+        self.assertEqual(support.conservative_outer_region, state.outer_region)
+
+    def test_second_response_boundary_rules_match_interface(self) -> None:
+        state = FirstState(
+            observation=FirstDirectionObservation((-500.0, 0.0), 0.0),
+            exact_support_label="test support",
+            outer_region=(
+                (-10.0, -10.0),
+                (1100.0, -10.0),
+                (1100.0, 10.0),
+                (-10.0, 10.0),
+            ),
+            joint_samples=(
+                JointSample((5.0, 0.0), 1000.0, 1.0),
+                JointSample((1000.0, 0.0), 1000.0, 1.0),
+                JointSample((1000.001, 0.0), 1000.0, 1.0),
+            ),
+        )
+        config = Q2Config(circle_vertices=36)
+
+        near = second_support(
+            (0.0, 0.0),
+            SecondResponse(SecondResponseKind.NEAR),
+            state,
+            config=config,
+        )
+        direction = second_support(
+            (0.0, 0.0),
+            SecondResponse(SecondResponseKind.DIRECTION, 0.0),
+            state,
+            config=config,
+        )
+        no_signal = second_support(
+            (0.0, 0.0),
+            SecondResponse(SecondResponseKind.NO_SIGNAL),
+            state,
+            config=config,
+        )
+
+        self.assertEqual(
+            tuple(sample.position for sample in near.sample_support),
+            ((5.0, 0.0),),
+        )
+        self.assertEqual(
+            tuple(sample.position for sample in direction.sample_support),
+            ((1000.0, 0.0),),
+        )
+        self.assertEqual(
+            tuple(sample.position for sample in no_signal.sample_support),
+            ((1000.001, 0.0),),
+        )
+
+    def test_empty_nominal_branch_is_returned_without_false_certificate(self) -> None:
+        state = self.make_state()
+
+        support = second_support(
+            (0.0, 0.0),
+            SecondResponse(SecondResponseKind.DIRECTION, 180.0),
+            state,
+            config=Q2Config(circle_vertices=36),
+        )
+
+        self.assertEqual(support.sample_support, ())
+        self.assertIsInstance(support.conservative_outer_region, tuple)
+
+    def test_second_support_rejects_non_finite_candidate(self) -> None:
+        with self.assertRaises(ValueError):
+            second_support(
+                (math.nan, 0.0),
+                SecondResponse(SecondResponseKind.NEAR),
+                self.make_state(),
+            )
 
 
 class CandidateDomainTests(unittest.TestCase):
