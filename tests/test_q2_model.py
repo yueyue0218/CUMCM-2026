@@ -6,8 +6,10 @@ from src.q2 import model
 from src.q2.model import (
     BayesianEvaluation,
     BearingErrorAtom,
+    BearingErrorBin,
     CandidateDomainFlags,
     FirstDirectionObservation,
+    FirstPosteriorSamples,
     FirstState,
     JointSample,
     Q2Config,
@@ -18,6 +20,7 @@ from src.q2.model import (
     build_first_state,
     evaluate_bayesian,
     evaluate_candidate_domains,
+    sample_first_direction_posterior,
     second_support,
 )
 
@@ -184,6 +187,164 @@ class FirstStateTests(unittest.TestCase):
             FirstDirectionObservation((math.inf, 0.0), 0.0)
         with self.assertRaises(ValueError):
             FirstDirectionObservation((0.0, 0.0), math.nan)
+
+
+
+class FirstPosteriorSamplingTests(unittest.TestCase):
+    def uniform_error_bins(self) -> tuple[BearingErrorBin, ...]:
+        return (BearingErrorBin(-1.0, 1.0, 1.0),)
+
+    def test_sampler_is_reproducible_and_returns_normalized_joint_samples(self) -> None:
+        observation = FirstDirectionObservation((0.0, 0.0), 0.0)
+        kwargs = dict(
+            prior_draws=20000,
+            bearing_error_bins=self.uniform_error_bins(),
+            seed=20260913,
+            config=Q2Config(circle_vertices=36),
+        )
+
+        first = sample_first_direction_posterior(observation, **kwargs)
+        second = sample_first_direction_posterior(observation, **kwargs)
+
+        self.assertIsInstance(first, FirstPosteriorSamples)
+        self.assertEqual(first, second)
+        self.assertGreater(first.retained_draws, 0)
+        self.assertAlmostEqual(sum(sample.weight for sample in first.samples), 1.0)
+        self.assertGreater(first.effective_sample_size, 0.0)
+        self.assertAlmostEqual(
+            first.acceptance_rate,
+            first.retained_draws / first.prior_draws,
+        )
+        for sample in first.samples:
+            self.assertGreater(sample.weight, 0.0)
+            self.assertGreaterEqual(sample.reception_radius_m, 1000.0)
+            self.assertLessEqual(sample.reception_radius_m, 1500.0)
+            self.assertLessEqual(math.dist(sample.position, (0.0, 0.0)), 1800.0 + 1e-9)
+
+    def test_samples_satisfy_first_direction_physics_and_feed_build_first_state(self) -> None:
+        observation = FirstDirectionObservation((0.0, 0.0), 0.0)
+        result = sample_first_direction_posterior(
+            observation,
+            prior_draws=20000,
+            bearing_error_bins=self.uniform_error_bins(),
+            seed=7,
+            config=Q2Config(circle_vertices=36),
+        )
+
+        for sample in result.samples:
+            source_distance = math.dist(sample.position, observation.station)
+            self.assertGreater(source_distance, 5.0)
+            self.assertLessEqual(source_distance, sample.reception_radius_m + 1e-9)
+            bearing = math.degrees(
+                math.atan2(
+                    sample.position[1] - observation.station[1],
+                    sample.position[0] - observation.station[0],
+                )
+            ) % 360.0
+            self.assertLessEqual(
+                abs(model.signed_angle_difference_deg(observation.bearing_deg, bearing)),
+                1.0 + 1e-12,
+            )
+
+        state = build_first_state(
+            observation,
+            samples=result.samples,
+            config=Q2Config(circle_vertices=36),
+        )
+        self.assertEqual(state.joint_samples, result.samples)
+
+    def test_explicit_error_density_changes_importance_weights(self) -> None:
+        observation = FirstDirectionObservation((0.0, 0.0), 0.0)
+        uniform = sample_first_direction_posterior(
+            observation,
+            prior_draws=30000,
+            bearing_error_bins=(BearingErrorBin(-1.0, 1.0, 1.0),),
+            seed=99,
+            config=Q2Config(circle_vertices=36),
+        )
+        center_peaked = sample_first_direction_posterior(
+            observation,
+            prior_draws=30000,
+            bearing_error_bins=(
+                BearingErrorBin(-1.0, -0.25, 0.2),
+                BearingErrorBin(-0.25, 0.25, 0.6),
+                BearingErrorBin(0.25, 1.0, 0.2),
+            ),
+            seed=99,
+            config=Q2Config(circle_vertices=36),
+        )
+
+        # Same prior draws and the same hard support are used; only the explicit
+        # likelihood changes the normalized posterior weights.
+        self.assertEqual(
+            tuple((s.position, s.reception_radius_m) for s in uniform.samples),
+            tuple((s.position, s.reception_radius_m) for s in center_peaked.samples),
+        )
+        self.assertNotEqual(
+            tuple(round(s.weight, 14) for s in uniform.samples),
+            tuple(round(s.weight, 14) for s in center_peaked.samples),
+        )
+        self.assertLess(
+            center_peaked.effective_sample_size,
+            uniform.effective_sample_size + 1e-9,
+        )
+
+    def test_error_bins_are_explicit_and_validated(self) -> None:
+        observation = FirstDirectionObservation((0.0, 0.0), 0.0)
+        base = dict(
+            observation=observation,
+            prior_draws=100,
+            seed=1,
+            config=Q2Config(circle_vertices=36),
+        )
+
+        with self.assertRaisesRegex(ValueError, "required"):
+            sample_first_direction_posterior(
+                bearing_error_bins=(),
+                **base,
+            )
+        with self.assertRaisesRegex(ValueError, "sum to one"):
+            sample_first_direction_posterior(
+                bearing_error_bins=(BearingErrorBin(-1.0, 1.0, 0.9),),
+                **base,
+            )
+        with self.assertRaisesRegex(ValueError, "outside"):
+            sample_first_direction_posterior(
+                bearing_error_bins=(BearingErrorBin(-1.1, 1.0, 1.0),),
+                **base,
+            )
+        with self.assertRaisesRegex(ValueError, "overlap"):
+            sample_first_direction_posterior(
+                bearing_error_bins=(
+                    BearingErrorBin(-1.0, 0.5, 0.5),
+                    BearingErrorBin(0.0, 1.0, 0.5),
+                ),
+                **base,
+            )
+
+    def test_sampler_rejects_bad_controls_and_can_enforce_ess_threshold(self) -> None:
+        observation = FirstDirectionObservation((0.0, 0.0), 0.0)
+        bins = self.uniform_error_bins()
+
+        for bad_draws in (0, -1, 10.5, True):
+            with self.subTest(prior_draws=bad_draws):
+                with self.assertRaises(ValueError):
+                    sample_first_direction_posterior(
+                        observation,
+                        prior_draws=bad_draws,  # type: ignore[arg-type]
+                        bearing_error_bins=bins,
+                        seed=1,
+                    )
+
+        with self.assertRaises(ValueError):
+            sample_first_direction_posterior(
+                observation,
+                prior_draws=10000,
+                bearing_error_bins=bins,
+                seed=123,
+                min_effective_sample_size=1e9,
+                config=Q2Config(circle_vertices=36),
+            )
 
 
 

@@ -200,6 +200,76 @@ Inputs: first station, bearing, nominal `(G,R)` samples, config. Output:
 non-finite, if samples are empty after hard filtering, or if
 `localization_region([BearingObservation(...)])` returns an empty outer region.
 
+#### Nominal first-direction posterior sampler (Task 3B)
+
+The nominal Bayesian path must generate `(G,R)` samples before
+`build_first_state(...)`. Adopted priors are modeling assumptions, not official
+facts:
+
+```text
+G ~ Uniform(area on B(0,1800))
+R ~ Uniform[1000,1500]
+```
+
+Use area-uniform disk sampling `r = 1800*sqrt(U)`, not a radius-uniform draw.
+The sampled `R` remains attached to its source sample for all later responses.
+
+Because the official problem gives only the hard `±1°` bearing bound, the first
+observation likelihood must also be explicit. Use:
+
+```python
+@dataclass(frozen=True)
+class BearingErrorBin:
+    lower_deg: float
+    upper_deg: float
+    probability: float
+```
+
+Each bin is a user/model-supplied probability mass over an interval inside the
+hard bound; within a bin Task 3B uses a piecewise-constant density. Bins may have
+gaps (zero nominal density), must not overlap, and total probability must be one.
+No uniform density is silently assumed.
+
+```python
+@dataclass(frozen=True)
+class FirstPosteriorSamples:
+    samples: tuple[JointSample, ...]
+    prior_draws: int
+    retained_draws: int
+    effective_sample_size: float
+    acceptance_rate: float
+    seed: int
+```
+
+```python
+def sample_first_direction_posterior(
+    observation: FirstDirectionObservation,
+    *,
+    prior_draws: int,
+    bearing_error_bins: Sequence[BearingErrorBin],
+    seed: int = 0,
+    min_effective_sample_size: float | None = None,
+    config: Q2Config = Q2Config(),
+) -> FirstPosteriorSamples:
+    ...
+```
+
+Implementation is a reproducible rejection/importance sampler:
+
+1. draw `(G,R)` from the adopted A1/A2 priors;
+2. enforce the observed `direction` physics `5 < ||G-S1|| <= R`;
+3. compute the required first-error residual
+   `wrap(theta1 - bearing(S1,G))`;
+4. reject residuals outside the hard `±1°` bound or zero-density bins;
+5. weight retained draws by the explicit bin density and normalize weights;
+6. report acceptance rate and effective sample size
+   `ESS = 1 / sum(w_i^2)`.
+
+This is a numerical posterior proxy, not an exact integral. A caller may set
+`min_effective_sample_size` to fail rather than accept an under-resolved
+posterior. The threshold is an experiment/convergence choice, not a problem
+constant.
+
 ### 3.2 Candidate domains, in `src/q2/model.py`
 
 ```python
@@ -629,9 +699,11 @@ Bayesian flow:
 
 ```text
 FirstDirectionObservation
+  -> sample_first_direction_posterior from explicit A1/A2 priors
+     and explicit first-bearing error density
   -> build_first_state
   -> Q1 outer_region via localization_region
-  -> nominal joint_samples over (G,R), filtered and weighted by H1
+  -> normalized nominal joint_samples over (G,R) for H1
   -> candidate q
   -> second_support for near / direction grid / no_signal
   -> response probabilities from joint sample weights

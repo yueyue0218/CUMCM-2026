@@ -8,6 +8,7 @@ does not implement the robust evaluator, optimizer, or large experiments.
 from __future__ import annotations
 
 import math
+import random
 from dataclasses import dataclass
 from enum import Enum
 from typing import Sequence
@@ -169,6 +170,42 @@ class SecondSupport:
 
 
 @dataclass(frozen=True)
+class BearingErrorBin:
+    """One explicit bin of the nominal first-bearing error density.
+
+    The hard ±delta bound is official; probabilities inside that bound are a
+    modeling choice.  Within each bin the nominal density is piecewise constant.
+    """
+
+    lower_deg: float
+    upper_deg: float
+    probability: float
+
+    def __post_init__(self) -> None:
+        if not all(
+            _is_finite_number(value)
+            for value in (self.lower_deg, self.upper_deg, self.probability)
+        ):
+            raise ValueError("bearing error bin values must be finite")
+        if self.upper_deg <= self.lower_deg:
+            raise ValueError("bearing error bin must have positive width")
+        if self.probability < 0.0:
+            raise ValueError("bearing error bin probability must be non-negative")
+
+
+@dataclass(frozen=True)
+class FirstPosteriorSamples:
+    """Diagnostics plus normalized nominal samples for p(G,R | first direction)."""
+
+    samples: tuple[JointSample, ...]
+    prior_draws: int
+    retained_draws: int
+    effective_sample_size: float
+    acceptance_rate: float
+    seed: int
+
+
+@dataclass(frozen=True)
 class BearingErrorAtom:
     """One explicit quadrature atom for the nominal bearing-error model.
 
@@ -260,6 +297,129 @@ def build_first_state(
         ),
         outer_region=tuple(q1_region),
         joint_samples=filtered_samples,
+    )
+
+
+def sample_first_direction_posterior(
+    observation: FirstDirectionObservation,
+    *,
+    prior_draws: int,
+    bearing_error_bins: Sequence[BearingErrorBin],
+    seed: int = 0,
+    min_effective_sample_size: float | None = None,
+    config: Q2Config = Q2Config(),
+) -> FirstPosteriorSamples:
+    """Sample the nominal joint posterior after the first ``direction`` response.
+
+    Priors follow the adopted nominal assumptions:
+    ``G ~ Uniform(area on the arena disk)`` and
+    ``R ~ Uniform[reception_radius_min_m, reception_radius_max_m]``.
+
+    The first-bearing likelihood is *not* inferred from the official hard bound.
+    Callers must provide ``bearing_error_bins`` explicitly.  Each bin specifies a
+    probability mass over an error interval and induces a piecewise-constant
+    density within that interval.  Returned ``JointSample.weight`` values are
+    normalized posterior importance weights.
+
+    This is a rejection/importance-sampling proxy, not an exact posterior
+    integral.  The effective sample size and acceptance rate are returned so
+    experiments can check convergence instead of silently trusting a thin cloud.
+    """
+
+    if not isinstance(observation, FirstDirectionObservation):
+        observation = FirstDirectionObservation(
+            station=observation.station,  # type: ignore[attr-defined]
+            bearing_deg=observation.bearing_deg,  # type: ignore[attr-defined]
+        )
+    if isinstance(prior_draws, bool) or not isinstance(prior_draws, int):
+        raise ValueError("prior_draws must be an integer")
+    if prior_draws <= 0:
+        raise ValueError("prior_draws must be positive")
+    if isinstance(seed, bool) or not isinstance(seed, int):
+        raise ValueError("seed must be an integer")
+    if min_effective_sample_size is not None:
+        if not _is_finite_number(min_effective_sample_size):
+            raise ValueError("min_effective_sample_size must be finite")
+        if min_effective_sample_size <= 0.0:
+            raise ValueError("min_effective_sample_size must be positive")
+
+    bins = _validate_bearing_error_bins(bearing_error_bins, config)
+    rng = random.Random(seed)
+    weighted_draws: list[tuple[Point, float, float]] = []
+
+    for _ in range(prior_draws):
+        # Uniform by area on the disk: radius = R_arena * sqrt(U).
+        radial = config.arena_radius_m * math.sqrt(rng.random())
+        azimuth = math.tau * rng.random()
+        position = (
+            radial * math.cos(azimuth),
+            radial * math.sin(azimuth),
+        )
+        reception_radius = rng.uniform(
+            config.reception_radius_min_m,
+            config.reception_radius_max_m,
+        )
+
+        station_distance = distance(position, observation.station)
+        if station_distance <= config.near_radius_m + _DISTANCE_TOLERANCE_M:
+            continue
+        if station_distance > reception_radius + _DISTANCE_TOLERANCE_M:
+            continue
+
+        true_bearing = _bearing_deg(observation.station, position)
+        observed_error = signed_angle_difference_deg(
+            observation.bearing_deg,
+            true_bearing,
+        )
+        if (
+            abs(observed_error)
+            > config.bearing_error_deg + _ANGLE_TOLERANCE_DEG
+        ):
+            continue
+
+        likelihood_density = _bearing_error_density(
+            observed_error,
+            bins,
+            config,
+        )
+        if likelihood_density <= 0.0:
+            continue
+        weighted_draws.append(
+            (position, reception_radius, likelihood_density)
+        )
+
+    if not weighted_draws:
+        raise ValueError(
+            "no posterior samples retained; increase prior_draws or revise the "
+            "explicit nominal bearing-error model"
+        )
+
+    total_weight = sum(weight for _, _, weight in weighted_draws)
+    if not math.isfinite(total_weight) or total_weight <= 0.0:
+        raise ValueError("posterior importance weights have invalid total mass")
+
+    samples = tuple(
+        JointSample(position, reception_radius, weight / total_weight)
+        for position, reception_radius, weight in weighted_draws
+    )
+    squared_weight_sum = sum(sample.weight * sample.weight for sample in samples)
+    effective_sample_size = 1.0 / squared_weight_sum
+    if (
+        min_effective_sample_size is not None
+        and effective_sample_size + 1e-12 < min_effective_sample_size
+    ):
+        raise ValueError(
+            "effective sample size below requested threshold: "
+            f"{effective_sample_size:.6g} < {min_effective_sample_size:.6g}"
+        )
+
+    return FirstPosteriorSamples(
+        samples=samples,
+        prior_draws=prior_draws,
+        retained_draws=len(samples),
+        effective_sample_size=effective_sample_size,
+        acceptance_rate=len(samples) / prior_draws,
+        seed=seed,
     )
 
 
@@ -558,6 +718,69 @@ def evaluate_bayesian(
         movement_m=distance(q, state.observation.station),
     )
 
+
+
+def _validate_bearing_error_bins(
+    bins: Sequence[BearingErrorBin],
+    config: Q2Config,
+) -> tuple[BearingErrorBin, ...]:
+    if not bins:
+        raise ValueError(
+            "bearing_error_bins is required because the problem gives no error density"
+        )
+
+    prepared = tuple(
+        item if isinstance(item, BearingErrorBin) else BearingErrorBin(*item)  # type: ignore[arg-type]
+        for item in bins
+    )
+    ordered = tuple(sorted(prepared, key=lambda item: (item.lower_deg, item.upper_deg)))
+
+    previous_upper: float | None = None
+    for item in ordered:
+        if item.lower_deg < -config.bearing_error_deg - _ANGLE_TOLERANCE_DEG:
+            raise ValueError("bearing error bin lies outside the hard error bound")
+        if item.upper_deg > config.bearing_error_deg + _ANGLE_TOLERANCE_DEG:
+            raise ValueError("bearing error bin lies outside the hard error bound")
+        if (
+            previous_upper is not None
+            and item.lower_deg < previous_upper - _ANGLE_TOLERANCE_DEG
+        ):
+            raise ValueError("bearing error bins must not overlap")
+        previous_upper = item.upper_deg
+
+    probability_sum = sum(item.probability for item in ordered)
+    if not math.isclose(probability_sum, 1.0, rel_tol=1e-10, abs_tol=1e-10):
+        raise ValueError("bearing error bin probabilities must sum to one")
+    if not any(item.probability > 0.0 for item in ordered):
+        raise ValueError("bearing error model must contain positive probability")
+    return ordered
+
+
+def _bearing_error_density(
+    error_deg: float,
+    bins: Sequence[BearingErrorBin],
+    config: Q2Config,
+) -> float:
+    if abs(error_deg) > config.bearing_error_deg + _ANGLE_TOLERANCE_DEG:
+        return 0.0
+
+    for index, item in enumerate(bins):
+        is_last = index == len(bins) - 1
+        inside = (
+            item.lower_deg - _ANGLE_TOLERANCE_DEG
+            <= error_deg
+            < item.upper_deg - _ANGLE_TOLERANCE_DEG
+        )
+        if is_last and math.isclose(
+            error_deg,
+            item.upper_deg,
+            rel_tol=0.0,
+            abs_tol=_ANGLE_TOLERANCE_DEG,
+        ):
+            inside = True
+        if inside:
+            return item.probability / (item.upper_deg - item.lower_deg)
+    return 0.0
 
 def _validate_bearing_error_atoms(
     atoms: Sequence[BearingErrorAtom],
