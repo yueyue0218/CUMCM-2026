@@ -123,7 +123,9 @@
 
 $$\theta_i^*=\theta_i+\epsilon_i,\qquad \epsilon_i\in[-\delta,\delta],\qquad \delta=1^\circ.$$
 
-该模型只使用误差硬界，不要求误差服从均匀分布、高斯分布或独立同分布，也不通过重复观测平均缩小误差。设干扰源位置为 $G=(x,y)$。单次观测对应的两个半平面为
+该模型只使用误差硬界，即不要求误差服从均匀分布、高斯分布或独立同分布，也不通过重复观测平均缩小误差。
+
+设干扰源位置为 $G=(x,y)$。则单次观测对应的两个半平面为
 
 $$H_i^-:\ (x-x_i)\sin(\theta_i-\delta)-(y-y_i)\cos(\theta_i-\delta)\le 0,$$
 
@@ -133,11 +135,11 @@ $$H_i^+:\ -(x-x_i)\sin(\theta_i+\delta)+(y-y_i)\cos(\theta_i+\delta)\le 0,$$
 
 $$\mathcal B(S_i,1500)=\{x\in\mathbb R^2:\|x-S_i\|_2\le1500\,\mathrm m\}.$$
 
-该约束来自响应类型与接收半径上界，不是概率假设。目标大圆域记为
+该约束来自响应类型与接收半径上界。设目标大圆域记为
 
 $$\mathcal C_0=\{(x,y)\in\mathbb R^2:x^2+y^2\le R_{\mathrm{target}}^2\},\qquad R_{\mathrm{target}}=1800\,\mathrm m.$$
 
-综合 $n$ 次观测后，精确定位区域为
+综合 $n$ 次观测后，定位区域可精确为
 
 $$\mathcal\Omega=\mathcal C_0\cap\bigcap_{i=1}^{n}\left[W_i\cap\mathcal B(S_i,1500)\right].$$
 
@@ -145,7 +147,7 @@ $$\mathcal\Omega=\mathcal C_0\cap\bigcap_{i=1}^{n}\left[W_i\cap\mathcal B(S_i,15
 
 ![图 1 有界测向误差与楔形交会定位：(a) 单次误差楔形示意，为便于辨识对角宽作视觉放大；(b) $\delta=1^\circ$ 下的真实三站交会示例](results/figures/q1_bearing_wedge_intersection.png)
 
-数值计算时，对 $\mathcal C_0$ 和各个 $1500\,\mathrm m$ 接收上界圆均采用外切正多边形作 conservative outer approximation，再与 bearing 半平面逐次裁剪，得到保守凸多边形外包 $K_{\mathrm{out}}$，满足 $\mathcal\Omega\subseteq K_{\mathrm{out}}$。若其顶点集为 $V$，则 $K_{\mathrm{out}}=\operatorname{conv}(V)$。该过程不会误删真实可行位置，但计算区域可能略偏保守。
+在后续计算中，对 $\mathcal C_0$ 和各个 $1500\,\mathrm m$ 接收上界圆均采用外切正多边形作保守OA（Outer Approximation），再与 bearing 半平面逐次裁剪，得到保守凸多边形外包 $K_{\mathrm{out}}$，满足 $\mathcal\Omega\subseteq K_{\mathrm{out}}$。若其顶点集为 $V$，则 $K_{\mathrm{out}}=\operatorname{conv}(V)$。为了保留所有的真实可行位置，我们选择将计算区域尽可能地保守化。
 
 ### 5.1.2 凸定位区域的直径计算
 
@@ -153,15 +155,20 @@ $$\mathcal\Omega=\mathcal C_0\cap\bigcap_{i=1}^{n}\left[W_i\cap\mathcal B(S_i,15
 
 $$D(\mathcal\Omega)=\sup_{A,B\in\mathcal\Omega}\|A-B\|_2.$$
 
-production 中旋转卡壳的实际计算对象是凸多边形 $K_{\mathrm{out}}$。若 $V=\{v_1,\ldots,v_m\}$ 为其顶点集，则
+旋转卡壳的实际计算对象是凸多边形 $K_{\mathrm{out}}$。若 $V=\{v_1,\ldots,v_m\}$ 为其顶点集，则
 
 $$D(K_{\mathrm{out}})=\max_{1\le j<k\le m}\|v_j-v_k\|_2.$$
 
-由 $\mathcal\Omega\subseteq K_{\mathrm{out}}$ 有 $D(\mathcal\Omega)\le D(K_{\mathrm{out}})$，故 production 得到的是真实定位区域直径的保守上界。对 $n$ 个输入点，主算法先以 $O(n\log n)$ 时间构造凸包；设凸包顶点数为 $h$，再用旋转卡壳算法（Rotating Calipers）以 $O(h)$ 时间扫描对踵点，因此总复杂度为 $O(n\log n+h)$。$O(h^2)$ 的顶点对穷举仅作为独立核验方法。
+由 $\mathcal\Omega\subseteq K_{\mathrm{out}}$ 有 $D(\mathcal\Omega)\le D(K_{\mathrm{out}})$，得到真实定位区域直径的保守上界。对 $n$ 个输入点，我们先以 $O(n\log n)$ 时间构造凸包：设凸包顶点数为 $h$，再用旋转卡壳算法（Rotating Calipers）以 $O(h)$ 时间扫描对踵点，因此总复杂度为 $O(n\log n+h)$。
 
 ### 5.1.3 最小包围圆与直径圆覆盖判据
 
-设 $p,q\in\mathcal\Omega$ 为一对距离达到 $D(\mathcal\Omega)$ 的点，以其为直径所得圆的半径为 $D(\mathcal\Omega)/2$。该直径圆并不一定覆盖 $\mathcal\Omega$：对非退化锐角三角形，最长边的直径圆不能包含第三个顶点。因此，仅知道直径 $D$ 尚不足以判断直径为 $D$ 的圆能否覆盖整个定位区域。图 2 给出了两个直径同为 $36\,\mathrm m$、但最小覆盖半径不同的凸集。
+设 $p,q\in\mathcal\Omega$ 为一对距离达到 $D(\mathcal\Omega)$ 的点，以其为直径所得圆的半径为 $D(\mathcal\Omega)/2$。
+
+**该直径圆并不一定覆盖 $\mathcal\Omega$**：对非退化锐角三角形，最长边的直径圆不能包含第三个顶点。
+
+因此，仅知道直径 $D$ 尚不足以判断直径为 $D$ 的圆能否覆盖整个定位区域。
+如图 2所示， 存在两个直径同为 $36\,\mathrm m$、但最小覆盖半径不同的凸集。
 
 ![图 2 相同直径下不同几何构型的最小包围圆与 $20\,\mathrm m$ 圆对比](results/figures/q1_same_diameter_coverage.png)
 
@@ -169,27 +176,25 @@ $$D(K_{\mathrm{out}})=\max_{1\le j<k\le m}\|v_j-v_k\|_2.$$
 
 $$r^*(\mathcal\Omega)=\min_{c\in\mathbb R^2}\max_{x\in\mathcal\Omega}\|x-c\|_2.$$
 
-对计算外包有 $K_{\mathrm{out}}=\operatorname{conv}(V)$。由于圆是凸集，任一包含全部顶点 $V$ 的圆必包含整个 $K_{\mathrm{out}}$，因此 $\operatorname{MEC}(K_{\mathrm{out}})=\operatorname{MEC}(V)$；同时由 $\mathcal\Omega\subseteq K_{\mathrm{out}}$ 有 $r^*(\mathcal\Omega)\le r^*(K_{\mathrm{out}})$。production 因而只需对 $K_{\mathrm{out}}$ 的顶点计算 MEC。
+对计算外包有 $K_{\mathrm{out}}=\operatorname{conv}(V)$。由于圆是凸集，任一包含全部顶点 $V$ 的圆必包含整个 $K_{\mathrm{out}}$，因此 $\operatorname{MEC}(K_{\mathrm{out}})=\operatorname{MEC}(V)$；同时由 $\mathcal\Omega\subseteq K_{\mathrm{out}}$ 有 $r^*(\mathcal\Omega)\le r^*(K_{\mathrm{out}})$。因而只需对 $K_{\mathrm{out}}$ 的顶点计算 MEC。
 
-当前采用确定性增量 MEC 算法：先对 $V$ 排序、去重，再依次更新支撑边界。二维最小包围圆由不超过三个边界点确定，当前确定性实现的最坏时间复杂度为 $O(m^3)$。
+我们选择采用确定性增量 MEC 算法：先对 $V$ 排序、去重，再依次更新支撑边界。二维最小包围圆由不超过三个边界点确定，确定性实现的最坏时间复杂度为 $O(m^3)$。
 
 Jung 定理给出任意二维紧凸集的严格界
 
 $$\frac{D(\mathcal\Omega)}{2}\le r^*(\mathcal\Omega)\le\frac{D(\mathcal\Omega)}{\sqrt3}.$$
 
-左端来自任意覆盖圆必须容纳一对相距 $D$ 的点，右端在正三角形构型达到。因此，问题一的核心判据为
+左端来自任意覆盖圆必须容纳一对相距 $D$ 的点，右端在正三角形构型达到。因此，问题一的核心判据可以改写为
 
 $$\boxed{\ \text{存在直径为 }D(\mathcal\Omega)\text{ 的圆覆盖 }\mathcal\Omega\iff r^*(\mathcal\Omega)=\frac{D(\mathcal\Omega)}2\ }.$$
 
-数值实现中对该等式采用统一的绝对相对浮点容差进行判断。这一判据回答“直径为 $D$ 的圆能否覆盖”；与之不同，$r^*(\mathcal\Omega)\le20\,\mathrm m$ 回答“是否存在半径为 $20\,\mathrm m$ 的单点清除圆”，两者不能混用。
-
 ### 5.1.4 面向后续问题的安全计算接口
 
-对精确定位区域，理论单点清除条件为 $r^*(\mathcal\Omega)\le20\,\mathrm m$。实际 production 使用 $D(K_{\mathrm{out}})$、$\operatorname{MEC}(K_{\mathrm{out}})$，并对最终输出圆心 $c_{\mathrm{out}}$ 在 $K_{\mathrm{out}}$ 上独立计算
+对精确定位区域，理论单点清除条件为 $r^*(\mathcal\Omega)\le20\,\mathrm m$。但在实际计算中我们使用 $D(K_{\mathrm{out}})$、$\operatorname{MEC}(K_{\mathrm{out}})$，并对最终输出圆心 $c_{\mathrm{out}}$ 在 $K_{\mathrm{out}}$ 上独立计算
 
 $$r_{\max}=\max_{x\in K_{\mathrm{out}}}\|x-c_{\mathrm{out}}\|_2.$$
 
-仅当 $r_{\max}\le19.999\,\mathrm m$ 时标记 `CLEAR_READY`，否则标记 `COVERAGE_UNCERTAIN`。通过 $K_{\mathrm{out}}$ 的覆盖认证必然能够覆盖真实 $\mathcal\Omega$；外包未通过只表示当前计算不能安全确认覆盖，不等价于真实集合不存在半径 $20\,\mathrm m$ 的覆盖圆。该接口供后续问题调用，不在问题一中展开状态机或控制策略。
+仅当 $r_{\max}\le19.999\,\mathrm m$ 时，我们可以标记 `CLEAR_READY`，否则标记 `COVERAGE_UNCERTAIN`。通过 $K_{\mathrm{out}}$ 的覆盖认证必然能够覆盖真实 $\mathcal\Omega$；外包未通过只表示当前计算不能安全确认覆盖，不等价于真实集合不存在半径 $20\,\mathrm m$ 的覆盖圆。该接口供后续问题调用，不在问题一中展开状态机或控制策略。
 
 ### 5.1.5 交会角敏感性分析
 
@@ -197,9 +202,9 @@ $$r_{\max}=\max_{x\in K_{\mathrm{out}}}\|x-c_{\mathrm{out}}\|_2.$$
 
 $$\alpha\in\{5^\circ,10^\circ,15^\circ,20^\circ,30^\circ,45^\circ,60^\circ,75^\circ,90^\circ\}.$$
 
-相应站间基线为 $2L\sin(\alpha/2)$，随 $\alpha$ 确定性变化，并非独立控制变量。
+相应站间基线为 $2L\sin(\alpha/2)$，随 $\alpha$ 确定性变化。
 
-实验结果表明，在该对称构型下，随着 $\alpha$ 从 $5^\circ$ 增至 $90^\circ$，定位区域直径 $D$ 与面积 $A$ 均显著下降，并随交会角继续增大而逐渐趋缓。
+在我们随机抽取数据，进行了多组试验后，结果表明，在该对称构型下，随着 $\alpha$ 从 $5^\circ$ 增至 $90^\circ$，定位区域直径 $D$ 与面积 $A$ 均显著下降，并随交会角继续增大而逐渐趋缓。
 
 ![图 3 两检测点距真实源均为 $L=500\,\mathrm m$、$\delta=1^\circ$ 时定位直径与面积的交会角敏感性](results/figures/q1_intersection_angle_sensitivity.png)
 
