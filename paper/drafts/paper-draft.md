@@ -18,13 +18,23 @@
 
 ### 2.2 问题二
 
-针对首次示向检测后干扰源定位区域的不确定性问题，深入分析第二检测点的选择策略具有重要的工程应用价值与理论意义。在实际搜寻过程中，单次示向观测仅能将干扰源限制在一个自检测点向外辐射的狭长楔形区域内，无法对干扰源的真实距离进行有效约束。若机器狗盲目沿首次示向轴方向直线推进，两次观测的交角极小，极易导致交叉定位失效，使更新后的定位区域几何直径依然过大；反之，若机器狗仅沿着示向轴的垂直方向侧向移动，虽然能拉开观测基线、增大交叉角，却可能在移动过程中偏离测向楔形远端，甚至超出干扰源的有效信号接收半径，导致第二次检测面临无信号的风险。因此，第二检测点的选择本质上是在“移动时间成本”、“信号接收可靠性”与“交叉定位几何精度”三者之间寻优的贝叶斯实验设计问题。
+问题二要求在首次示向检测后主动选择第二检测点，使新增观测尽可能压缩干扰源的位置不确定性。单次 `direction` 响应只能把目标限制在狭长测向楔形与最大接收距离内：若第二检测点与首次观测几何关系不佳，两次测向交角过小，定位区域仍然狭长；若机械地沿示向轴垂直移动，又可能偏离真实信号覆盖范围。因此，本题实质上是一个兼顾**名义平均定位效果与最坏情形鲁棒性**的主动选点问题。
 
-为科学求解这一多目标决策问题，建模思路遵循“联合后验更新 — 时间与接收双重可达域 — 期望与最坏性能双轨优化”的逻辑主线。首先，将干扰源的空间位置 $G$ 与该干扰源固有的接收半径 $R$ 构建为联合隐状态 $(G, R)$，引入联合先验分布；在首次检测获得示向角后，基于贝叶斯定理推导联合后验分布，准确刻画位置支持集以及远端位置（$1000\,\mathrm{m} < d < 1500\,\mathrm{m}$）因接收概率衰减所形成的非均匀权重。同时，模型引入“精确可行集—闭合凸外包”双层几何表示，精确可行集用于贝叶斯更新和面积计算，而闭合凸外包用于直径、最小覆盖圆半径的保守认证。
+本文首先依据题设硬约束构造首次观测后的真实支持集 $\mathcal F_1$，并以闭合凸外包 $K_{1,\mathrm{out}}$ 承担保守几何计算；同时将干扰源位置 $G$ 与该源固定接收半径 $R$ 组成联合隐状态 $(G,R)$，在显式声明的名义误差模型下形成联合后验样本。在此基础上定义第二检测点的可能接收域 $\mathcal C_{\mathrm{poss}}$ 与保证接收域 $\mathcal C_{\mathrm{rec}}$。
 
-在此基础上，结合机器狗的最大移动速度与本次任务的时限要求，构建局部位移坐标系下的时间可达域；同时根据联合后验计算候选点的信号接收概率，将接收概率达到置信水平的可达区域映射为第二检测点的候选决策空间。进一步地，考虑第二次检测可能出现的近距离响应（$\mathrm{near}$）、示向角响应（$\mathrm{direction}$）以及无信号响应（$\mathrm{no\_signal}$），计算第二次检测后定位区域的期望几何直径与期望面积；通过引入无量纲化的综合损失函数，将期望定位直径、期望面积与移动时间成本进行加权融合。
+对候选点 $q$，第二次检测可能返回 `near`、`direction` 或 `no_signal`。本文以第二次观测后定位支持集直径的名义期望 $\Psi_D(q)$ 衡量平均定位效果，同时构造有限 后验样本支持与有限方向网格上的最坏直径代理 $u_{\mathrm{proxy}}(q)$，并用连续响应区间的保守外包给出上界诊断量 $\bar U(q)$。进一步定义 鲁棒包络
+\[
+\mathcal A_\rho=
+\left\{
+q:
+u_{\mathrm{proxy}}(q)
+\le
+(1+\rho)u_{\mathrm{proxy}}^*
+\right\},
+\]
+先限制候选点的最坏性能，再在包络内优先选择名义期望直径较小的点，从而形成 Bayesian、Minimax 与 Hybrid 三类策略。
 
-考虑到测向误差或接收距离可能存在失配，模型进一步通过 Minkowski 膨胀与边界扩大构造鲁棒安全可行域与最坏性能上界约束，形成极小极大（Minimax）或带最坏约束的贝叶斯优化选择准则。最后，采用成对蒙特卡洛仿真方法，将该最优策略与传统的“等距离垂直布点策略”在平均定位直径、尾部风险及信号接收率等指标上进行成对对比分析，从而为后续多频段、多目标的动态搜寻与清除任务提供坚实的单目标决策基础。
+数值求解采用“**粗网格生成—多尺度局部精化—统一评分—策略筛选**”的无梯度流程。三类策略共享同一最终候选集和同一组评价结果，并通过样本规模、方向离散和空间搜索分辨率的稳定性检验确定最终数值配置；最后与等移动距离的双侧垂直布点基线比较，并分析 $\rho$ 对名义性能与鲁棒性能折中的影响。
 
 ### 2.3 问题三
 
@@ -50,9 +60,9 @@
 3. **信号传播与辐射稳定性假设**：假设干扰源在工作期间的发射功率、中心频率及辐射方向图（全向或特定定向特性）保持时间恒定，信号在平面介质中沿直线传播，不考虑多径效应、非线性衰减或突发性停播对示向度采集的干扰。
 4. **动作耗时与状态切换确定性假设**：假设机器狗的移动速度、频道切换耗时、信号检测耗时以及执行清除动作的耗时均为确定性常数，且在任务执行过程中设备性能稳定，不发生随机故障或机械迟滞。
 5. **清除机制的确定性与局域有效性假设**：假设机器狗发起的干扰清除动作在其指定的清除半径内具有绝对有效性，即位于清除圆域内的干扰源将被100%销毁并停止发射信号，而清除圆域外的干扰源完全不受影响。
-6. **信号有效接收半径的先验分布与不变性假设**：假设全向干扰源的信号有效接收半径 $R$ 在 $[1000, 1500]\,\mathrm{m}$ 范围内服从均匀分布，且在同一干扰源的搜寻与定位过程中，其接收半径保持恒定不变，后续检测继承首次观测后的联合后验分布，不得重新独立抽取 $R$。
-7. **干扰源位置的先验分布假设**：假设干扰源在目标大圆域 $\Omega = \{g \in \mathbb{R}^2 \mid \|g\| \le 1800\,\mathrm{m}\}$ 内按面积均匀分布，且在未发生任何观测前，干扰源位置 $G$ 与其接收半径 $R$ 相互独立。
-8. **问题二的附加概率假设与重复观测假设**：仅在问题二的名义贝叶斯模型中，额外假设不同检测点的测向误差在 $[-\delta, \delta]$（$\delta = 1^\circ$）内独立同分布且服从均匀分布；该假设不是问题一几何结论的前提。同一地点的环境误差固定，重复观测不产生独立平均收益。
+6. **问题二接收半径的名义先验与不变性假设**：仅在问题二的名义 Bayesian 评价中，取干扰源有效接收半径 $R\sim\operatorname{Unif}[1000,1500]$；该分布属于建模先验，不是题设给出的真实概率规律。对同一干扰源，$R$ 在一次搜寻与定位过程中保持恒定，后续检测继承首次观测后的联合后验，不得重新独立抽取 $R$。
+7. **问题二位置的名义先验假设**：仅在问题二的名义 Bayesian 评价中，取干扰源位置 $G$ 在目标圆域 $\Omega=\{g\in\mathbb R^2:\|g\|\le1800\,\mathrm m\}$ 内按面积均匀分布，并在首次观测前假设 $G$ 与 $R$ 独立；该先验用于数值期望计算，不影响只依赖题设硬约束的鲁棒几何结论。
+8. **问题二的名义概率模型与重复观测假设**：题目只规定测向误差硬界 $\varepsilon\in[-1^\circ,1^\circ]$，未给出真实概率分布，因此问题二的鲁棒几何结论仍只依赖该硬界。仅在计算 Bayesian 名义指标时，引入显式数值误差模型：首次观测将 $[-1^\circ,1^\circ]$ 划分为 $[-1,-1/3]$、$[-1/3,1/3]$、$[1/3,1]$ 三个等宽区间，概率质量取 $(0.2,0.6,0.2)$，并在各区间内采用常密度；第二观测的测角积分采用 $-2/3^\circ,0^\circ,+2/3^\circ$ 三个 quadrature atoms，并使用相同概率质量。该分布仅为名义建模假设，不代表题设真实误差规律。同一地点的环境误差固定，重复观测不产生独立平均收益。
 
 ## 四、符号说明
 
@@ -95,19 +105,24 @@
 | $\mathcal E_t$ | 时刻 $t$ 已证明无源的频道集合 | 无 |
 | $\mathcal U_t$ | 时刻 $t$ 仍待判明存在性的频道集合 | 无 |
 | $u_i$ | 机器狗在第 $i$ 步采取的决策动作（移动、切换频道、检测或清除） | 无 |
-| $G = (X,Y)$ | 干扰源的真实空间位置坐标 | $\text{m}$ |
-| $R$ | 干扰源的有效信号接收半径 ($1000 \sim 1500\,\text{m}$) | $\text{m}$ |
-| $S$ / $q$ | 首次检测点坐标 / 第二检测点候选坐标 | $\text{m}$ |
-| $H_1$ / $H_2$ | 首次观测历史信息 / 第二次观测后的累积历史信息 | — |
-| $\pi_0(g,r)$ / $\pi_1(g,r \mid H_1)$ | 干扰源位置与接收半径的联合先验密度 / 联合后验密度 | $\text{m}^{-3}$ |
-| $p_1(g \mid H_1)$ | 首次观测后干扰源位置的边缘后验概率密度 | $\text{m}^{-2}$ |
-| $\mathcal{F}_1$ / $K_1$ | 首次检测后的精确位置支持集 / 闭合凸外包区域 | — |
-| $W(S,\theta,\delta)$ | 由检测点 $S$、示向角 $\theta$ 与误差 $\delta$ 决定的测向楔形区域 | — |
-| $Q_{\text{g}}$ | 保障绝对能接收到信号的极端稳健候选区域 | — |
-| $M(T_{\max})$ | 在最大允许时间 $T_{\max}$ 内机器狗的时间可达域 | — |
-| $\rho(q)$ | 第二检测点 $q$ 处的预测信号接收概率 | — |
-| $J_{\boldsymbol{\omega}}(\xi)$ | 融合期望直径、期望面积与移动时间的无量纲综合损失函数 | — |
-| $\omega_D, \omega_A, \omega_T$ | 综合损失函数中几何直径、区域面积与移动时间的权重系数 | — |
+| $G=(X,Y)$ | 干扰源真实空间位置 | $\text{m}$ |
+| $R$ | 干扰源固定有效接收半径，$R\in[1000,1500]$ | $\text{m}$ |
+| $S_1$ / $q$ | 第一次检测点 / 第二检测点候选位置 | $\text{m}$ |
+| $H_1$ | 第一次 direction 观测后的历史信息 | — |
+| $\pi_1(g,r\mid H_1)$ | 首次观测后的 $(G,R)$ 联合后验 | — |
+| $\mathcal F_1$ | 第一次 direction 观测后的真实位置硬支持集 | — |
+| $K_{1,\mathrm{out}}$ | $\mathcal F_1$ 的闭合凸保守外包 | — |
+| $W(S,\theta,\delta)$ | 由检测点、示向角与误差硬界构成的测向楔形 | — |
+| $\mathcal C_{\mathrm{poss}}$ | 至少存在一个可能源位置可在 $1500\,\mathrm m$ 内被接收的第二检测候选域 | — |
+| $\mathcal C_{\mathrm{rec}}$ | 对所有可能源位置均在 $1000\,\mathrm m$ 内、可保证接收的候选域 | — |
+| $Z_q$ | 第二检测点 $q$ 的响应，取 $\mathrm{near}$、$\mathrm{direction}$ 或 $\mathrm{no\_signal}$ | — |
+| $\Psi_D(q)$ | 第二次观测后定位直径的名义期望指标 | $\text{m}$ |
+| $u_{\mathrm{proxy}}(q)$ | 有限 后验样本支持与有限方向网格上的最坏直径数值代理 | $\text{m}$ |
+| $\bar U(q)$ | 连续响应保守外包得到的最坏直径上界诊断量 | $\text{m}$ |
+| $u_{\mathrm{proxy}}^*$ | 候选集上的最小鲁棒代理值 | $\text{m}$ |
+| $\mathcal A_\rho$ | 允许 $u_{\mathrm{proxy}}$ 相对最优值退化不超过比例 $\rho$ 的 鲁棒包络 | — |
+| $\rho$ | Robust-envelope 相对容许系数，属于建模/敏感性参数 | — |
+| $\tau$ | Bayesian/Hybrid 近最优集合的数值容差，本文取 $0.5\,\mathrm m$ | $\text{m}$ |
 | **算法与训练参数** |  |  |
 | $\mathcal I_{\mathrm{choice}}$ | 采样批次中真实的自由选择决策步集合 | 无 |
 | $\mathcal I_V$ | 采样批次中有效价值估计样本集合 | 无 |
@@ -210,241 +225,426 @@ $$\alpha\in\{5^\circ,10^\circ,15^\circ,20^\circ,30^\circ,45^\circ,60^\circ,75^\c
 
 实验中出现的 $r^*=D/2$ 只属于该对称构型，不是一般凸集的性质。因此，第二检测点的选择应主动改善交会几何，同时兼顾移动成本和信号接收可靠性。
 
+
 ### 5.2 问题二的模型建立与求解
 
-### 5.2.1 联合隐状态与贝叶斯联合后验更新
-
-在首次检测点 $S = (x_S, y_S)$ 处，机器狗对已确认存在的全向干扰源获得示向度 $\theta$。设干扰源真实位置为 $G = (X, Y) \in \mathbb{R}^2$，有效信号接收半径为 $R \in [1000, 1500]\,\mathrm{m}$。系统将状态表示为联合隐状态 $(G, R)$。
-
-#### (1) 联合先验分布
-
-依据先验假设，干扰源在半径 $1800\,\mathrm{m}$ 的目标圆域 $\Omega = \{g \in \mathbb{R}^2 : \Vert{}g\Vert{} \le 1800\}$ 内按面积均匀分布，且接收半径 $R \sim \operatorname{Unif}[1000, 1500]$ 与位置 $G$ 独立。联合先验密度为：
-
-$$\pi_0(g,r) = \frac{\mathbf 1_{\{g\in\Omega\}}}{\pi \cdot 1800^2} \frac{\mathbf 1_{\{1000\le r\le1500\}}}{500} \tag{1}$$
-
-#### (2) 首次观测似然与联合后验
-
-定义 $d_S(g) = \Vert{}g-S\Vert{}$，方位角 $h_S(g) = \operatorname{atan2}(g_y-S_y, g_x-S_x)$。对全向干扰源，首次检测响应 $Y_1$ 按距离分类：
-
-$$Y_1 = \begin{cases} \mathrm{near}, & d_S(g) \le 5, \\ \mathrm{direction}(\theta), & 5 < d_S(g) \le r, \\ \mathrm{no\_signal}, & d_S(g) > r. \end{cases}$$
-
-当 $Y_1 = \mathrm{direction}(\theta)$ 时，隐含条件 $d_S(g) > 5$。在测角误差服从密度 $f_\varepsilon$（主模型取 $\delta=1^\circ$ 均匀分布 $f_\varepsilon(e) = \frac{1}{2\delta} \mathbf{1}_{\{\vert{}e\vert{}\le \delta\}}$）下，观测似然为：
-
-$$L_1(\theta\mid g,r,S) = \mathbf 1_{\{5<d_S(g)\le r\}}\, f_\varepsilon\!\left(\operatorname{wrap}\!\left[\theta-h_S(g)\right]\right) \tag{2}$$
-
-记首次观测历史 $H_1 = (S, \mathrm{direction}, \theta)$，首次检测后的联合后验密度为：
-
-$$\pi_1(g,r\mid H_1) = \frac{L_1(\theta\mid g,r,S)\pi_0(g,r)}{\int_{\Omega}\int_{1000}^{1500} L_1(\theta\mid \xi,\rho,S)\pi_0(\xi,\rho) \,\mathrm d\rho\,\mathrm d\xi} \tag{3}$$
-
-对接收半径 $r$ 积分得到干扰源位置的边缘后验密度：
-
-$$p_1(g\mid H_1) = \int_{1000}^{1500}\pi_1(g,r\mid H_1)\,\mathrm dr \propto \mathbf 1_{\{g\in\Omega\}} \mathbf 1_{\{5<d_S(g)\le1500\}} \mathbf 1_{\{\vert{}\operatorname{wrap}(\theta-h_S(g))\vert{}\le\delta\}} p_{\mathrm{rec}}\!\left(d_S(g)\right) \tag{4}$$
-
-其中先验接收概率函数 $p_{\mathrm{rec}}(d)$ 为：
-
-$$p_{\mathrm{rec}}(d) = \begin{cases} 1, & 0\le d\le1000, \\ \frac{1500-d}{500}, & 1000<d<1500, \\ 0, & d\ge1500. \end{cases} \tag{5}$$
-
-式（4）表明：后验位置分布在楔形远端（$1000\,\mathrm{m} < d < 1500\,\mathrm{m}$）因接收概率衰减而并非均匀分布，这为后续精细化选点提供了准确的概率权重。由于同一干扰源的接收半径在一次任务中保持不变，后续检测继承联合后验 $\pi_1$，不能重新独立抽取 $R$。
-
----
-
-### 5.2.2 定位几何可行域与决策候选空间构建
-
-为了兼顾定位精度的提高与信号接收的可靠性，本模型采用“双层几何表示”对位置集合进行刻画。记测向楔形为 $W(S,\theta,\delta) = \{g: \vert{}\operatorname{wrap}(h_S(g)-\theta)\vert{} \le \delta\}$。
-
-首次观测对应的精确位置支持集 $\mathcal{F}_1$ 及其闭合凸外包 $K_1$ 分别为：
-
-$$\mathcal F_1 = \Omega\cap W(S,\theta,\delta) \cap\mathcal B(S,1500) \cap\{g:d_S(g)>5\} \tag{6}$$
-
-$$K_1 = \Omega\cap W(S,\theta,\delta)\cap\mathcal B(S,1500), \qquad \mathcal F_1\subset K_1 \tag{7}$$
-
-其中精确可行集用于贝叶斯更新与面积计算，闭合凸外包仅用于不改变其数值的直径与最小覆盖圆半径计算。
-
-#### (1) 局部位移坐标系与时间可达域
-
-为避免混淆全局坐标与移动决策，定义沿示向轴的单位方向向量 $u=(\cos\theta,\sin\theta)^{\mathsf T}$ 与法向向量 $n=(-\sin\theta,\cos\theta)^{\mathsf T}$，构造正交基矩阵 $B_\theta=[\,u\ \ n\,]$。定义局部决策变量 $\xi=(a,b)^{\mathsf T}$，其中 $a$ 为沿示向轴的纵向推进量，$b$ 为侧向基线偏移量。全局第二检测点坐标映射为：
-
-$$q(\xi) = S + B_\theta\xi = S + a u + b n \tag{8}$$
-
-当本次移动与检测的最大可用时间为 $T_{\max} > 5\,\mathrm{s}$（机器狗移动速度 $v=5\,\mathrm{m/s}$，检测耗时 $5\,\mathrm{s}$）时，允许的最大移动距离为 $R_T = 5(T_{\max}-5)$。局部坐标下的时间可达域表示为：
-
-$$M(T_{\max}) = \left\{ S+a u+b n : a^2+b^2\le R_T^2 \right\} \tag{9}$$
-
-#### (2) 高置信接收候选区域
-
-第二检测点 $q$ 处的预测信号接收概率为：
-
-$$\rho(q) = \int_{\Omega}\int_{1000}^{1500} \mathbf 1_{\{\Vert{}g-q\Vert{}\le r\}} \pi_1(g,r\mid H_1) \,\mathrm dr\,\mathrm dg \tag{10}$$
-
-给定名义接收置信水平 $\eta_0$（如 $0.95$），为防止固定阈值导致候选域为空，定义有效自适应阈值 $\eta_{\mathrm{eff}} = \min\{\eta_0, \max_{q\in M(T_{\max})}\rho(q)\}$。第二检测点的最终候选决策空间为：
-
-$$\mathcal C = \left\{ q\in M(T_{\max}) : \rho(q)\ge\eta_{\mathrm{eff}} \right\}, \qquad \Xi = \{\xi \in \mathbb{R}^2 : q(\xi) \in \mathcal{C}\} \tag{11}$$
-
----
-
-### 5.2.3 第二次观测的分段贝叶斯更新与状态预测
-
-设第二检测点为 $q=q(\xi)$，观测结果记为 $Z_q$。第二次观测似然在联合状态 $(G, R)$ 上定义：
-
-$$L_2(z\mid g,r,q) = \begin{cases} \mathbf 1_{\{d_q(g)\le5\}}, & z=\mathrm{near},\\ \mathbf 1_{\{5<d_q(g)\le r\}}\, f_\varepsilon\!\left(\operatorname{wrap}[z-h_q(g)]\right), & z\in[-\pi,\pi)\quad(\mathrm{direction}),\\ \mathbf 1_{\{d_q(g)>r\}}, & z=\mathrm{no\_signal}. \end{cases} \tag{12}$$
-
-更新后的二次联合后验密度与位置边缘后验分布分别为：
-
-$$\pi_2(g,r\mid H_1,z,q) = \frac{L_2(z\mid g,r,q)\pi_1(g,r\mid H_1)}{\int_{\Omega}\int_{1000}^{1500} L_2(z\mid \xi,\rho,q)\pi_1(\xi,\rho\mid H_1) \,\mathrm d\rho\,\mathrm d\xi} \tag{13}$$
-
-$$p_2(g\mid H_1,z,q) = \int_{1000}^{1500}\pi_2(g,r\mid H_1,z,q)\,\mathrm dr \tag{14}$$
-
-对于连续方向响应 $z \in [-\pi, \pi)$，定义其预测次密度（Predictive Sub-density）：
-
-$$\lambda_{\mathrm{dir}}(z\mid H_1,q) = \int_{\Omega}\int_{1000}^{1500} L_2(z\mid g,r,q)\pi_1(g,r\mid H_1) \,\mathrm dr\,\mathrm dg \tag{15}$$
-
-二次观测后的几何位置闭合外包 $K_2(z,q)$ 按响应分类更新：
-
-$$K_2(z,q) = \begin{cases} K_1\cap\mathcal B(q,5), & z=\mathrm{near},\\ K_1\cap W(q,z,\delta)\cap\mathcal B(q,1500), & z\in[-\pi,\pi),\\ K_1\setminus\mathcal B^\circ(q,1000), & z=\mathrm{no\_signal}. \end{cases} \tag{16}$$
-
-当发生 $\mathrm{no\_signal}$ 时，$E_2^{\mathrm{no}}(q) = K_1\setminus\mathcal B^\circ(q,1000)$ 为非凸闭合外包，计算直径或覆盖圆时取其闭合凸包 $K_{2,\mathrm c}^{\mathrm{no}}(q) = \overline{\operatorname{conv}}(E_2^{\mathrm{no}}(q))$，由凸包性质知其直径与最小覆盖圆半径保持不变。
-
----
-
-### 5.2.4 期望定位直径与综合损失优化模型
-
-决策第二检测点 $q(\xi)$ 时，第二次观测结果尚未发生。全概率空间下的**期望定位直径** $\Psi_D(q)$ 与**期望定位面积** $\Psi_A(q)$ 计算如下：
-
-$$\Psi_D(q) = \Pr(\mathrm{near}\mid H_1,q) D\!\left(K_2^{\mathrm{near}}(q)\right) + \Pr(\mathrm{no\_signal}\mid H_1,q) D\!\left(K_2^{\mathrm{no}}(q)\right) + \int_{-\pi}^{\pi} D\!\left(K_2^{\mathrm{dir}}(z,q)\right) \lambda_{\mathrm{dir}}(z\mid H_1,q)\,\mathrm dz \tag{17}$$
-
-$$\Psi_A(q) = \mathbb E\!\left[ \mathcal A\!\left(K_2(Z_q,q)\right) \middle\vert{}H_1,q \right] \tag{18}$$
-
-移动与检测的时间开销为 $T(q) = \frac{\Vert{}q-S\Vert{}}{5} + 5$。取初始无量纲化基准 $D_0 = D(K_1), A_0 = \mathcal{A}(K_1), T_0 = T_{\max}$，构造多目标综合损失函数 $J_{\boldsymbol\omega}(\xi)$：
-
-$$\min_{\xi\in\Xi} J_{\boldsymbol\omega}(\xi) = \omega_D\frac{\Psi_D(q(\xi))}{D_0} + \omega_A\frac{\Psi_A(q(\xi))}{A_0} + \omega_T\frac{T(q(\xi))}{T_0} \tag{19}$$
-
-$$\text{s.t.} \quad \omega_D,\omega_A,\omega_T\ge0, \qquad \omega_D+\omega_A+\omega_T=1, \qquad \omega_T>0 \tag{20}$$
-
-由于显式要求 $\omega_T > 0$，避免了时间约束项退化失效。
-
----
-
-### 5.2.5 鲁棒不确定集合与最坏性能约束模型
-
-为使选点策略能够承受测角误差界限或接收距离的轻微失配，模型引入位置、测角、接收距离和时间的非负安全裕量 $\eta_g, \eta_\theta, \eta_r, \eta_T$。
-
-#### (1) 鲁棒膨胀不确定集
-
-定义膨胀后的位置支持集、放大测角界限与区间接收距离：
-
-$$\mathcal S_1^{\mathrm{rob}} = \left(\mathcal S_1\oplus\mathcal B(0,\eta_g)\right)\cap\Omega, \quad \delta_{\mathrm{rob}}=\delta+\eta_\theta, \quad [r_{\min},r_{\max}] = [1000-\eta_r,\ 1500+\eta_r] \tag{21}$$
-
-> **说明**：式（21）中的算子 $\oplus$ 表示 Minkowski 和，用于对位置不确定区域进行 $\eta_g$ 空间半径的几何膨胀，以防御空间位置的轻微扰动。
-> 
-> 
-
-由此得到带时间裕量的安全可行域 $\Xi_{\mathrm{safe}}$ 与保证接收域 $\Xi_{\mathrm{rec}}$：
-
-$$\Xi_{\mathrm{safe}} = \{ \xi\in\Xi : T(q(\xi))\le T_{\max}-\eta_T \}, \quad \Xi_{\mathrm{rec}} = \left\{ \xi\in\Xi_{\mathrm{safe}} : \sup_{g\in\mathcal S_1^{\mathrm{rob}}} \Vert{}q(\xi)-g\Vert{}\le r_{\min} \right\} \tag{22}$$
-
-若任务要求第二次检测必然收到信号，取许可决策域 $\Xi_{\mathrm{adm}} = \Xi_{\mathrm{rec}}$；若 $\Xi_{\mathrm{rec}} = \varnothing$，则系统自动降级退回 $\Xi_{\mathrm{safe}}$ 并显式保留无信号分支（即退化至式 11 的自适应降级逻辑）。
-
-#### (2) 最坏性能指标与双轨选点准则
-
-对任意有效的鲁棒响应集合 $z \in \mathcal{Z}_{\mathrm{rob}}(q)$，定义最坏定位直径 $\overline{D}(\xi)$、最坏面积 $\overline{A}(\xi)$ 与最坏覆盖半径 $\overline{r}(\xi)$：
-
-$$\overline D(\xi) = \sup_{z\in\mathcal Z_{\mathrm{rob}}} D\!\left(K_2^{\mathrm{rob}}(z,q(\xi))\right), \quad \overline A(\xi) = \sup_{z\in\mathcal Z_{\mathrm{rob}}} \mathcal A\!\left(K_2^{\mathrm{rob}}(z,q(\xi))\right), \quad \overline r(\xi) = \sup_{z\in\mathcal Z_{\mathrm{rob}}} r_*\!\left(K_2^{\mathrm{rob}}(z,q(\xi))\right) \tag{23}$$
-
-根据信息完备度，选点准则分类如下：
-
-$$\text{选点准则} = \begin{cases} \text{贝叶斯目标与最坏约束联合优化 (式 25)}, & f_\varepsilon \text{ 可信, } \Xi_{\mathrm{adm}}\ne\varnothing, \\ \text{纯极小极大几何最坏损失优化 (式 26)}, & \text{仅已知误差硬界, } \Xi_{\mathrm{adm}}\ne\varnothing, \\ \text{退回 } \Xi_{\mathrm{safe}} \text{ 并显式保留无信号分支}, & \Xi_{\mathrm{rec}}=\varnothing. \end{cases} \tag{24}$$
-
-当概率密度 $f_\varepsilon$ 可信时，推荐优化模型为：
-
-$$\min_{\xi\in\Xi_{\mathrm{adm}}} J_{\boldsymbol\omega}(\xi) \quad \text{s.t.} \quad \overline D(\xi)\le D_{\lim}, \quad \overline A(\xi)\le A_{\lim}, \quad (\text{若要求一次覆盖则加入 } \overline r(\xi)\le20) \tag{25}$$
-
-当仅已知误差硬界时，采用纯极小极大（Minimax）优化：
-
-$$\min_{\xi\in\Xi_{\mathrm{adm}}} \left[ \omega_D\frac{\overline D(\xi)}{D_0} + \omega_A\frac{\overline A(\xi)}{A_0} + \omega_T\frac{T(q(\xi))}{T_0} \right] \tag{26}$$
-
-针对概率分布或参数偏好，可以在权重集合 $\mathcal{W}$ 上扫描生成鲁棒 Pareto 界面 $\mathcal{P}_{\mathrm{rob}}$，检验决策在时间与精度平衡上的稳定性。
-
----
-
-### 5.2.6 求解算法流程与决策执行逻辑
-
-为实现第二检测点选择与二次检测后的动态决策，设计了完整的算法流程。
-
----
-
-> **【插入图 2：第二检测点贝叶斯实验设计与决策执行流程图】**
-> *(建议在此处插入流程图。流程图绘制说明：包含“首次检测历史 $H_1$” $\rightarrow$ “构建时间可达域 $M(T_{\max})$ 与高置信候选域 $\mathcal{C}$” $\rightarrow$ “鲁棒可行性检验 $\Xi_{\mathrm{adm}}$” $\rightarrow$ “式(25)贝叶斯/式(26)极小极大优化” $\rightarrow$ “得到 $q^*$” $\rightarrow$ “执行二次检测” $\rightarrow$ “依据式(27)条件决策”的全流程。)*
-> 
-> 
-
----
-
-#### (1) 求解算法核心步骤
-
-1. **角度求积分离散化**：将连续角度 $[-\pi, \pi)$ 分解为 $M$ 个微元，中点为 $z_\ell$，采用步长逐级折半复合中点求积，直至相对误差小于 $\tau_{\mathrm{int}}=10^{-4}$。
-
-
-2. **几何特征计算**：对每个离散角 $z_\ell$，调用问题一的半平面交算法求出 $K_2^{\mathrm{dir}}(z_\ell, q)$，利用**旋转卡壳算法**求极点间最大距离 $D(K_2)$，利用 Green 公式（含圆弧）或鞋盒公式求面积 $\mathcal{A}(K_2)$，并利用 Welzl 算法求 $r_*(K_2)$。
-
-
-3. **最坏性能数值认证**：利用 Lipschitz 常数 $L_z(\xi)$ 对网格最大值进行上界补正，确保最坏损失的确定性上界认证 $\sup_{z} \mathcal{L}_{\mathrm{rob}}(z, \xi) \le \max_\ell \mathcal{L}_{\mathrm{rob}}(z_\ell, \xi) + \frac{L_z(\xi)\Delta z}{2}$。
-
-
-4. **两阶段优化求解**：在局部坐标系 $(a,b)$ 内先进行极坐标粗网格扫描，找到极小值邻域后，以 SQP 算法求解连续变量 $\xi^* = (a^*, b^*)^{\mathsf T}$，得到全局最优检测点 $q^* = S + a^* u + b^* n$。
-
-
-
-#### (2) 第二次观测后的条件决策规程
-
-当机器狗在 $q^*$ 完成第二次检测并获得响应 $z$ 后，严格按如下决策规程执行：
-
-$$a^*(z) = \begin{cases} \text{在 } q^* \text{ 处定位并清除}, & z = \text{near}, \\ \text{移动至鲁棒最小覆盖圆圆心 } c_{\mathrm{rob}}^* \text{ 后定位并清除}, & z = \text{direction}, \ r_*(K_2^{\mathrm{rob}}(z,q^*)) \le 20, \\ \text{保留联合后验 } \pi_2 \text{ 并准备继续测向}, & z = \text{direction}, \ r_*(K_2^{\mathrm{rob}}(z,q^*)) > 20, \\ \text{按 } \pi_2 \text{ 更新状态并在 } \Xi_{\mathrm{safe}} \text{ 中重新选点}, & z = \text{no\_signal}, \\ \text{检查观测并扩大鲁棒误差裕量重新计算}, & \int L_2 \pi_1 = 0 \text{ (观测冲突)}. \end{cases} \tag{27}$$
-
-其中鲁棒最小覆盖圆圆心求解为 $c_{\mathrm{rob}}^* = \arg\min_c \max_{g\in K_2^{\mathrm{rob}}(z,q)} \Vert{}g-c\Vert{}$。当发生观测冲突（归一化常数为零）时，说明实际误差超出了预设界限，此时系统自动扩大安全裕量 $\eta_\theta, \eta_g$ 重新计算，而绝不强行归一化空后验。
-
----
-
-### 5.2.7 成对蒙特卡洛验证与垂直布点对比分析
-
-为了客观量化本模型优化策略 $q^*$ 相比于传统“沿首次示向轴垂直移动”策略（$q_\perp$）的几何与概率优势，建立成对蒙特卡洛（Pairwise Monte Carlo）仿真验证机制。
-
-#### (1) 配对样本生成与对照点选择
-
-试验生成 $N = 5000$ 组满足联合先验且经首次观测似然 $L_1$ 加权筛选的隐状态样本 $(G^{(k)}, R^{(k)})$，精确服从后验密度 $\pi_1(g,r \mid H_1)$。设定垂直对照点为移动相同距离 $L = \Vert{}q^* - S\Vert{}$ 的法线方向点 $q_\perp^\pm = S \pm L n$，并取两者中期望定位直径较优者作为保守对照：
-
-$$q_\perp = \arg\min_{q \in \{q_\perp^+, q_\perp^-\}} \Psi_D(q) \tag{28}$$
-
-在第二次检测采样时，保持样本自身的真实 $R^{(k)}$ 不变，仅独立生成新位置的测向误差。
-
----
-
-> **【插入图 3：优化选点与垂直布点在后验分布下的交会几何与接收域对比图】**
-> *(建议在此处插入几何对比图。图像绘制说明：画出测向楔形 $W$、高置信接收域 $\mathcal{C}$、时间可达域 $M(T_{\max})$、最优选点 $q^*$（兼顾纵向推进 $a^*$ 与横向偏移 $b^*$）以及垂直对照点 $q_\perp$。直观展示 $q^*$ 如何避开远端无信号风险并拉大有效交叉角。)*
-> 
-> 
-
----
-
-#### (2) 性能评估指标与优越性验证
-
-对策略 $s \in \{*, \perp\}$，统计平均定位直径 $\overline{D}_s$、$90\%$ 分位数尾部风险 $Q_{0.9, s}$、有效信号接收率 $\widehat{P}_{\mathrm{rec}, s}$ 以及单点可清除率 $\widehat{P}_{40, s}$（对应 $r_* \le 20\,\mathrm{m}$）。定义量化相对优势指标：
-
-$$\Gamma_D = \frac{\overline D_\perp-\overline D_*}{\overline D_\perp}\times100\%, \qquad \Gamma_{0.9} = \frac{Q_{0.9,\perp}-Q_{0.9,*}}{Q_{0.9,\perp}}\times100\% \tag{29}$$
-
-$$\Delta P_{\mathrm{rec}} = \widehat P_{\mathrm{rec},*} - \widehat P_{\mathrm{rec},\perp}, \qquad \Delta P_{40} = \widehat P_{40,*} - \widehat P_{40,\perp} \tag{30}$$
-
-为了排除“优势仅来自垂直点无信号响应较多”的干扰因素，进一步在两种策略均成功收到示向角的配对子集 $\mathcal{I}_{\mathrm{both}} = \{k : Z_*^{(k)}=\mathrm{direction}, Z_\perp^{(k)}=\mathrm{direction}\}$ 上计算纯交叉几何改善率 $\Gamma_D^{\mathrm{both}}$。若仿真结果满足：
-
-$$\Gamma_D > 0, \quad \Delta P_{\mathrm{rec}} > 0, \quad \Gamma_D^{\mathrm{both}} > 0 \tag{31}$$
-
-则分别从**总体定位精度**、**信号接收可靠性**与**纯几何交会效果**三个维度充份证明了本文策略显著优于传统垂直布点策略。同时，对样本差值 $\Delta D_k = D_\perp^{(k)} - D_*^{(k)}$ 进行 Bootstrap 检验，确认其 $95\%$ 置信区间严格大于零，保证了量化优势的统计稳定性。
-
----
-
-### 5.2.8 多频段全局决策的建模衔接接口说明
-
-为了实现问题二单目标选点与后续多频段、多干扰源全局搜寻规划的无缝衔接，问题二模型向后续决策层输出标准化接口状态元组 $\mathcal{I}_2$：
-
-$$\mathcal I_2 = \left( \pi_2,\ \mathcal S_2,\ \mathcal S_2^{\mathrm{rob}},\ K_2^{\mathrm{rob}},\ \mathcal A(K_2^{\mathrm{rob}}),\ D(K_2^{\mathrm{rob}}),\ r_*(K_2^{\mathrm{rob}}),\ c_{\mathrm{rob}}^* \right) \tag{32}$$
-
-在后续多频道调度中，$\pi_2$ 用于指导机器狗对多频道的期望收益进行概率排序，$\mathcal{S}_2$ 保存精确几何约束。只有当满足 $r_*(K_2^{\mathrm{rob}}) \le 20\,\mathrm{m}$ 的确定性几何条件时，全局模型才允许向该频道分配“执行清除”动作，从而防止将高后验概率误判为已覆盖清除，确保了控制策略的绝对可靠性。
+#### 5.2.1 首次观测后的联合状态与硬支持集
+
+设第一次检测点为 $S_1=(x_1,y_1)$，首次响应为 $\mathrm{direction}(\theta_1)$。干扰源真实位置记为 $G=(X,Y)$，其固定接收半径为
+\[
+R\in[1000,1500]\ \mathrm m.
+\]
+一次 `direction` 响应同时意味着目标不在 `near` 范围内，且仍处于该源自身的接收半径内，因此
+\[
+5<\|G-S_1\|\le R.
+\]
+
+记目标圆域为
+\[
+\mathcal C_0=\{g\in\mathbb R^2:\|g\|\le1800\},
+\]
+测角硬界为 $\delta=1^\circ$，则首次观测后的真实位置支持集为
+\[
+\boxed{
+\mathcal F_1=
+\mathcal C_0
+\cap W(S_1,\theta_1,\delta)
+\cap B(S_1,1500)
+\cap\{g:\|g-S_1\|>5\}.
+}
+\tag{1}
+\]
+
+其中
+\[
+W(S_1,\theta_1,\delta)=
+\left\{
+g:
+\left|
+\operatorname{wrap}
+\bigl(
+\operatorname{bearing}(S_1,g)-\theta_1
+\bigr)
+\right|
+\le\delta
+\right\}.
+\tag{2}
+\]
+
+为兼顾物理真实性与保守几何计算，本文同时维护三种表示：真实硬支持集 $\mathcal F_1$、用于名义积分的联合后验样本，以及闭合凸保守外包
+\[
+K_{1,\mathrm{out}}\supseteq\overline{\mathcal F_1}.
+\tag{3}
+\]
+三者分别服务于硬约束、Bayesian 数值评价和安全外包，不能混用。
+
+名义先验取
+\[
+G\sim\operatorname{UniformArea}(\mathcal C_0),\qquad
+R\sim\operatorname{Unif}[1000,1500],
+\tag{4}
+\]
+并假定二者先验独立。题目并未给出测角误差真实分布，因此本文仅为 Bayesian 数值积分引入显式名义模型：首次观测将 $[-1^\circ,1^\circ]$ 分为三个等宽区间，概率质量取
+\[
+(0.2,0.6,0.2).
+\tag{5}
+\]
+据此获得联合后验样本
+\[
+\{(G_i,R_i,w_i)\}_{i=1}^N
+\approx \pi_1(g,r\mid H_1).
+\tag{6}
+\]
+其中 $R_i$ 是对应干扰源的固定属性，第二次观测继续沿用同一 $R_i$，不重新抽样。
+
+#### 5.2.2 第二检测点的候选域
+
+第二检测点记为 $q\in\mathbb R^2$。题目只限制干扰源位于半径 $1800\,\mathrm m$ 的目标圆域内，并未限制机器狗必须停留在该圆域内，因此候选点 $q$ 不作圆域裁剪。
+
+若至少存在一个首次支持位置与 $q$ 的距离不超过最大接收半径 $1500\,\mathrm m$，则该点具有再次接收信号的可能性。定义
+\[
+\boxed{
+\mathcal C_{\mathrm{poss}}
+=
+\left\{
+q:
+\inf_{g\in\overline{\mathcal F}_1}\|q-g\|
+\le1500
+\right\}
+=
+\overline{\mathcal F}_1\oplus B(0,1500).
+}
+\tag{7}
+\]
+
+另一方面，所有干扰源的接收半径均不小于 $1000\,\mathrm m$。若
+\[
+\sup_{g\in\overline{\mathcal F}_1}\|q-g\|\le1000,
+\]
+则无论真实 $R$ 为何，第二次检测都必在覆盖范围内。定义保证接收域
+\[
+\boxed{
+\mathcal C_{\mathrm{rec}}
+=
+\left\{
+q:
+\sup_{g\in\overline{\mathcal F}_1}\|q-g\|
+\le1000
+\right\}
+=
+\bigcap_{g\in\overline{\mathcal F}_1}B(g,1000).
+}
+\tag{8}
+\]
+通常 $\mathcal C_{\mathrm{rec}}\subseteq\mathcal C_{\mathrm{poss}}$，且前者可能为空。程序中，$\mathcal C_{\mathrm{poss}}$ 用于候选生成，$\mathcal C_{\mathrm{rec}}$ 用于判断 `no_signal` 分支能否被严格排除。
+
+#### 5.2.3 第二次响应与名义期望定位直径
+
+给定候选点 $q$ 与联合状态 $(G,R)$，令
+\[
+d_q=\|G-q\|.
+\]
+第二次响应分为
+\[
+Z_q=
+\begin{cases}
+\mathrm{near},&d_q\le5,\\
+\mathrm{direction},&5<d_q\le R,\\
+\mathrm{no\_signal},&d_q>R.
+\end{cases}
+\tag{9}
+\]
+
+不同响应分别对支持集进行裁剪。`near` 对应
+\[
+\mathcal S_2^{\mathrm{near}}
+=
+\mathcal F_1\cap B(q,5),
+\tag{10}
+\]
+若返回 $\mathrm{direction}(\theta_2)$，则
+\[
+\mathcal S_2^{\mathrm{dir}}
+=
+\mathcal F_1
+\cap W(q,\theta_2,\delta)
+\cap B(q,1500),
+\tag{11}
+\]
+且联合样本层仍需满足 $5<d_q\le R$；若返回 `no_signal`，则保留满足 $d_q>R$ 的联合样本。
+
+在第二次观测尚未发生时，以观测后支持集直径的名义期望衡量候选点的平均定位收益：
+\[
+\boxed{
+\Psi_D(q)
+=
+\mathbb E
+\left[
+D\bigl(\mathcal S_2(Z_q,q)\bigr)
+\mid H_1,q
+\right].
+}
+\tag{12}
+\]
+
+数值计算以加权联合后验样本近似上述期望。第二次测角积分采用
+\[
+-\frac23^\circ,\quad 0^\circ,\quad +\frac23^\circ
+\]
+三个 quadrature atoms，并使用概率质量 $(0.2,0.6,0.2)$。因此 $\Psi_D(q)$ 是显式名义误差模型下的数值指标，而不是由题设硬界直接推出的确定性量。
+
+#### 5.2.4 最坏直径代理与保守上界
+
+仅最小化 $\Psi_D(q)$ 无法控制少数不利响应，因此理论上定义
+\[
+U(q)=\sup_z D\bigl(\mathcal S_2(z,q)\bigr).
+\tag{13}
+\]
+由于 direction 响应连续变化，且 后验分布以有限样本表示，程序在有限 后验样本支持和有限方向中心网格上计算
+\[
+\boxed{u_{\mathrm{proxy}}(q)}
+\tag{14}
+\]
+作为 Minimax 与 Hybrid 的主鲁棒指标。需要强调，
+\[
+u_{\mathrm{proxy}}(q)\neq U(q),
+\]
+它只是有限样本、有限角度网格上的数值代理。
+
+为保守覆盖连续 direction 响应，将角度区间划分为若干 bins。若第 $j$ 个 bin 中心为 $c_j$、宽度为 $\Delta$，则以扩大的半角
+\[
+\delta+\frac{\Delta}{2}
+\]
+构造
+\[
+K_{2,j}^{\mathrm{dir,out}}
+=
+K_{1,\mathrm{out}}
+\cap
+W\!\left(q,c_j,\delta+\frac{\Delta}{2}\right)
+\cap
+B_{\mathrm{out}}(q,1500).
+\tag{15}
+\]
+`near` 分支采用 $K_{1,\mathrm{out}}\cap B_{\mathrm{out}}(q,5)$；若 $q\notin\mathcal C_{\mathrm{rec}}$，则无法排除 `no_signal`，工程上保守取
+\[
+K_2^{\mathrm{no,out}}=K_{1,\mathrm{out}}.
+\tag{16}
+\]
+由此得到连续响应的保守诊断上界
+\[
+\boxed{
+\bar U(q)
+=
+\max_z D\bigl(K_{2,\mathrm{out}}(z,q)\bigr).
+}
+\tag{17}
+\]
+
+当 $q\notin\mathcal C_{\mathrm{rec}}$ 时，式（16）会使 $\bar U$ 较松。因此正式实验中出现的 $\bar U\approx1501.429\,\mathrm m$ 只能解释为保守外包诊断值，不能视为真实 最坏情形 定位误差。
+
+#### 5.2.5 Bayesian、Minimax 与 Hybrid 选点准则
+
+设统一最终候选集为 $\mathcal Q$。
+
+Bayesian 策略首先计算
+\[
+\Psi_D^*=\min_{q\in\mathcal Q}\Psi_D(q),
+\tag{18}
+\]
+考虑有限样本和离散候选造成的数值波动，引入
+\[
+\tau=0.5\,\mathrm m
+\]
+的 近最优 容差：
+\[
+\mathcal Q_B^\tau=
+\{q\in\mathcal Q:\Psi_D(q)\le\Psi_D^*+\tau\}.
+\tag{19}
+\]
+再在该集合内优先选择移动距离较小的候选点。因此本文报告的 Bayesian 点是数值近最优点，而非必须严格等于唯一的 $\Psi_D$ 最小点。
+
+Minimax 策略定义
+\[
+u_{\mathrm{proxy}}^*
+=
+\min_{q\in\mathcal Q}u_{\mathrm{proxy}}(q),
+\tag{20}
+\]
+优先选择 $u_{\mathrm{proxy}}$ 最小的候选点，并以移动距离作为并列时的次级规则。
+
+为在平均性能与最坏性能之间建立可解释折中，定义
+\[
+\boxed{
+\mathcal A_\rho
+=
+\left\{
+q\in\mathcal Q:
+u_{\mathrm{proxy}}(q)
+\le
+(1+\rho)u_{\mathrm{proxy}}^*
+\right\}.
+}
+\tag{21}
+\]
+Hybrid 策略先限制 $q\in\mathcal A_\rho$，再在其中选择 $\Psi_D$ 的 $\tau$-近最优候选，并以移动距离作为次级规则。参数 $\rho$ 表示允许相对于最优 鲁棒代理 的最大相对退化比例，即
+\[
+\boxed{
+\rho
+=
+\text{允许牺牲多少最坏性能，以换取名义平均性能}.
+}
+\tag{22}
+\]
+因此 $\rho$ 是本文的决策参数，而非题设常数或概率置信度。
+
+#### 5.2.6 粗网格—局部精化求解
+
+由于 $\Psi_D(q)$ 与 $u_{\mathrm{proxy}}(q)$ 均由响应分类、集合裁剪和有限 后验样本支持共同决定，目标函数呈现分段、非光滑特征。本文采用确定性的 coarse-to-fine 无梯度搜索。
+
+首先，以 $K_{1,\mathrm{out}}$ 的包围盒向外扩展 $1500\,\mathrm m$，构造间距
+\[
+h_0=300\,\mathrm m
+\tag{23}
+\]
+的粗网格，并剔除不属于 $\mathcal C_{\mathrm{poss}}$ 工程代理的候选点。
+
+随后分别取 coarse 阶段的 Bayesian、Minimax 和 $\rho=0.10$ Hybrid 点作为精化种子，对步长
+\[
+h\in\{120,40\}\,\mathrm m
+\tag{24}
+\]
+沿 $0^\circ,45^\circ,\ldots,315^\circ$ 八个方向生成局部候选。局部精化仅负责候选生成，不携带任何策略目标。最终将粗网格和精化候选合并、去重后，统一计算
+\[
+\left(
+\Psi_D,\,
+u_{\mathrm{proxy}},\,
+\bar U,\,
+\mathrm{movement}
+\right).
+\tag{25}
+\]
+Bayesian、Minimax 与 Hybrid 均从同一最终评分集合中选点，从而保证策略比较采用一致的候选预算和评价口径。
+
+#### 5.2.7 数值稳定性与离散化核验
+
+为避免把有限样本下的偶然结果作为正式结论，本文先对 后验样本规模进行稳定性检验。固定
+\[
+S_1=(-900,0),\qquad \theta_1=0^\circ,
+\]
+以及粗网格间距 $300\,\mathrm m$、局部精化步长 $(120,40)\,\mathrm m$、方向中心数 $180$ 和圆外包顶点数 $72$，逐步增加 先验抽样数。关键结果如表 2 所示。
+
+**表 2  后验样本规模稳定性诊断**
+
+| Prior draws | 保留样本数 | ESS | 接受率 |
+|---:|---:|---:|---:|
+| 300000 | 820 | 622.710 | 0.002733 |
+| 600000 | 1611 | 1218.692 | 0.002685 |
+| 1000000 | 2741 | 2076.570 | 0.002741 |
+
+当前 对称测试场景 关于 $x$ 轴镜像对称，因此 $(x,y)$ 与 $(x,-y)$ 为等价策略。为避免把镜像等价解之间的切换误判为位置不稳定，定义仅用于该 对称测试场景 的对称距离
+\[
+d_{\mathrm{sym}}(q_1,q_2)
+=
+\min
+\left\{
+\|q_1-q_2\|,
+\|q_1-\mathcal R_x(q_2)\|
+\right\},
+\quad
+\mathcal R_x(x,y)=(x,-y).
+\tag{26}
+\]
+在 $600000\rightarrow1000000$ 的比较中，Bayesian、Minimax 与 Hybrid 的 $d_{\mathrm{sym}}$ 分别约为
+\[
+0,\qquad 0,\qquad 30.615\,\mathrm m,
+\]
+且三类策略的 $\Psi_D$ 与 $u_{\mathrm{proxy}}$ 相对变化均低于 $10\%$。综合稳定性与计算成本，本文采用 $600000$ 作为后续正式计算的 prior draw 规模。
+
+随后进行最小离散化核验。方向中心数由 $180$ 增至 $360$ 时，策略位置和 $u_{\mathrm{proxy}}$ 已基本稳定，但 $\Psi_D$ 仍变化约 $17.1\%$、$21.8\%$ 和 $17.4\%$，因此采用已经完成计算的更细 $360$ 中心；受时间和计算成本限制，不继续运行 $720$ 中心。空间粗网格由 $300\,\mathrm m$ 缩小到 $200\,\mathrm m$ 后，三类策略的选点及报告指标在本次核验中完全一致，因此保留计算成本更低的 $300\,\mathrm m$ 网格。
+
+最终数值配置冻结为
+\[
+\boxed{
+N_{\mathrm{prior}}=600000,\quad
+M_{\mathrm{dir}}=360,\quad
+h_0=300\,\mathrm m,\quad
+(h_1,h_2)=(120,40)\,\mathrm m,
+}
+\tag{27}
+\]
+\[
+\boxed{
+N_{\mathrm{circle}}=72,\qquad
+\tau=0.5\,\mathrm m.
+}
+\tag{28}
+\]
+上述检验属于工程数值稳定性核验，不等同于严格的数值收敛定理。
+
+#### 5.2.8 策略比较与 $\rho$ 敏感性分析
+
+在式（27）—（28）的冻结配置下，正式计算仅生成一次 posterior，并对最终候选集统一评分；所有 $\rho$ 取值均复用同一评分结果。本次 posterior 共保留 $1611$ 个联合样本，有效样本量为
+\[
+\mathrm{ESS}=1218.692.
+\]
+
+首先比较 Bayesian、Minimax、$\rho=0.10$ 的 Hybrid，以及与 Hybrid 移动距离相同的双侧垂直布点，结果见表 3。
+
+**表 3  第二检测点策略比较**
+
+| 策略 | 第二检测点 $q$/m | $\Psi_D$/m | $u_{\mathrm{proxy}}$/m | $\bar U$/m | 移动距离/m |
+|---|---|---:|---:|---:|---:|
+| Bayesian | $(0,-480)$ | 43.451 | 84.452 | 1501.429 | 1020.000 |
+| Minimax | $(120,-600)$ | 44.936 | 60.518 | 1501.429 | 1183.385 |
+| Hybrid, $\rho=0.10$ | $(120,-600)$ | 44.936 | 60.518 | 1501.429 | 1183.385 |
+| Vertical $+n$ | $(-900,1183.385)$ | 1206.091 | 1414.219 | 1501.429 | 1183.385 |
+| Vertical $-n$ | $(-900,-1183.385)$ | 1207.615 | 1414.219 | 1501.429 | 1183.385 |
+
+![图 4  第二检测点策略空间位置对比](results/q2/strategy_locations.png)
+
+Bayesian 近最优点的 $\Psi_D$ 比 Minimax 小
+\[
+44.936-43.451=1.485\,\mathrm m,
+\]
+约改善 $3.3\%$；但其 $u_{\mathrm{proxy}}$ 从 $60.518\,\mathrm m$ 增至 $84.452\,\mathrm m$，相对增加约
+\[
+\frac{84.452-60.518}{60.518}\approx39.5\%.
+\tag{29}
+\]
+这说明单纯追求名义平均性能会显著牺牲最坏性能，因此有必要使用 鲁棒包络 进行约束。
+
+进一步在同一最终评分集合上扫描
+\[
+\rho\in\{0,0.025,0.05,0.10,0.20,0.30\},
+\]
+结果见表 4。
+
+**表 4  Robust-envelope 参数 $\rho$ 的敏感性**
+
+| $\rho$ | $q$/m | $\Psi_D$/m | $u_{\mathrm{proxy}}$/m | 移动距离/m |
+|---:|---|---:|---:|---:|
+| 0.000 | $(120,-600)$ | 44.936 | 60.518 | 1183.385 |
+| 0.025 | $(120,-600)$ | 44.936 | 60.518 | 1183.385 |
+| 0.050 | $(120,-600)$ | 44.936 | 60.518 | 1183.385 |
+| 0.100 | $(120,-600)$ | 44.936 | 60.518 | 1183.385 |
+| 0.200 | $(28.284,-571.716)$ | 42.985 | 69.914 | 1090.216 |
+| 0.300 | $(0,560)$ | 43.254 | 73.171 | 1060.000 |
+
+![图 5  Robust-envelope 参数 $\rho$ 对名义定位直径与鲁棒代理的影响](results/q2/rho_tradeoff.png)
+
+当 $0\le\rho\le0.10$ 时，Hybrid 保持在 Minimax 一侧，说明 $10\%$ 的 robust 退化预算尚不足以使更偏 nominal 的候选进入包络；当 $\rho$ 增至 $0.20$ 和 $0.30$ 时，策略出现候选切换，$u_{\mathrm{proxy}}$ 上升，而名义 $\Psi_D$ 相对 Minimax plateau 总体改善。由于候选集离散，且 selector 允许 $\tau=0.5\,\mathrm m$ 的 近最优 容差，报告的 $\Psi_D$ 不要求随 $\rho$ 严格单调。
+
+对于纯 Bayesian 点，其进入 鲁棒包络 所需的最小相对容许比例约为
+\[
+\rho_{\mathrm{Bayes}}
+=
+\frac{84.452}{60.518}-1
+\approx0.3955.
+\tag{30}
+\]
+该数值只反映当前 对称测试场景 的候选集合与评价结果，不是理论常数。
+
+等距离垂直布点的 $\Psi_D$ 超过 $1200\,\mathrm m$，$u_{\mathrm{proxy}}$ 超过 $1400\,\mathrm m$，明显劣于主动选点结果。说明第二检测点不能只依赖“扩大交会基线”的固定几何规则，还应结合首次后验结构与接收半径不确定性进行主动设计。
+
+综上，问题二形成了“**硬支持集约束—名义 Bayesian 评价—鲁棒代理约束—Robust-envelope 折中—粗到细无梯度搜索**”的完整选点框架，并通过统一候选集上的策略对比验证了主动选点的必要性。
