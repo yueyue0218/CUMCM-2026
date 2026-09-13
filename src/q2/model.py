@@ -1,8 +1,8 @@
 """Minimal Q2 model primitives.
 
 This module covers state construction, candidate-domain checks, second-response
-support updates, and the nominal Bayesian candidate evaluator.  It intentionally
-does not implement the robust evaluator, optimizer, or large experiments.
+support updates, the nominal Bayesian evaluator, and the single-candidate robust
+evaluator.  It intentionally does not implement the optimizer or large experiments.
 """
 
 from __future__ import annotations
@@ -241,6 +241,20 @@ class BayesianEvaluation:
     psi_d_m: float
     response_probabilities: dict[SecondResponseKind, float]
     metrics: tuple[ResponseMetric, ...]
+    movement_m: float
+
+
+@dataclass(frozen=True)
+class RobustEvaluation:
+    """Finite-grid robust proxy plus continuous-response conservative outer bound."""
+
+    q: Point
+    u_proxy_m: float
+    u_bar_m: float
+    worst_response_proxy: SecondResponse | None
+    worst_response_outer: SecondResponse | None
+    in_c_poss_proxy: bool
+    in_c_rec_certified: bool
     movement_m: float
 
 
@@ -718,6 +732,177 @@ def evaluate_bayesian(
         movement_m=distance(q, state.observation.station),
     )
 
+
+
+def evaluate_robust(
+    q: Point,
+    state: FirstState,
+    *,
+    direction_grid_deg: Sequence[float],
+    config: Q2Config = Q2Config(),
+) -> RobustEvaluation:
+    """Evaluate one candidate under hard-bound worst-case geometry.
+
+    ``u_proxy_m`` is a finite center-grid, sample-supported proxy for
+    ``U(q) = sup_z D(S2(z,q))``.  It is useful for ranking candidates but is not
+    a continuous-response certificate.
+
+    ``u_bar_m`` is a conservative outer upper bound over continuous direction
+    responses.  Each direction grid center represents a full angular bin; its
+    outer region uses the widened half-angle
+    ``bearing_error_deg + bin_width_deg/2``.  ``near`` uses the certified 5 m
+    outer disk.  ``no_signal`` uses ``K1_out`` unless it is ruled out by the
+    certified reception condition ``C_rec``.
+
+    The two quantities intentionally serve different roles and must not be
+    reported as equal or as exact worst-case values.
+    """
+
+    _validate_point(q, "q")
+    if not isinstance(state, FirstState):
+        raise TypeError("state must be a FirstState")
+    if not state.outer_region:
+        raise ValueError("state.outer_region must be non-empty")
+
+    centers, bin_width_deg = _prepare_direction_grid(direction_grid_deg)
+    domain = evaluate_candidate_domains(q, state, config=config)
+    movement_m = distance(q, state.observation.station)
+
+    weighted_samples = tuple(
+        sample for sample in state.joint_samples if sample.weight > 0.0
+    )
+    if not weighted_samples:
+        raise ValueError("state.joint_samples must contain positive-weight samples")
+
+    # At the exact first station the same-place error is fixed, so a repeated
+    # measurement cannot split the support or provide an independent bearing.
+    if movement_m <= _DISTANCE_TOLERANCE_M:
+        positions = tuple(sample.position for sample in weighted_samples)
+        response = SecondResponse(
+            SecondResponseKind.DIRECTION,
+            state.observation.bearing_deg,
+        )
+        return RobustEvaluation(
+            q=q,
+            u_proxy_m=polygon_diameter(positions),
+            u_bar_m=polygon_diameter(state.outer_region),
+            worst_response_proxy=response,
+            worst_response_outer=response,
+            in_c_poss_proxy=domain.in_c_poss_proxy,
+            in_c_rec_certified=domain.in_c_rec_certified,
+            movement_m=0.0,
+        )
+
+    proxy_candidates: list[tuple[float, SecondResponse]] = []
+
+    near_response = SecondResponse(SecondResponseKind.NEAR)
+    near_support = second_support(q, near_response, state, config=config)
+    if near_support.sample_support:
+        proxy_candidates.append(
+            (
+                polygon_diameter(
+                    tuple(sample.position for sample in near_support.sample_support)
+                ),
+                near_response,
+            )
+        )
+
+    no_signal_response = SecondResponse(SecondResponseKind.NO_SIGNAL)
+    no_signal_support = second_support(q, no_signal_response, state, config=config)
+    if no_signal_support.sample_support:
+        proxy_candidates.append(
+            (
+                polygon_diameter(
+                    tuple(sample.position for sample in no_signal_support.sample_support)
+                ),
+                no_signal_response,
+            )
+        )
+
+    for center in centers:
+        response = SecondResponse(SecondResponseKind.DIRECTION, center)
+        support = second_support(q, response, state, config=config)
+        if not support.sample_support:
+            continue
+        proxy_candidates.append(
+            (
+                polygon_diameter(
+                    tuple(sample.position for sample in support.sample_support)
+                ),
+                response,
+            )
+        )
+
+    if not proxy_candidates:
+        raise ValueError(
+            "finite direction grid has no sample-supported response; "
+            "refine direction_grid_deg"
+        )
+
+    # max() is stable for ties because candidates are appended in deterministic
+    # near / no_signal / ascending-direction order.
+    u_proxy_m, worst_response_proxy = max(
+        proxy_candidates,
+        key=lambda item: item[0],
+    )
+
+    outer_candidates: list[tuple[float, SecondResponse]] = []
+
+    # A non-empty near outer is a conservative witness that near may be feasible.
+    if near_support.conservative_outer_region:
+        outer_candidates.append(
+            (
+                polygon_diameter(near_support.conservative_outer_region),
+                near_response,
+            )
+        )
+
+    # If C_rec is certified, every true source position is within 1000 m and
+    # R >= 1000 m, so no_signal is impossible.  Otherwise the first safe outer
+    # remains K1_out; it is deliberately loose but cannot under-cover.
+    if not domain.in_c_rec_certified:
+        outer_candidates.append(
+            (
+                polygon_diameter(state.outer_region),
+                no_signal_response,
+            )
+        )
+
+    for center in centers:
+        outer = _direction_bin_outer_region(
+            q,
+            center,
+            bin_width_deg,
+            state,
+            config,
+        )
+        if not outer:
+            continue
+        outer_candidates.append(
+            (
+                polygon_diameter(outer),
+                SecondResponse(SecondResponseKind.DIRECTION, center),
+            )
+        )
+
+    if not outer_candidates:
+        raise ValueError("no conservative second-response outer region is non-empty")
+
+    u_bar_m, worst_response_outer = max(
+        outer_candidates,
+        key=lambda item: item[0],
+    )
+
+    return RobustEvaluation(
+        q=q,
+        u_proxy_m=u_proxy_m,
+        u_bar_m=u_bar_m,
+        worst_response_proxy=worst_response_proxy,
+        worst_response_outer=worst_response_outer,
+        in_c_poss_proxy=domain.in_c_poss_proxy,
+        in_c_rec_certified=domain.in_c_rec_certified,
+        movement_m=movement_m,
+    )
 
 
 def _validate_bearing_error_bins(

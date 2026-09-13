@@ -518,8 +518,14 @@ is not a continuous-response certificate.
 `u_bar_m` is a conservative engineering upper bound only when continuous
 `direction` responses are covered by interval bins. For each direction bin
 center `c_j` with width `bin_width_deg`, build `K2_dir_bin_out` using the
-widened half-angle `bearing_error_deg + bin_width_deg / 2`. Then compute
-`u_bar_m` as the maximum of:
+widened half-angle `bearing_error_deg + bin_width_deg / 2`.
+
+Before including the `no_signal` branch, reuse the certified reception test:
+if `C_rec` is certified, then every true source satisfies `||q-G|| <= 1000 <= R`,
+so `no_signal` is impossible and must be omitted. Otherwise retain the safe
+first implementation `K2_no_out = K1_out`.
+
+Then compute `u_bar_m` as the maximum of:
 
 - `D(K2_near_out)`;
 - `D(K2_no_out)`, with first implementation `K2_no_out = K1_out`;
@@ -532,6 +538,12 @@ centers alone must be named a grid proxy.
 `worst_response_outer` may store `near`, `no_signal`, or the center-labeled
 `direction` response for the worst interval bin. It is a diagnostic label, not
 proof that the worst continuous angle equals the bin center.
+
+Task 4A implements only this single-candidate evaluator. It does not yet
+minimize over candidate points, construct `A_rho`, or select the hybrid policy.
+For `u_proxy_m`, only non-empty sample-supported center-grid responses contribute;
+if a grid is too coarse to support any response, the evaluator fails explicitly
+instead of silently returning zero.
 
 ```python
 def minimax_baseline(

@@ -14,12 +14,14 @@ from src.q2.model import (
     JointSample,
     Q2Config,
     ResponseMetric,
+    RobustEvaluation,
     SecondResponse,
     SecondResponseKind,
     SecondSupport,
     build_first_state,
     evaluate_bayesian,
     evaluate_candidate_domains,
+    evaluate_robust,
     sample_first_direction_posterior,
     second_support,
 )
@@ -729,6 +731,187 @@ class BayesianEvaluatorTests(unittest.TestCase):
                 direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
                 bearing_error_atoms=(BearingErrorAtom(0.0, 1.0),),
                 config=Q2Config(circle_vertices=36),
+            )
+
+
+
+class RobustEvaluatorTests(unittest.TestCase):
+    def make_state(
+        self,
+        *,
+        station: tuple[float, float] = (-500.0, 0.0),
+        outer_region: tuple[tuple[float, float], ...] | None = None,
+        samples: tuple[JointSample, ...] | None = None,
+    ) -> FirstState:
+        if outer_region is None:
+            outer_region = (
+                (-100.0, -100.0),
+                (100.0, -100.0),
+                (100.0, 100.0),
+                (-100.0, 100.0),
+            )
+        if samples is None:
+            samples = (
+                JointSample((3.0, 0.0), 1000.0, 1.0),
+                JointSample((60.0, 0.0), 1000.0, 1.0),
+                JointSample((80.0, 0.0), 1000.0, 1.0),
+            )
+        return FirstState(
+            observation=FirstDirectionObservation(station, 0.0),
+            exact_support_label="synthetic robust test support",
+            outer_region=outer_region,
+            joint_samples=samples,
+        )
+
+    def test_robust_result_separates_grid_proxy_and_outer_bound(self) -> None:
+        result = evaluate_robust(
+            (0.0, 0.0),
+            self.make_state(),
+            direction_grid_deg=tuple(float(value) for value in range(0, 360, 10)),
+            config=Q2Config(circle_vertices=72),
+        )
+
+        self.assertIsInstance(result, RobustEvaluation)
+        self.assertGreaterEqual(result.u_proxy_m, 0.0)
+        self.assertGreaterEqual(result.u_bar_m + 1e-9, result.u_proxy_m)
+        self.assertIsNotNone(result.worst_response_proxy)
+        self.assertIsNotNone(result.worst_response_outer)
+        self.assertAlmostEqual(result.movement_m, 500.0)
+
+    def test_no_signal_outer_is_omitted_when_c_rec_is_certified(self) -> None:
+        state = self.make_state(
+            outer_region=(
+                (-50.0, -50.0),
+                (50.0, -50.0),
+                (50.0, 50.0),
+                (-50.0, 50.0),
+            ),
+            samples=(
+                JointSample((20.0, 0.0), 1000.0, 1.0),
+                JointSample((40.0, 0.0), 1000.0, 1.0),
+            ),
+        )
+
+        result = evaluate_robust(
+            (0.0, 0.0),
+            state,
+            direction_grid_deg=tuple(float(value) for value in range(0, 360, 10)),
+            config=Q2Config(circle_vertices=72),
+        )
+
+        self.assertTrue(result.in_c_rec_certified)
+        self.assertIsNot(result.worst_response_outer.kind, SecondResponseKind.NO_SIGNAL)
+
+    def test_no_signal_outer_falls_back_to_k1_when_c_rec_not_certified(self) -> None:
+        state = self.make_state(
+            outer_region=(
+                (-1200.0, -100.0),
+                (1200.0, -100.0),
+                (1200.0, 100.0),
+                (-1200.0, 100.0),
+            ),
+            samples=(
+                JointSample((100.0, 0.0), 1000.0, 1.0),
+                JointSample((1100.0, 0.0), 1000.0, 1.0),
+            ),
+        )
+
+        result = evaluate_robust(
+            (0.0, 0.0),
+            state,
+            direction_grid_deg=tuple(float(value) for value in range(0, 360, 10)),
+            config=Q2Config(circle_vertices=72),
+        )
+
+        self.assertFalse(result.in_c_rec_certified)
+        self.assertAlmostEqual(result.u_bar_m, model.polygon_diameter(state.outer_region))
+        self.assertIs(result.worst_response_outer.kind, SecondResponseKind.NO_SIGNAL)
+
+    def test_widened_direction_bin_contains_exact_response_outers_at_bin_edges(self) -> None:
+        state = self.make_state(
+            outer_region=(
+                (-400.0, -400.0),
+                (400.0, -400.0),
+                (400.0, 400.0),
+                (-400.0, 400.0),
+            ),
+            samples=(JointSample((100.0, 0.0), 1000.0, 1.0),),
+        )
+        config = Q2Config(circle_vertices=144)
+        center = 0.0
+        bin_width = 10.0
+        widened = model._direction_bin_outer_region(
+            (0.0, 0.0),
+            center,
+            bin_width,
+            state,
+            config,
+        )
+        self.assertTrue(widened)
+
+        for measured in (355.0, 0.0, 5.0):
+            exact = second_support(
+                (0.0, 0.0),
+                SecondResponse(SecondResponseKind.DIRECTION, measured),
+                state,
+                config=config,
+            ).conservative_outer_region
+            self.assertTrue(exact)
+            for vertex in exact:
+                self.assertTrue(
+                    model._point_in_convex_polygon(vertex, widened, epsilon=1e-7)
+                )
+
+    def test_same_station_repeat_does_not_create_new_robust_information(self) -> None:
+        samples = (
+            JointSample((100.0, 0.0), 1000.0, 1.0),
+            JointSample((200.0, 1.0), 1000.0, 1.0),
+        )
+        state = self.make_state(
+            station=(0.0, 0.0),
+            outer_region=(
+                (90.0, -10.0),
+                (210.0, -10.0),
+                (210.0, 10.0),
+                (90.0, 10.0),
+            ),
+            samples=samples,
+        )
+
+        result = evaluate_robust(
+            (0.0, 0.0),
+            state,
+            direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+            config=Q2Config(circle_vertices=36),
+        )
+
+        self.assertEqual(result.movement_m, 0.0)
+        self.assertIs(result.worst_response_proxy.kind, SecondResponseKind.DIRECTION)
+        self.assertEqual(result.worst_response_proxy.bearing_deg, 0.0)
+        self.assertAlmostEqual(
+            result.u_proxy_m,
+            math.dist(samples[0].position, samples[1].position),
+        )
+        self.assertAlmostEqual(
+            result.u_bar_m,
+            model.polygon_diameter(state.outer_region),
+        )
+
+    def test_robust_rejects_invalid_grid_and_non_finite_candidate(self) -> None:
+        state = self.make_state()
+
+        with self.assertRaises(ValueError):
+            evaluate_robust(
+                (math.nan, 0.0),
+                state,
+                direction_grid_deg=(0.0, 90.0, 180.0, 270.0),
+            )
+
+        with self.assertRaisesRegex(ValueError, "equally spaced"):
+            evaluate_robust(
+                (0.0, 0.0),
+                state,
+                direction_grid_deg=(0.0, 80.0, 180.0, 270.0),
             )
 
 
