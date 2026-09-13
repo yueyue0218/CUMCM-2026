@@ -601,7 +601,7 @@ N_{\mathrm{circle}}=72,\qquad
 | Vertical $+n$ | $(-900,1183.385)$ | 1206.091 | 1414.219 | 1501.429 | 1183.385 |
 | Vertical $-n$ | $(-900,-1183.385)$ | 1207.615 | 1414.219 | 1501.429 | 1183.385 |
 
-![图 4  第二检测点策略空间位置对比](results/q2/strategy_locations.png)
+![图 4  第二检测点策略空间位置对比（灰色虚线为等移动距离垂直基线，Minimax 与 $\rho=0.10$ Hybrid 选点重合）](results/q2/strategy_locations.png)
 
 Bayesian 近最优点的 $\Psi_D$ 比 Minimax 小
 \[
@@ -631,7 +631,7 @@ Bayesian 近最优点的 $\Psi_D$ 比 Minimax 小
 | 0.200 | $(28.284,-571.716)$ | 42.985 | 69.914 | 1090.216 |
 | 0.300 | $(0,560)$ | 43.254 | 73.171 | 1060.000 |
 
-![图 5  Robust-envelope 参数 $\rho$ 对名义定位直径与鲁棒代理的影响](results/q2/rho_tradeoff.png)
+![图 5  Robust-envelope 参数 $\rho$ 对名义定位直径与鲁棒代理的影响（阶梯线表示离散候选切换，虚线为鲁棒包络上限）](results/q2/rho_tradeoff.png)
 
 当 $0\le\rho\le0.10$ 时，Hybrid 保持在 Minimax 一侧，说明 $10\%$ 的 robust 退化预算尚不足以使更偏 nominal 的候选进入包络；当 $\rho$ 增至 $0.20$ 和 $0.30$ 时，策略出现候选切换，$u_{\mathrm{proxy}}$ 上升，而名义 $\Psi_D$ 相对 Minimax plateau 总体改善。由于候选集离散，且 selector 允许 $\tau=0.5\,\mathrm m$ 的 近最优 容差，报告的 $\Psi_D$ 不要求随 $\rho$ 严格单调。
 

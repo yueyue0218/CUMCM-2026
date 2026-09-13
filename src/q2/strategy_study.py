@@ -113,27 +113,147 @@ def write_outputs(artifacts: StudyArtifacts, output_dir: Path | str) -> None:
     (directory / "strategy_study_summary.md").write_text("\n".join(summary) + "\n", encoding="utf-8")
 
 
-def _write_plots(artifacts: StudyArtifacts, directory: Path) -> None:
+def _configure_publication_style() -> None:
+    """Configure a compact Chinese paper style without requiring LaTeX."""
+    import matplotlib as mpl
+
+    mpl.rcParams.update({
+        "font.family": "sans-serif",
+        "font.sans-serif": ["Microsoft YaHei", "SimHei", "Noto Sans CJK SC", "DejaVu Sans"],
+        "axes.unicode_minus": False,
+        "font.size": 9.5,
+        "axes.labelsize": 10,
+        "xtick.labelsize": 8.5,
+        "ytick.labelsize": 8.5,
+        "legend.fontsize": 8.3,
+        "axes.linewidth": 0.8,
+        "lines.linewidth": 1.6,
+        "savefig.facecolor": "white",
+        "savefig.bbox": "tight",
+        "pdf.fonttype": 42,
+        "ps.fonttype": 42,
+    })
+
+
+def _save_publication_figure(fig: object, directory: Path, stem: str) -> None:
+    """Save an editable vector figure and a print-ready raster fallback."""
+    fig.savefig(directory / f"{stem}.pdf")
+    fig.savefig(directory / f"{stem}.png", dpi=600)
+
+
+def _write_publication_plots(
+    primary: dict[str, tuple[float, float]],
+    rho_rows: Sequence[tuple[float, float, float]],
+    directory: Path,
+) -> None:
     import matplotlib.pyplot as plt
-    labels = {"pure_bayesian": "Pure Bayesian", "pure_minimax": "Pure minimax", "hybrid_rho_0.10": "Hybrid (rho=0.10)", "vertical_plus": "Vertical +n", "vertical_minus": "Vertical -n"}
-    fig, ax = plt.subplots(figsize=(6, 6))
-    for name, score in artifacts.primary.items():
-        ax.scatter(*score.q, label=labels[name], s=45)
-    ax.scatter([-900], [0], marker="*", s=180, color="black", zorder=5, label="S1 = (-900, 0)")
-    ax.annotate("minimax = hybrid (rho=0.10)", (120, -600), xytext=(12, -34), textcoords="offset points", fontsize=8,
-                arrowprops={"arrowstyle": "-", "color": "0.35"})
-    ax.axhline(0, color="0.5", linestyle="--", linewidth=0.8, label="x-axis symmetry")
-    ax.set_aspect("equal", adjustable="box"); ax.set_xlabel("x (m)"); ax.set_ylabel("y (m)"); ax.set_title("Q2 candidate second-station locations"); ax.legend(fontsize=8); fig.tight_layout(); fig.savefig(directory / "strategy_locations.png", dpi=160); plt.close(fig)
-    fig, axes = plt.subplots(2, 1, figsize=(6, 6), sharex=True)
-    rhos = list(artifacts.rho_scores); psi = [artifacts.rho_scores[r].bayes.psi_d_m for r in rhos]; proxy = [artifacts.rho_scores[r].robust.u_proxy_m for r in rhos]
-    for ax, values, ylabel in ((axes[0], psi, "Expected diameter proxy (m)"), (axes[1], proxy, "Robust proxy diameter (m)")):
-        ax.plot(rhos, values, marker="o"); ax.axvline(0.10, color="0.6", linestyle="--", label="rho=0.10 reference"); ax.set_ylabel(ylabel); ax.grid(alpha=0.25); ax.legend(fontsize=8)
-    axes[1].set_xlabel("Robust-envelope tolerance rho"); fig.suptitle("Q2 robust-envelope sensitivity"); fig.tight_layout(); fig.savefig(directory / "rho_tradeoff.png", dpi=160); plt.close(fig)
+    from matplotlib.ticker import FormatStrFormatter
+
+    _configure_publication_style()
+    blue, orange, grey, dark = "#0072B2", "#D55E00", "#6B7280", "#222222"
+
+    # Spatial comparison: use unique visual marks, since minimax and hybrid
+    # coincide exactly in the reported benchmark.
+    fig, ax = plt.subplots(figsize=(5.55, 4.65))
+    s1 = (-900.0, 0.0)
+    bayes = primary["pure_bayesian"]
+    robust = primary["pure_minimax"]
+    v_plus = primary["vertical_plus"]
+    v_minus = primary["vertical_minus"]
+    for endpoint in (bayes, robust):
+        ax.plot((s1[0], endpoint[0]), (s1[1], endpoint[1]), color="0.78", linewidth=1.0, zorder=1)
+    for endpoint in (v_plus, v_minus):
+        ax.plot((s1[0], endpoint[0]), (s1[1], endpoint[1]), color="0.82", linewidth=0.9,
+                linestyle=(0, (3, 2)), zorder=1)
+    ax.axhline(0, color="0.68", linestyle=(0, (4, 3)), linewidth=0.8, zorder=0)
+    ax.scatter(*s1, marker="*", s=150, color=dark, edgecolor="white", linewidth=0.5,
+               zorder=5, label=r"首次检测点 $S_1$")
+    ax.scatter(*bayes, marker="o", s=58, color=blue, edgecolor="white", linewidth=0.7,
+               zorder=5, label="Bayesian")
+    ax.scatter(*robust, marker="D", s=56, color=orange, edgecolor="white", linewidth=0.7,
+               zorder=6, label=r"Minimax / Hybrid（$\rho=0.10$）")
+    ax.scatter(*v_plus, marker="^", s=53, color=grey, edgecolor="white", linewidth=0.6,
+               zorder=4, label="等距离垂直基线")
+    ax.scatter(*v_minus, marker="v", s=53, color=grey, edgecolor="white", linewidth=0.6, zorder=4)
+    ax.annotate(r"$q_B=(0,-480)$", bayes, xytext=(-10, 9), textcoords="offset points",
+                ha="right", color=blue)
+    ax.annotate(r"$q_M=q_H=(120,-600)$", robust, xytext=(-8, -19), textcoords="offset points",
+                ha="right", color=orange)
+    ax.text(-1270, 45, "对称轴", color="0.45", fontsize=8)
+    ax.set(xlabel=r"横坐标 $x$/m", ylabel=r"纵坐标 $y$/m", xlim=(-1320, 390), ylim=(-1320, 1320))
+    ax.set_aspect("equal", adjustable="box")
+    ax.grid(color="0.90", linewidth=0.6)
+    ax.set_axisbelow(True)
+    ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.01), ncol=2, frameon=False,
+              borderpad=0.2, columnspacing=1.0, handletextpad=0.5)
+    fig.tight_layout(pad=0.55, rect=(0, 0, 1, 0.90))
+    _save_publication_figure(fig, directory, "strategy_locations")
+    plt.close(fig)
+
+    # The selector changes only at sampled rho values. A post-step line avoids
+    # implying that uncomputed intermediate values were evaluated.
+    rhos = [row[0] for row in rho_rows]
+    psi = [row[1] for row in rho_rows]
+    proxy = [row[2] for row in rho_rows]
+    robust_floor = min(proxy)
+    envelope = [(1.0 + rho) * robust_floor for rho in rhos]
+    fig, axes = plt.subplots(2, 1, figsize=(5.75, 5.45), sharex=True,
+                             gridspec_kw={"hspace": 0.10}, layout="constrained")
+    axes[0].step(rhos, psi, where="post", color=blue, zorder=2)
+    axes[0].scatter(rhos, psi, s=29, color=blue, edgecolor="white", linewidth=0.5, zorder=3)
+    axes[1].step(rhos, proxy, where="post", color=orange, zorder=2,
+                 label=r"入选点的 $u_{\mathrm{proxy}}$")
+    axes[1].scatter(rhos, proxy, s=29, color=orange, edgecolor="white", linewidth=0.5, zorder=3)
+    axes[1].plot(rhos, envelope, color="0.35", linestyle=(0, (4, 2)), linewidth=1.1,
+                 label=r"包络上限 $(1+\rho)u^*_{\mathrm{proxy}}$")
+    for ax in axes:
+        ax.axvspan(0.0, 0.10, color="#E5E7EB", alpha=0.65, zorder=0)
+        ax.axvline(0.10, color="0.42", linestyle=(0, (2, 2)), linewidth=0.9)
+        ax.grid(color="0.90", linewidth=0.6)
+        ax.set_axisbelow(True)
+        ax.yaxis.set_major_formatter(FormatStrFormatter("%.1f"))
+    axes[0].text(0.05, 0.92, "Minimax 平台", transform=axes[0].get_xaxis_transform(),
+                 ha="center", va="top", color="0.34", fontsize=8.2)
+    axes[0].annotate("候选切换", xy=(0.20, psi[4]), xytext=(0.225, 44.15),
+                     arrowprops={"arrowstyle": "->", "color": "0.35", "lw": 0.8},
+                     color="0.30", fontsize=8.2)
+    axes[0].set_ylabel(r"名义期望直径 $\Psi_D$/m")
+    axes[1].set_ylabel(r"鲁棒代理 $u_{\mathrm{proxy}}$/m")
+    axes[1].set_xlabel(r"鲁棒包络容许系数 $\rho$")
+    axes[1].set_xticks(rhos)
+    axes[1].set_xlim(-0.01, 0.31)
+    axes[1].legend(loc="upper left", frameon=True, framealpha=0.96)
+    fig.align_ylabels(axes)
+    _save_publication_figure(fig, directory, "rho_tradeoff")
+    plt.close(fig)
+
+
+def _write_plots(artifacts: StudyArtifacts, directory: Path) -> None:
+    primary = {name: score.q for name, score in artifacts.primary.items()}
+    rho_rows = [(rho, score.bayes.psi_d_m, score.robust.u_proxy_m)
+                for rho, score in artifacts.rho_scores.items()]
+    _write_publication_plots(primary, rho_rows, directory)
+
+
+def write_plots_from_csv(output_dir: Path | str = Path("results/q2")) -> None:
+    """Regenerate publication plots from the frozen tables without rerunning Q2."""
+    directory = Path(output_dir)
+    with (directory / "strategy_comparison.csv").open(encoding="utf-8", newline="") as handle:
+        primary = {row["strategy"]: (float(row["q_x"]), float(row["q_y"]))
+                   for row in csv.DictReader(handle)}
+    with (directory / "rho_sensitivity.csv").open(encoding="utf-8", newline="") as handle:
+        rho_rows = [(float(row["rho"]), float(row["psi_d_m"]), float(row["u_proxy_m"]))
+                    for row in csv.DictReader(handle)]
+    _write_publication_plots(primary, rho_rows, directory)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__); parser.add_argument("--output-dir", type=Path, default=Path("results/q2")); parser.add_argument("--seed", type=int, default=7); args = parser.parse_args(argv)
+    parser = argparse.ArgumentParser(description=__doc__); parser.add_argument("--output-dir", type=Path, default=Path("results/q2")); parser.add_argument("--seed", type=int, default=7); parser.add_argument("--plots-only", action="store_true", help="regenerate plots from existing CSV outputs"); args = parser.parse_args(argv)
     if args.seed < 0: parser.error("--seed must be non-negative")
+    if args.plots_only:
+        write_plots_from_csv(args.output_dir)
+        print(f"publication plots regenerated in {args.output_dir}")
+        return 0
     study = run_study(output_dir=args.output_dir, seed=args.seed)
     print(f"runtime_s={study.runtime_s:.3f}; retained={study.posterior.retained_draws}; ESS={study.posterior.effective_sample_size:.3f}; final_candidates={len(study.final_candidates)}")
     return 0
