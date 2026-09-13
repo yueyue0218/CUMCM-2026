@@ -588,6 +588,11 @@ the 1800 m target circle. Reject non-positive spacing. Return an empty tuple if
 the grid has no valid proxy candidates; the optimizer should turn that into a
 clear failure.
 
+Task 4B implementation detail: align the Cartesian grid to integer multiples of
+`spacing_m` after expanding the outer-region bounding box by 1500 m. This makes
+candidate generation deterministic and independent of vertex ordering. Task 4B
+does not yet implement local refinement.
+
 ```python
 def refine_candidates(
     seeds: Sequence[Point],
@@ -636,6 +641,14 @@ def select_pure_minimax(scores: Sequence[CandidateScore]) -> CandidateScore:
 
 Select minimum `robust.u_proxy_m`, with movement as final deterministic
 tie-break. Report `u_bar_m` alongside it.
+
+Task 4B first exposes this behavior through `minimax_baseline(candidates, ...)`,
+which returns the selected `RobustEvaluation` directly. Ranking is by
+`(u_proxy_m, movement_m, q.x, q.y)`. Candidates outside the `C_poss` outer proxy
+are ignored. This is explicitly a finite-candidate / finite-direction numerical
+baseline, not a claim of continuous-space global optimality. `CandidateScore`
+and `select_pure_minimax(...)` remain for the later unified Bayesian/robust
+scoring layer.
 
 ```python
 def select_robust_envelope_hybrid(
